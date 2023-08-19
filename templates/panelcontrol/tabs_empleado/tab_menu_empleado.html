@@ -1,0 +1,56 @@
+<form id="frm-memp" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+	{% csrf_token %}
+
+	<div class="form-group">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<label>{{frmMenuEmpleadoForm.me_items.label}}</label>
+			{{frmMenuEmpleadoForm.me_items}}
+		</div>
+	</div>
+
+	
+	<div class="form-group">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<button  style="margin-top:15px;" type="button" onclick="addMenuEmpleado({{id_usuario}}, {{empresa_id}})" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+		</div>
+	</div>
+	
+	<div class="ln_solid"></div>
+	<div class="form-group">
+		<style type="text/css">
+			.table > thead > tr > th{
+				background: #2A3F54;
+				color:#FFFFFF;
+				border:1px solid #FFFFFF;
+			}
+
+			.table > tbody > tr:hover{
+				background: #E0E0F8;
+				border:1px solid #FFFFFF;
+				cursor: pointer;
+			}
+		</style>
+		<table class="table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+			    <tr>
+					<th>#</th>
+					<th>NOMBRE</th>
+					<th>ACCIONES</th>
+			    </tr>
+			</thead>
+			<tbody>
+		  		{% for m in lstMenuItemes %}
+		    	<tr>
+					<td>{{m.contador}}</td>
+					<td>{{m.item|upper}}</td>
+					<td>
+						<div class="btn-group  btn-group-sm">
+							<a href="#" class="btn btn-{% if m.estado == 'S' %}danger{% else %}success{% endif %}" onclick="borrar_item({{m.men_ite_id}}, '{{m.estado}}')"><span class="fa fa-trash"></span> {% if m.estado == 'S' %}Desactivar{% else %}Activar{% endif %}</a>
+						</div>
+					</td>
+		    	</tr>
+		    	{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</form>

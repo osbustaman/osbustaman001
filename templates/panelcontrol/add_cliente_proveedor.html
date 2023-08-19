@@ -1,0 +1,83 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+agregar clientes/proveedores
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+    <a href="{% url 'bases:viewsClientesProveedores' %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+{% if is_edit %}
+<li role="presentation">
+    <a href="#" style="border:0px;">{{nombre_empresa}}</a>
+</li>
+<li role="presentation">
+	<a href="{% url 'bases:addClienteProveedorEmpresa' cp_id %}" style="border:0px;" id="relacion-cle-prov-emp">
+		<span class="fa fa-plus-circle"></span> Relacionar cliente/proveedor empresa
+	</a>
+</li>
+{% endif %}
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+
+
+<div class="x_panel">
+    <div class="x_content" >
+
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+			<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Cliente/Proveedor</a>
+				</li>
+				{% if is_edit %}
+				<li role="presentation" class="">
+					<a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Relación empresa <span class="badge badge-success">{{contador}}</span></a>
+				</li>
+				{% endif %}
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+					{% include "panelcontrol/tabs_cliente_proveedor/tabs_add_cliente_proveedor.html" %}
+				</div>
+				{% if is_edit %}
+				<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+					{% include "panelcontrol/tabs_cliente_proveedor/tabs_listado_relacion_empresa.html" %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $("#relacion-cle-prov-emp").css('display', 'none');
+    $("#home-tab").click(function(){
+        $("#relacion-cle-prov-emp").css('display', 'none');
+    });
+    $("#profile-tab").click(function(){
+        $("#relacion-cle-prov-emp").css('display', 'block');
+    });
+
+    {% if error %}
+    var mensaje_error = 'Problemas en los siguientes campos: <br/><br/>'
+    {% for e in lista_err %}
+    mensaje_error='{{ e }}<br/>'
+    {% endfor %}
+
+    $.alert({
+        title: 'Error!',
+        content: mensaje_error,
+    });
+    {% endif %}
+})
+</script>
+{% endblock %}

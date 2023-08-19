@@ -1,0 +1,82 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+agregar/editar parámetros
+{% endblock %}
+
+{% block nav %}
+<ul class="nav nav-pills" role="tablist">
+    <li role="presentation">
+        <a href="{% url 'bases:views_parametros' %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content" >
+		<br />
+		<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+			{% csrf_token %}
+			<div class="form-group">
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label>{{frmParametrosForm.param_codigo.label}}</label>
+					{{frmParametrosForm.param_codigo}}
+				</div>
+				<div class="col-md-9 col-sm-9 col-xs-12">
+					<label>{{frmParametrosForm.param_descripcion.label}}</label>
+					{{frmParametrosForm.param_descripcion}}
+				</div>
+
+			</div>
+            <div class="form-group">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+					<label>{{frmParametrosForm.param_valor.label}}</label>
+					{{frmParametrosForm.param_valor}}
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+					<label>{{frmParametrosForm.param_rangoini.label}}</label>
+					{{frmParametrosForm.param_rangoini}}
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+					<label>{{frmParametrosForm.param_rangofin.label}}</label>
+					{{frmParametrosForm.param_rangofin}}
+				</div>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+					<label>{{frmParametrosForm.param_factor.label}}</label>
+					{{frmParametrosForm.param_factor}}
+				</div>
+			</div>
+			{% if activo == 'N' %}
+			<div class="form-group">
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label>{{frmParametrosForm.param_activo.label}}</label>
+					{{frmParametrosForm.param_activo}}
+				</div>
+			</div>
+			{% endif %}
+			<div class="ln_solid"></div>
+			<div class="form-group">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+                    {% if is_edit %}
+					<button type="submit" class="btn btn-primary" onclick=""><span class="fa fa-edit"></span> Editar</button>
+                    {% else %}
+					<button type="submit" class="btn btn-primary" onclick=""><span class="fa fa-save"></span> Guardar</button>
+                    {% endif %}
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2()
+</script>
+{% endblock %}

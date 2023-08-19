@@ -1,0 +1,338 @@
+{% load static_tags %} 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>JAB consultores </title>
+    <link rel="icon" type="image/jpg" href="{% statics_tag 'img/jab.jpg' %}" />
+    <!-- Bootstrap -->
+    <link href="{% statics_tag_gentella 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% statics_tag_gentella 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% statics_tag_gentella 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% statics_tag_gentella 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- bootstrap-datetimepicker -->
+    <link href="{% statics_tag_gentella 'vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css' %}" rel="stylesheet">
+    <!-- jQuery custom content scroller -->
+    <link href="{% statics_tag_gentella 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet"/>
+    <!-- Datatables -->
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{% statics_tag 'bower_components/select2/dist/css/select2.min.css' %}">
+
+    <!-- Custom Theme Style -->
+    <link href="{% statics_tag_gentella 'build/css/custom.min.css' %}" rel="stylesheet">
+
+        <!-- jQuery -->
+    <script src="{% statics_tag_gentella 'vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- <link href="{% statics_tag_confirm 'dist/jquery-confirm.min.css' %}" rel="stylesheet"> -->
+    <!-- <link href="{% statics_tag_confirm 'dist/jquery-confirm.min.js' %}" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+    <link href="{% statics_tag 'css/style_general.css' %}" rel="stylesheet">
+
+    <style type="text/css">
+
+    .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--single {
+		background-color: #fff;
+		border: 1px solid #ccc;
+		border-radius: 0;
+		min-height: 34.3px;
+    }
+    .form-control {
+		font-size: 13px;
+		color: #73879C;
+    }
+	fieldset{
+		border: 1px solid #ddd !important;
+		margin: 0;
+		xmin-width: 0;
+		padding: 10px;
+		position: relative;
+		border-radius:4px;
+		background-color:#f5f5f5;
+		padding-left:10px!important;
+	}
+	legend{
+		font-size:14px;
+		font-weight:bold;
+		margin-bottom: 0px;
+		width: 35%;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: 5px 5px 5px 10px;
+		background-color: #ffffff;
+	}
+	#WindowLoad{
+	    position:fixed;
+	    top:0px;
+	    left:0px;
+	    z-index:3200;
+	    filter:alpha(opacity=45);
+	    -moz-opacity:45;
+	    opacity:0.65;
+	    background:#000;
+	}
+
+    #nombre_usuario_lista_empresas{
+       width:500px;
+    }
+
+    #nombre_empresa{
+       width:500px;
+       padding-top:19px;
+       font-size:16px;
+    }
+    .checkbox-filtro {
+        vertical-align: middle;
+        margin: 0 4px 0 0 !important;
+    }
+
+    .label-filtro {
+        margin : 0 5px 0 190px;
+    }
+
+
+    @media screen and (max-width: 1300px) {
+      #nombre_usuario_lista_empresas{
+        width:400px;
+      }
+    }
+
+    @media screen and (max-width: 1200px) {
+      #nombre_usuario_lista_empresas{
+        width:300px;
+      }
+    }
+
+    @media screen and (max-width: 1098px) {
+      #nombre_usuario_lista_empresas{
+        width:200px;
+      }
+    }
+
+    @media screen and (max-width: 770px) {
+      #nombre_usuario_lista_empresas{
+        width:auto;
+      }
+    }
+
+    @media screen and (max-width: 700px) {
+      #nombre_empresa{
+        width:auto;
+      }
+    }
+
+	@media screen and (max-width: 768px) {
+      .navbar-right{
+        max-width:30%;
+      }
+    }
+
+    </style>
+
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col menu_fixed">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><span>JAB consultores</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="{% statics_tag 'img/jab.jpg' %}" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Bienvenido,</span>
+                <h2>{{ request.session.dicUsuario.first_name|title }} {{ request.session.dicUsuario.last_name|title }}</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+            <br />
+            <!-- ****************************************************************** -->
+            <!-- ****************************************************************** -->
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>MENU</h3>
+                <ul class="nav side-menu">
+
+                  <li id="bases" {% if request.session.item == 'bases' %}class="active"{% else %}{% endif %}><a><i class="fa fa-database"></i> Bases <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" {% if request.session.item == 'bases' %}style="display: block;"{% endif %}>
+                      <li {% if request.session.sub_item == 'ver_bases' %}class="current-page"{% endif %}>
+                        <a href="{% url 'bases:listado_bases' %}">Ver bases</a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li id="config" {% if request.session.item == 'configuracion_entorno' %}class="active"{% else %}{% endif %}><a><i class="fa fa-cogs"></i> Configuración entornos <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" {% if request.session.item == 'configuracion_entorno' %}style="display: block;"{% endif %}>
+                      <li {% if request.session.sub_item == 'documentos_por_defecto' %}class="current-page"{% endif %}>
+                        <a href="{% url 'bases:documentoPorDefecto' %}">Documentos default</a>
+                      </li>
+                    </ul>
+                  </li>
+
+				
+                </ul>
+              </div>
+            </div>
+            <!-- ****************************************************************** -->
+            <!-- ****************************************************************** -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <div class="nav toggle" id="nombre_empresa">
+                <a id="menu_toggle2"><strong>Panel de control</strong>:{% block dato_empresa %}{% endblock %}</a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right" id="nombre_usuario_lista_empresas">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="images/img.jpg" alt="">{{ request.session.dicUsuario.first_name|title }} {{ request.session.dicUsuario.last_name|title }}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="{% url 'logout_bases' %}"><i class="fa fa-sign-out pull-right" onclick="delete_sesion({{request.user.id}})"></i> Cerrar sesión</a></li>
+                  </ul>
+                </li>
+
+
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="x_panel" style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
+                <div class="x_content" style="padding-top: 0px; padding-bottom: 0px;  margin-bottom: 0px; margin-top: 0px;">
+                    <ul class="nav nav-pills" role="tablist">
+                        {% block nav %}{% endblock %}
+                    </ul>
+                </div>
+            </div>
+           {% block bases %}
+            {% endblock %}
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gestor de documentos | ©JAB consultores | 2019
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- Bootstrap -->
+    <script src="{% statics_tag_gentella 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% statics_tag_gentella 'vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% statics_tag_gentella 'vendors/nprogress/nprogress.js' %}"></script>
+    <!-- jQuery custom content scroller -->
+    <script src="{% statics_tag_gentella 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <!-- Datatables -->
+    <script src="{% statics_tag_gentella 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+	
+	<!-- bootstrap-daterangepicker -->
+    <script src="{% statics_tag_gentella 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- bootstrap-datetimepicker -->    
+    <script src="{% statics_tag_gentella 'vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
+	
+    <!-- jquery.inputmask -->
+    <script src="{% statics_tag_gentella 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+    <!-- Select2 -->
+    <script src="{% statics_tag 'bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% statics_tag_gentella 'build/js/custom.min.js' %}"></script>
+
+      <!-- Input file -->
+    <script src="{% statics_tag_gentella 'build/js/bootstrap-filestyle.min.js' %}"></script>
+
+    <script src="{% statics_tag 'ckeditor/ckeditor.js' %}"></script>
+
+    <script src="{% statics_tag 'js/js.cookie.js' %}"></script>
+
+  </body>
+
+  {% block css_js_down %}
+
+  {% endblock %}
+    <script>
+
+    {% include 'includes/css_datatable.html'%}
+
+    function delete_sesion(user_id) {
+      alert(user_id)
+    }
+    </script>
+</html>

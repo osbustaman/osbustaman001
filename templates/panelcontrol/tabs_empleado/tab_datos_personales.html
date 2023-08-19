@@ -1,0 +1,80 @@
+<br>
+<form id="frm-dp" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+	{% csrf_token %}
+	<div class="form-group">	
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmDatosPersonales.usu_tiporut.label}}</label>
+			{{frmDatosPersonales.usu_tiporut}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmDatosPersonales.usu_sexo.label}}</label>
+			{{frmDatosPersonales.usu_sexo}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmDatosPersonales.usu_estadocivil.label}}</label>
+			{{frmDatosPersonales.usu_estadocivil}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmDatosPersonales.usu_licenciaconducir.label}}</label>
+			{{frmDatosPersonales.usu_licenciaconducir}}
+		</div>
+	</div>
+	<div class="form-group">	
+		<div class="col-md-2 col-sm-2 col-xs-12">
+			<div id="div_pais">
+				<label>{{frmDatosPersonales.pais.label}}</label>
+				{{frmDatosPersonales.pais}}
+			</div>
+			<div id="div_usu_paisextranjeros">
+				<label>{{frmDatosPersonales.usu_paisextranjeros.label}}</label>
+				{{frmDatosPersonales.usu_paisextranjeros}}
+			</div>
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-12">
+			<label >{{frmDatosPersonales.region.label}}</label>
+			{{frmDatosPersonales.region}}
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-12">
+			<label >{{frmDatosPersonales.comuna.label}}</label>
+			{{frmDatosPersonales.comuna}}
+		</div>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<label >{{frmDatosPersonales.usu_direccion.label}}</label>
+			{{frmDatosPersonales.usu_direccion}}
+		</div>
+	</div>
+	<div class="form-group">	
+		<div class="col-md-6 col-sm-4 col-xs-12">
+			<label >{{frmDatosPersonales.usu_profesion.label}}</label>
+			{{frmDatosPersonales.usu_profesion}}
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-12">
+			<label >{{frmDatosPersonales.usu_usuarioactivo.label}}</label>
+			{{frmDatosPersonales.usu_usuarioactivo}}
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-12">
+
+			<label >{{frmDatosPersonales.usu_fechanacimiento.label}}</label>
+			<div class='input-group date' id='usu_fechanacimiento'>
+				{{frmDatosPersonales.usu_fechanacimiento}}
+				<span class="input-group-addon">
+				   <span class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+
+
+
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-12">
+			<label >{{frmDatosPersonales.usu_fono.label}}</label>
+			{{frmDatosPersonales.usu_fono}}
+		</div>
+	
+	</div>	
+	<div class="ln_solid"></div>
+	<div class="form-group">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<button type="button" onclick="addDatosPersonales({{id_usuario}})" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+		</div>
+	</div>
+</form>

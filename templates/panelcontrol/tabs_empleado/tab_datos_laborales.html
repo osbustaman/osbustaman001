@@ -1,0 +1,117 @@
+<form id="frm-dl" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+	{% csrf_token %}
+	<fieldset class="col-md-12">    	
+		<legend>Datos Empresa</legend>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="form-group">
+					
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.sucursal.label}}</label>
+						{{frmUsuarioEmpresaForm.sucursal}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.cargo.label}}</label>
+						{{frmUsuarioEmpresaForm.cargo}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.centrocosto.label}}</label>
+						{{frmUsuarioEmpresaForm.centrocosto}}
+					</div>
+
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_tipotrabajdor.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_tipotrabajdor}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>				
+
+	<fieldset class="col-md-12" style="margin-top: 20px; margin-bottom: 20px;">    	
+		<legend>Datos Contrato</legend>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="form-group">
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_tipocontrato.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_tipocontrato}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_fechacontratacion.label}}</label>
+						<div class='input-group date' id='ue_fechacontratacion'>
+                            {{frmUsuarioEmpresaForm.ue_fechacontratacion}}
+                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_fecharenovacioncontrato.label}}</label>
+						<div class='input-group date' id='ue_fecharenovacioncontrato'>
+                            {{frmUsuarioEmpresaForm.ue_fecharenovacioncontrato}}
+                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_fecharetiro.label}}</label>
+						<div class='input-group date' id='ue_fecharetiro'>
+                            {{frmUsuarioEmpresaForm.ue_fecharetiro}}
+                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_formapago.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_formapago}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.banco.label}}</label>
+						{{frmUsuarioEmpresaForm.banco}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_cuentabancaria.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_cuentabancaria}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_horassemanales.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_horassemanales}}
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_asignacionfamiliar.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_asignacionfamiliar}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_cargasfamiliares.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_cargasfamiliares}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_montoasignacionfamiliar.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_montoasignacionfamiliar}}
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<label >{{frmUsuarioEmpresaForm.ue_jornadalaboral.label}}</label>
+						{{frmUsuarioEmpresaForm.ue_jornadalaboral}}
+					</div>
+				</div>
+			</div>	
+		</div>
+	</fieldset>	
+			
+	<div class="form-group">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<button type="button" onclick="addDatosLaborales({{id_usuario}}, {{empresa_id}})" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+		</div>
+		<input type="hidden" id="update_var" value="">
+	</div>
+</form>

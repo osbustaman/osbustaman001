@@ -1,0 +1,15 @@
+<br>
+<form id="frm-otros-texto" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+{% csrf_token %}
+    <div class="form-group">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            {{frmOtrosForm.ue_otros}}
+        </div>
+    </div>
+
+</form>
+<div class="form-group">
+<div class="col-md-12 col-sm-12 col-xs-12">
+	<button  style="margin-top:15px;" type="button" onclick="ajax_otro()" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+	</div>
+</div>

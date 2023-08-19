@@ -1,0 +1,528 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+{% if add_emp %}
+agregar empresa
+{% else %}
+editar empresa
+{% endif %}
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<style type="text/css">
+    .table > thead > tr > th{
+        background: #2A3F54;
+        color:#FFFFFF;
+        border:1px solid #FFFFFF;
+    }
+
+    .table > tbody > tr:hover{
+        background: #E0E0F8;
+        border:1px solid #FFFFFF;
+        cursor: pointer;
+    }
+</style>
+<div class="x_panel" style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
+    <div class="x_content" style="padding-top: 0px; padding-bottom: 0px;  margin-bottom: 0px; margin-top: 0px;">
+    	<ul class="nav nav-pills" role="tablist">
+			<li role="presentation">
+				<a href="{% url 'bases:views_empresa' %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+			</li>
+			{% if not add_emp %}
+			<li role="presentation" id="relacion">
+				<a href="{% url 'bases:add_relacion' id_emp %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar relación</a>
+			</li>
+			<li role="presentation" id="sucursal">
+				<a href="{% url 'bases:add_sucursal' id_emp %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar sucursal</a>
+			</li>
+			<li role="presentation" id="empleado">
+				<a href="{% url 'bases:add_personal' id_emp %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar Empleado</a>
+			</li>
+			<li role="presentation" id="cargos">
+				<a href="{% url 'bases:add_cargo' id_emp %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar cargo</a>
+			</li>
+			<li role="presentation" id="c_costos">
+				<a href="{% url 'bases:add_grupo_centro_costo' id_emp %}" style="border:0px;">
+					<span class="fa fa-plus-circle"></span> Agregar grupo centro de costo
+				</a>
+			</li>
+			{% endif %}
+			<li role="presentation">
+				<a href="#" style="border:0px;">Empresa: {{ emp_razonsocial }}</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="x_panel">
+    <div class="x_content" >
+		<div class="" role="tabpanel" data-example-id="togglable-tabs">
+			<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#tab_content1" id="tab-empresa" role="tab" data-toggle="tab" aria-expanded="true">Empresa</a>
+				</li>
+				{% if not add_emp %}
+				<li role="presentation" class="">
+					<a href="#tab_cargos" role="tab" id="tab-cargos" data-toggle="tab" aria-expanded="false">Cargos</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_ccostos" role="tab" id="tab-ccostos" data-toggle="tab" aria-expanded="false">Centros de costos</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content2" role="tab" id="tab-relaciones" data-toggle="tab" aria-expanded="false">Relaciones anexas</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content3" role="tab" id="tab-sucursales" data-toggle="tab" aria-expanded="false">Sucursales</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content4" role="tab" id="tab-empleados" data-toggle="tab" aria-expanded="false">Empleados</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content5" role="tab" id="tab-logo-empresa" data-toggle="tab" aria-expanded="false">Logo empresa</a>
+				</li>
+				{% endif %}
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="tab-empresa">
+					<form class="form-horizontal form-label-left input_mask" method="POST" action="." enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="form-group">	
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_codigo.label}}</label>
+								{{frmEmpresa.emp_codigo}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_rut.label}}</label>
+								{{frmEmpresa.emp_rut}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_nombrerepresentante.label}}</label>
+								{{frmEmpresa.emp_nombrerepresentante}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_rutrepresentante.label}}</label>
+								{{frmEmpresa.emp_rutrepresentante}}
+							</div>
+						</div>
+
+						<div class="form-group">	
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<label >{{frmEmpresa.emp_razonsocial.label}}</label>
+								{{frmEmpresa.emp_razonsocial}}
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<label >{{frmEmpresa.emp_giro.label}}</label>
+								{{frmEmpresa.emp_giro}}
+							</div>
+						</div>
+
+						<div class="form-group">	
+							<div class="col-md-8 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_direccion.label}}</label>
+								{{frmEmpresa.emp_direccion}}
+							</div>
+							<div class="col-md-1 col-sm-1 col-xs-12">
+								<label >{{frmEmpresa.emp_numero.label}}</label>
+								{{frmEmpresa.emp_numero}}
+							</div>
+							<div class="col-md-1 col-sm-1 col-xs-12">
+								<label >{{frmEmpresa.emp_piso.label}}</label>
+								{{frmEmpresa.emp_piso}}
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-12">
+								<label >{{frmEmpresa.emp_dptooficina.label}}</label>
+								{{frmEmpresa.emp_dptooficina}}
+							</div>
+						</div>
+
+						<div class="form-group">	
+							
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.pais.label}}</label>
+								{{frmEmpresa.pais}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.region.label}}</label>
+								{{frmEmpresa.region}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.comuna.label}}</label>
+								{{frmEmpresa.comuna}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_cospostal.label}}</label>
+								{{frmEmpresa.emp_cospostal}}
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_fonouno.label}}</label>
+								{{frmEmpresa.emp_fonouno}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_mailuno.label}}</label>
+								{{frmEmpresa.emp_mailuno}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_fonodos.label}}</label>
+								{{frmEmpresa.emp_fonodos}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_maildos.label}}</label>
+								{{frmEmpresa.emp_maildos}}
+							</div>
+						</div>
+
+						<div class="form-group">	
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_fechaingreso.label}}</label>
+								<div class='input-group date' id='emp_fechaingreso'>
+									{{frmEmpresa.emp_fechaingreso}}
+									<span class="input-group-addon">
+									   <span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_isholding.label}}</label>
+								{{frmEmpresa.emp_isholding}}
+							</div>	
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_activa.label}}</label>
+								{{frmEmpresa.emp_activa}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_isestatal.label}}</label>
+								{{frmEmpresa.emp_isestatal}}
+							</div>
+						</div>
+						
+						<div class="form-group">	
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_rutcontador.label}}</label>
+								{{frmEmpresa.emp_rutcontador}}
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12">
+								<label >{{frmEmpresa.emp_nombrecontador.label}}</label>
+								{{frmEmpresa.emp_nombrecontador}}
+							</div>
+						</div>
+
+						<div class="ln_solid"></div>
+						<div class="form-group">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<button type="submit" class="btn btn-primary" onclick="campos_disabled()"><span class="fa fa-save"></span> Guardar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				{% if not add_emp %}
+				<div role="tabpanel" class="tab-pane fade" id="tab_cargos" aria-labelledby="tab-cargos">
+                    <div class="x_content" >
+					    <table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NOMBRE</th>
+                                    <th>EMPRESA</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for c in lst_cargos %}
+                                <tr>
+                                    <td>{{c.contador}}</td>
+                                    <td>{{c.car_nombre|upper}}</td>
+                                    <td>{{c.care_nombre_emp|upper}}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{% url 'bases:edit_cargo' c.car_id c.care_empresa_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+                                            <a href="#" class="btn btn-danger" onclick="borrar_cargo({{c.car_id}}, {{c.care_empresa_id}}, '{{c.car_nombre|title}}')"><span class="fa fa-trash"></span> Borrar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_ccostos" aria-labelledby="tab-ccostos">
+					<div class="x_content" >
+                        <table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NOMBRE GRUPO</th>
+                                    <th>CÓDIGO</th>
+                                    <th>EMPRESA</th>
+                                    <th>GRUPO ACTIVO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for g in lst_GrupoCentroCosto %}
+                                <tr>
+                                    <td>{{g.contador}}</td>
+                                    <td>{{g.gcencost_nombre|upper}}</td>
+                                    <td>{{g.gcencost_codigo|upper}}</td>
+                                    <td>{{g.empresa|upper}}</td>
+                                    <td>{{g.gcencost_activo|upper}}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{% url 'bases:edit_grupo_centro_costo' g.gcencost_id id_emp %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+                                            <a href="#" class="btn btn-danger" onclick="borrar_grupo_centro_costo({{g.gcencost_id}}, '{{g.gcencost_nombre|title}}')"><span class="fa fa-trash"></span> Borrar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+					<div class="x_content" >
+						<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+							<thead>
+							    <tr>
+									<th>#</th>
+									<th>AFILIACIÓN</th>
+									<th>NOMBRE</th>
+									<th>ACCIONES</th>
+							    </tr>
+							</thead>
+							<tbody>
+						  		{% for r in lst_relaciones %}
+						    	<tr>
+									<td>{{ r.contador }}</td>
+									<td>{{ r.rda_tipoafiliacion|upper }}</td>
+									<td>{{ r.nombre|upper }}</td>
+									<td>
+										<div class="btn-group  btn-group-sm">
+											<a href="{% url 'bases:edit_relacion' r.id_emp r.rda_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+											<a href="#" class="btn btn-danger" onclick="borrar_relacion({{r.id_emp}}, {{r.rda_id}}, '{{r.nombre}}')"><span class="fa fa-trash"></span> Borrar</a>
+										</div>
+									</td>
+						    	</tr>
+						    	{% endfor %}
+							</tbody>
+						</table>
+				    </div>
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="tab-sucursales">
+					<div class="x_content" >
+						<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+							<thead>
+							    <tr>
+									<th>CÓDIGO</th>
+									<th>DIRECCIÓN</th>
+									<th>REGIÓN</th>
+									<th>COMUNA</th>
+									<th>ACCIONES</th>
+							    </tr>
+							</thead>
+							<tbody>
+						  		{% for s in las_sucursales %}
+						    	<tr>
+									<td>{{ s.suc_codigo }}</td>
+									<td>{{ s.suc_direccion|upper }}</td>
+									<td>{{ s.region|upper }}</td>
+									<td>{{ s.comuna|upper }}</td>
+									<td>
+										<div class="btn-group  btn-group-sm">
+											<a href="{% url 'bases:edit_sucursal' s.empresa_id s.suc_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+											<a href="#" class="btn btn-danger" onclick="borrar_sucursal({{s.empresa_id}}, {{s.suc_id}}, '{{s.suc_descripcion}}')"><span class="fa fa-trash"></span> Borrar</a>
+										</div>
+									</td>
+						    	</tr>
+						    	{% endfor %}
+							</tbody>
+						</table>
+				    </div>
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="tab-empleados">
+					{% include "panelcontrol/tabs_empresa/tab_views_empleados.html" %}
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="tab-logo-empresa">
+					{% include "panelcontrol/tabs_empresa/tab_logo_por_empresa.html" %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+	$(document).ready(function(){
+
+		{% include 'includes/cookies_js.html' with id_elemento='tab-empresa' nombre_cookie='tabEmp' valor_cookie='empresa' %}
+		{% include 'includes/cookies_js.html' with id_elemento='tab-cargos' nombre_cookie='tabEmp' valor_cookie='cargos' %}
+		{% include 'includes/cookies_js.html' with id_elemento='tab-ccostos' nombre_cookie='tabEmp' valor_cookie='ccostos' %}
+    	{% include 'includes/cookies_js.html' with id_elemento='tab-relaciones' nombre_cookie='tabEmp' valor_cookie='relaciones' %}
+    	{% include 'includes/cookies_js.html' with id_elemento='tab-sucursales' nombre_cookie='tabEmp' valor_cookie='sucursales' %}
+    	{% include 'includes/cookies_js.html' with id_elemento='tab-empleados' nombre_cookie='tabEmp' valor_cookie='empleados' %}
+    	{% include 'includes/cookies_js.html' with id_elemento='tab-logo-empresa' nombre_cookie='tabEmp' valor_cookie='logo' %}
+
+		{% if error %}
+
+		mensaje_error = "";
+		{% for e in lista_err %}
+		mensaje_error += " {{e}} <br/>"
+		{% endfor %}
+
+		$.alert({
+			title: 'Error!',
+			content: mensaje_error,
+		});
+		{% endif %}
+
+		$("#relacion, #sucursal, #empleado, #c_costos, #cargos").css('display', 'none');
+
+		$('#id_emp_fechaingreso').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+
+		$("#tab-cargos").click(function () {
+			$("#relacion").css('display', 'none');
+			$("#sucursal").css('display', 'none');
+			$("#empleado").css('display', 'none');
+			$("#c_costos").css('display', 'none');
+			$("#cargos").css('display', 'block');
+		});
+
+		$("#tab-ccostos").click(function () {
+			$("#relacion").css('display', 'none');
+			$("#sucursal").css('display', 'none');
+			$("#empleado").css('display', 'none');
+			$("#c_costos").css('display', 'block');
+			$("#cargos").css('display', 'none');
+		});
+
+		$("#tab-relaciones").click(function () {
+			$("#relacion").css('display', 'block');
+			$("#sucursal").css('display', 'none');
+			$("#empleado").css('display', 'none');
+			$("#c_costos").css('display', 'none');
+			$("#cargos").css('display', 'none');
+		});
+
+		$("#tab-sucursales").click(function () {
+			$("#relacion").css('display', 'none');
+			$("#sucursal").css('display', 'block');
+			$("#empleado").css('display', 'none');
+			$("#c_costos").css('display', 'none');
+			$("#cargos").css('display', 'none');
+		});
+		
+		$("#tab-empleados").click(function () {
+			$("#relacion").css('display', 'none');
+			$("#sucursal").css('display', 'none');
+			$("#empleado").css('display', 'block');
+			$("#c_costos").css('display', 'none');
+			$("#cargos").css('display', 'none');
+		});
+
+		$("#tab-empresa").click(function () {
+			$("#relacion").css('display', 'none');
+			$("#sucursal").css('display', 'none');
+			$("#empleado").css('display', 'none');
+			$("#c_costos").css('display', 'none');
+			$("#cargos").css('display', 'none');
+		});
+
+		$("#id_emp_rut").keyup(function (e){
+
+		});
+
+	});
+
+	function campos_disabled() {
+		$("#id_emp_isholding").removeAttr('disabled').attr('readonly', 'readonly');
+	}
+
+	function borrar_relacion(id_emp, rda_id, nombre) {
+		$.confirm({
+		    title: 'Advertencia!',
+		    content: 'Esta seguro de eliminar la relacion de la entidad '+nombre,
+		    buttons: {
+		        confirm: function () {
+					var __ruta__ = "{% url 'bases:remove_relacion' '__id_emp__' '__rda_id__' %}";
+	        		__ruta__ = __ruta__.replace('__id_emp__', id_emp).replace('__rda_id__', rda_id);
+		            location.href = __ruta__
+		        },
+		        cancel: function () {
+		            $.alert('Acción cancelada!');
+		        },
+		    }
+		});
+	}
+
+	function borrar_sucursal(id_emp, id_suc, nombre) {
+		$.confirm({
+		    title: 'Advertencia!',
+		    content: 'Esta seguro de eliminar la sucursal '+nombre,
+		    buttons: {
+		        confirm: function () {
+					var __ruta__ = "{% url 'bases:delete_sucursal' '__id_emp__' '__id_suc__' %}";
+	        		__ruta__ = __ruta__.replace('__id_emp__', id_emp).replace('__id_suc__', id_suc);
+		            location.href = __ruta__
+		        },
+		        cancel: function () {
+		            $.alert('Acción cancelada!');
+		        },
+		    }
+		});
+	}
+
+	function borrar_cargo(car_id, id_emp, nombre) {
+        $.confirm({
+            title: 'Advertencia!',
+            content: 'Esta seguro de eliminar el cargo '+nombre,
+            buttons: {
+                confirm: function () {
+                    var __ruta__ = "{% url 'bases:delete_cargo' '__car_id__' '__id_emp__' %}";
+                    __ruta__ = __ruta__.replace('__car_id__', car_id).replace('__id_emp__', id_emp);
+                    location.href = __ruta__
+                },
+                cancel: function () {
+                    $.alert('Acción cancelada!');
+                },
+            }
+        });
+    }
+
+    function borrar_grupo_centro_costo(gcencost_id, nombre) {
+        $.confirm({
+            title: 'Advertencia!',
+            content: 'Esta seguro de eliminar el grupo de centro de costo '+nombre,
+            buttons: {
+                confirm: function () {
+                    var __ruta__ = "{% url 'bases:delete_grupo_centro_costo' '__gcencost_id__' '__id_emp__' %}";
+                    __ruta__ = __ruta__.replace('__gcencost_id__', gcencost_id).replace('__id_emp__', id_emp);
+                    location.href = __ruta__
+                },
+                cancel: function () {
+                    $.alert('Acción cancelada!');
+                },
+            }
+        });
+    }
+
+	function validar_campo_rut(campo){
+	   // $(campo.selector).keypress(function(e) {
+		// 	if((e.charCode < 48 || e.charCode > 57) && (e.charCode != 45)) return false;
+		// });
+
+		//\d{1,2}\.\d{3}\.\d{3}[\-][0-9kK]{1}
+	}
+</script>
+{% endblock %}

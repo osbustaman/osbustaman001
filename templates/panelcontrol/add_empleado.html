@@ -1,0 +1,1475 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+	{% if request.session.boton_volver_ver_ficha_empleado %}
+	<a href="{% url 'bases:viewsFichaEmpleado' id_usuario empresa_id 0 %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+	{% else %}
+	<a href="{{ request.session.ruta_volver_p }}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+	{% endif %}
+</li>
+<li role="presentation">
+	<a href="#">{{nombre_usuario}}</a>
+</li>
+<li role="presentation">
+	<a href="#" style="border:0px;">Empresa: {{ emp_razonsocial }}</a>
+</li>
+
+{% endblock %}
+
+{% block dato_empresa %}
+agregar/editar personal
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content" >
+    
+		<div class="" role="tabpanel" data-example-id="togglable-tabs">
+			<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Datos usuario</a>
+				</li>
+				{% if is_edit %}
+				<li role="presentation" class="">
+					<a href="#tab_content2" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">Datos personales</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Leyes sociales</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content4" role="tab" id="profile-tab3" data-toggle="tab" aria-expanded="false">Datos laborales</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content5" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">Remuneraci&oacute;n</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content6" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Men&uacute; empleado</a>
+				</li>
+                <li role="presentation" class="">
+					<a href="#tab_content7" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">Ciclo de vida</a>
+				</li>
+                <li role="presentation" class="">
+					<a href="#tab_content8" role="tab" id="profile-tab7" data-toggle="tab" aria-expanded="false">Término relación laboral</a>
+				</li>
+                <li role="presentation" class="">
+					<a href="#tab_content9" role="tab" id="profile-tab8" data-toggle="tab" aria-expanded="false">Otros</a>
+				</li>
+                <li role="presentation" class="">
+					<a href="#tab_content10" role="tab" id="profile-tab9" data-toggle="tab" aria-expanded="false">Foto empleado</a>
+				</li>
+				{% endif %}
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+					{% include "panelcontrol/tabs_empleado/tab_datos_usuario.html" %}
+				</div>
+				{% if is_edit %}
+				<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab1">
+					{% include "panelcontrol/tabs_empleado/tab_datos_personales.html" %}
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab2">
+					{% include "panelcontrol/tabs_empleado/tab_leyes_sociales.html" %}
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab3">
+    				{% include "panelcontrol/tabs_empleado/tab_datos_laborales.html" %}
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab4">
+    				{% include "panelcontrol/tabs_empleado/tab_remuneracion_empleado.html" %}
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab5">
+					{% include "panelcontrol/tabs_empleado/tab_menu_empleado.html" %}
+				</div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content7" aria-labelledby="profile-tab6">
+					{% include "panelcontrol/tabs_empleado/ciclo_de_vida.html" %}
+				</div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content8" aria-labelledby="profile-tab7">
+					{% include "panelcontrol/tabs_empleado/termino_relacion_laboral.html" %}
+				</div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content9" aria-labelledby="profile-tab8">
+					{% include "panelcontrol/tabs_empleado/otros.html" %}
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content10" aria-labelledby="profile-tab9">
+					{% include "panelcontrol/tabs_empleado/tab_foto_empleado.html" %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+   
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+    //Initialize Select2 Elements
+
+	{% include 'includes/cookies_js.html' with id_elemento='home-tab' nombre_cookie='tab' valor_cookie='hometab' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab1' nombre_cookie='tab' valor_cookie='profiletab1' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab2' nombre_cookie='tab' valor_cookie='profiletab2' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab3' nombre_cookie='tab' valor_cookie='profiletab3' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab4' nombre_cookie='tab' valor_cookie='profiletab4' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab5' nombre_cookie='tab' valor_cookie='profiletab5' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab6' nombre_cookie='tab' valor_cookie='profiletab6' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab7' nombre_cookie='tab' valor_cookie='profiletab7' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab8' nombre_cookie='tab' valor_cookie='profiletab8' %}
+	{% include 'includes/cookies_js.html' with id_elemento='profile-tab9' nombre_cookie='tab' valor_cookie='profiletab9' %}
+
+
+    $('.select2').select2()
+    $('.select-multiple').select2({
+	  createTag: function (params) {
+	    var term = $.trim(params.term);
+	    if (term === '') {
+	      return null;
+	    }
+	    return {
+	      id: term,
+	      text: term,
+	      newTag: true // add additional parameters
+	    }
+	  }
+	});
+
+    $(document).ready(function(){
+
+
+		{% if usu_tiporut == 1 %}
+			$("#div_usu_paisextranjeros").css('display', 'none');
+    		$("#div_pais").css('display', 'block');
+		{% elif usu_tiporut == 2 %}
+			$("#div_usu_paisextranjeros").css('display', 'block');
+    		$("#div_pais").css('display', 'none');
+		{% else %}
+			$("#div_usu_paisextranjeros").css('display', 'none');
+    		$("#div_pais").css('display', 'block');
+		{% endif %}
+
+
+    	$("#id_usu_tiporut").change(function () {
+			if(this.value === '1'){
+				$("#div_pais").css('display', 'block');
+				$("#div_usu_paisextranjeros").css('display', 'none');
+			}
+			if(this.value === '2'){
+				$("#div_pais").css('display', 'none');
+				$("#div_usu_paisextranjeros").css('display', 'block');
+			}
+		});
+
+		{% if is_edit %}
+    	$('#upload_imagen').click(function(e) {
+
+            if($("#id_archivo").val().length == 0){
+                $.alert({
+                    title: 'Error!',
+                    content: 'Agregar un archivo.',
+                });
+            }else{
+
+                var archivo=$("#id_archivo").val()
+                extensiones_permitidas = new Array(".jpg", ".jpeg", ".png");
+                extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase();
+                permitida = false;
+                for (var i = 0; i < extensiones_permitidas.length; i++) {
+                    if (extensiones_permitidas[i] == extension) {
+                        permitida = true;
+                        break;
+                    }
+                }
+                if (!permitida) {
+                    $.alert({
+                        title: 'Error!',
+                        content: 'Formato no permitido debe ser <strong>\".jpg, \".jpeg, .png\"</strong>',
+                    });
+                }else{
+                    var link_ = '{% url 'bases:ajaxAddImagenPerfilUSuario' id_usuario empresa_id  %}';
+                    var data = new FormData(document.getElementById("frm_carga"));
+                    $('#frm_carga').find(':input').each(function(){
+                        data.append(this.name, $(this).val());
+                    });
+                    $.ajax({
+                        url: link_,
+                        type: "POST",
+                        dataType: "html",
+                        data: data,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function(){
+                          // $("#img-loading").show();
+                        },
+                        success: function(data){
+                            json = JSON.parse(data);
+                            $("#imagen-avatar").attr('src', json.imagen_template)
+                        },
+                        error: function (obj, error, objError){
+                            //avisar que ocurrió un error
+                            $.alert({
+                                title: 'Error!',
+                                content: objError,
+                            });
+                        }
+                    });
+                }
+            }
+        });
+
+		{% endif %}
+
+		if('{{tieneAignacionFamiliar}}' == 'N'){
+			$("#btn-accion-asignacio-familiar").css('display','None')
+		}
+
+		{% if error %}
+		mensaje_error = "";
+		{% for e in lista_err %}
+		mensaje_error += " {{e}} <br/>"
+		{% endfor %}
+
+		$.alert({
+			title: 'Error!',
+			content: mensaje_error,
+		});
+		{% endif %}
+
+		$("#id_banco").attr('disabled', 'disabled');
+
+
+		$("#id_ue_tieneapv").change(function(){
+
+			if(this.value == 'S'){
+				$("#id_afp_apv").removeAttr('disabled')
+				$("#id_ue_tipomontoapv").removeAttr('disabled')
+				$("#id_ue_cotizacionvoluntaria").removeAttr('readonly')
+			}else{
+				$("#id_afp_apv").attr('disabled', true)
+				$("#id_ue_tipomontoapv").attr('disabled', true)
+				$("#id_ue_cotizacionvoluntaria").attr('readonly', true)
+			}
+		});
+
+
+		$("#id_ue_tieneahorrovoluntario").change(function(){
+			if(this.value == 'S'){
+				$("#id_ue_ahorrovoluntario").removeAttr('readonly')
+			}else{
+				$("#id_ue_ahorrovoluntario").attr('readonly', true)
+			}
+		});
+
+		$("#id_ue_tipomontoapv").change(function(){
+			if(this.value == 'M'){
+				$("#char_ue_cotizacionvoluntaria").text('$')
+			}
+			if(this.value == 'P'){
+				$("#char_ue_cotizacionvoluntaria").text('%')
+			}
+		});
+
+
+		$("#id_ue_asignacionfamiliar").change(function(){
+			if(this.value == 'S'){
+
+				$.confirm({
+    				backgroundDismiss: 'calcular',
+    				title: 'Calcular asignaci&oacute;n familiar',
+    				content: 'El promedio de la asignaci&oacute;n familiar se determina considerando los ingresos obtenidos en el lapso de 12 meses comprendido entre julio y junio anteriores'+
+								'<br/><br/>'+
+
+								'<div class="form-group container" style="padding-left:10px; padding-right:10px;">'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Cantidad de cargas familiares'+
+								'		</span>'+
+								'		<input type="number" name="canti_cargas_familiares" id="canti_cargas_familiares" class="form-control">'+
+								'	</div>'+
+								'</div>'+
+
+								'<div class="form-group container" style="padding-left:10px; padding-right:10px;">'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Junio {{anioActual}}'+
+								'		</span>'+
+								'		<input type="number" name="junio_asig" id="mes_junio_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Mayo {{anioActual}}'+
+								'		</span>'+
+								'		<input type="number" name="mayo_asig" id="mes_mayo_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Abril {{anioActual}}'+
+								'		</span>'+
+								'		<input type="number" name="abril_asig" id="mes_abril_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Marzo {{anioActual}}'+
+								'		</span>'+
+								'		<input type="number" name="marzo_asig" id="mes_marzo_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Febrero {{anioActual}}'+
+								'		</span>'+
+								'		<input type="number" name=febrero_asig" id="mes_febrero_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Enero {{anioActual}}'+
+								'		</span>'+
+								'		<input type="number" name="enero_asig" id="mes_enero_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Diciembre {{anioAnterior}}'+
+								'		</span>'+
+								'		<input type="number" name="diciembre_old_asig" id="mes_diciembre_old_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Noviembre {{anioAnterior}}'+
+								'		</span>'+
+								'		<input type="number" name="noviembre_old_asig" id="mes_noviembre_old_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Octubre {{anioAnterior}}'+
+								'		</span>'+
+								'		<input type="number" name="octubre_old_asig" id="mes_octubre_old_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Septiembre {{anioAnterior}}'+
+								'		</span>'+
+								'		<input type="number" name="septiembre_old_asig" id="mes_septiembre_old_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Agosto {{anioAnterior}}'+
+								'		</span>'+
+								'		<input type="number" name="agosto_old_asig" id="mes_agosto_old_asig" class="form-control">'+
+								'	</div>'+
+
+								'	<div class="input-group">'+
+								'		<span class="input-group-addon">'+
+								'	    	Julio {{anioAnterior}}'+
+								'		</span>'+
+								'		<input type="number" name="mes_julio_old_asig" id="mes_julio_old_asig" class="form-control">'+
+								'	</div>'+
+
+
+								'</div>',
+					buttons: {
+						calcular: function () {
+
+							var contador = 0
+							var suma = 0
+							var contador_error = 0
+							var cantidad_cargas = parseInt($("#canti_cargas_familiares").val())
+
+
+							$('input[id^=mes_]').each(function() {
+
+								if(this.value.length == 0){
+									contador_error+=1
+								}
+
+    							suma+=parseInt(this.value)
+    							contador+=1
+							});
+
+							if(contador_error > 0){
+								$.alert({
+									title: 'Error!',
+									content: 'Faltan campos por llenar, favor revise',
+								});
+								$("#id_ue_asignacionfamiliar").val('N');
+							}else{
+								jsShowWindowLoad();
+								var promedio = suma / contador
+								var link_ = "{% url 'bases:ajaxObtenerAsignacioFamiliar' 'S' %}";
+								$.ajax({
+									type: "POST",
+									url: link_,
+									data:{
+										'valor':parseInt(promedio),
+									},
+									success: function(data){
+										json = data;
+
+										console.log(cantidad_cargas)
+
+
+										$("#id_ue_cargasfamiliares").val(cantidad_cargas)
+										$("#id_ue_montoasignacionfamiliar").val(parseInt(json.montoAsignacion) * cantidad_cargas)
+
+
+										$("#btn-accion-asignacio-familiar").css('display','block');
+										jsRemoveWindowLoad();
+									},
+									error: function (obj, error, objError){
+										//avisar que ocurrio un error
+										alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+									}
+								});
+
+							}
+
+
+
+						},
+						close: function () {
+						}
+					}
+				});
+			}else{
+				$("#id_ue_cargasfamiliares").attr('readonly', 'readonly')
+				return false;
+			}
+		});
+		{% if not notPassword %}
+		$("#id_username").blur(function(){
+			var rut = (this.value).replace('.', '');
+			$("#id_password1").val(rut.replace('.', ''));
+			$("#id_password2").val(rut.replace('.', ''));
+		});
+		{% endif %}
+
+		$('#ue_fechacontratacion').datetimepicker({
+	        format: 'DD/MM/YYYY'
+	    });
+		$('#ue_fecharenovacioncontrato').datetimepicker({
+	        format: 'DD/MM/YYYY'
+	    });
+		$('#ue_fecharetiro').datetimepicker({
+	        format: 'DD/MM/YYYY'
+	    });
+		$('#usu_fechanacimiento').datetimepicker({
+	        format: 'DD/MM/YYYY'
+	    });
+
+		/* --------------------------------------------------------- */
+		$("#id_username").change(function(){
+			var link_ = "{% url 'bases:ajaxVerificarEmpleado' %}";
+			$.ajax({
+			    type: "POST",
+			    url: link_,
+			    data:{
+					'rut':this.value,
+					'empresa':{{empresa_id}}
+			    },
+			    success: function(data){
+			        json = data;
+			        if(json.existeEnUser && !json.existeEnAsociacionUsuarioEmpresa){
+
+			        	$.confirm({
+						    title: 'Confirmaci&oacute;n!',
+						    content: 'El Colaborador ya existe, pero esta en otra empresa, desea cargarlo?',
+						    buttons: {
+						        confirm: function () {
+						        	$("#id_password1").val("")
+									$("#id_password2").val("")
+									$("#btn-datos-usuario").removeAttr('onclick').attr('onclick', json.lafuncion)
+						        	jsShowWindowLoad();
+									var link_ = "{% url 'bases:ajaxCargaDatosUsuario' %}";
+									$.ajax({
+									    type: "POST",
+									    url: link_,
+									    data:{
+											'pk':json.id,
+									    },
+									    success: function(data){
+									        json = data;
+											$("#id_first_name").val(json.first_name)
+											$("#id_last_name").val(json.last_name)
+											$("#id_email").val(json.email)
+											$("#id_password1").val(json.usu_passwordusuario)
+											$("#id_password2").val(json.usu_passwordusuario)
+											$("#id_usu_tipousuario").val(json.usu_tipousuario)
+											jsRemoveWindowLoad();
+									    },
+									    error: function (obj, error, objError){
+									        //avisar que ocurrio un error
+									        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+									    }
+									});
+						        },
+						        cancel: function () {
+						        },
+						    }
+						});
+			        }
+			    },
+			    error: function (obj, error, objError){
+			        //avisar que ocurrio un error
+			        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			    }
+			});
+		});
+
+		/* --------------------------------------------------------- */
+		$("#id_afp").change(function(){
+			jsShowWindowLoad();
+			var link_ = "{% url 'bases:ajax_data_afp' %}";
+			$.ajax({
+			    type: "POST",
+			    url: link_,
+			    data:{
+					'pk':this.value,
+			    },
+			    success: function(data){
+			        json = data;
+					$("#id_afp_codigo").val(json.afp_codigoprevired)
+					$("#id_afp_porcentaje").val(json.afp_tasatrabajadordependiente)
+					$("#id_ue_sis").val(json.afp_sis)
+					//$("#id_afp_tasatrabajadorindependiente").val(json.afp_tasatrabajadorindependiente)
+					jsRemoveWindowLoad();
+			    },
+			    error: function (obj, error, objError){
+			        //avisar que ocurrio un error
+			        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			    }
+			});
+		});
+		/* --------------------------------------------------------- */
+
+		$("button[id^=btn_h_]").click(function(){
+			$("#btn-add-haberes").removeAttr('id').attr('id', 'btn-edit-haberes').removeAttr('onclick').attr('onclick', 'edit_haberes('+this.value+')');
+			$("#btn-edit-haberes").attr('value', this.value);
+			$(this).parents("tr").find("td").each(function() {
+				if (this.id.substring(0,4) === "hab_"){
+					if(this.id === 'hab_monto'){
+						object_name = "#id_"+this.id
+						valor = ($(this).text()).replace('$', '').replace(',', '')
+						console.log(valor)
+						$(object_name).val(valor)
+					}else{
+						object_name = "#id_"+this.id
+						object_valor = $(this).text()
+						$(object_name).val($(this).text())
+					}
+				}
+			});
+		})
+
+		{% if tipoEntidad == 'FONASA' %}
+		$("#lbl_ue_ufisapre").css('display', 'none');
+		$("#lbl_ue_funisapre").css('display', 'none');
+		$("#lbl_ue_cotizacion").css('display', 'block');
+		$("#addons").text('%');
+		{% elif tipoEntidad == 'ISAPRE' %}
+		$("#lbl_ue_ufisapre").css('display', 'block');
+		$("#lbl_ue_funisapre").css('display', 'block');
+		$("#lbl_ue_cotizacion").css('display', 'block');
+		$("#addons").text('$');
+		{% else %}
+		$("#lbl_ue_ufisapre").css('display', 'none');
+		$("#lbl_ue_funisapre").css('display', 'none');
+		$("#lbl_ue_cotizacion").css('display', 'none');
+		{% endif %}
+
+		$("#id_salud").change(function(){
+			jsShowWindowLoad();
+			var link_ = "{% url 'bases:ajax_salud' %}";
+			$.ajax({
+			    type: "POST",
+			    url: link_,
+			    data:{
+					'pk':this.value,
+			    },
+			    success: function(data){
+			        json = data;
+			        $("#id_sa_codigo").val(json.sa_codigo);
+					if(json.sa_tipo == 'I'){
+						$("#id_ue_cotizacion").val(0);
+						$("#addons").text("$")
+						$("#lbl_ue_cotizacion").css('display', 'block');
+						$("#lbl_ue_ufisapre").css('display', 'block');
+						$("#lbl_ue_funisapre").css('display', 'block');
+
+					}else if(json.sa_tipo == 'F'){
+						$("#id_ue_cotizacion").val(json.fonasa_param);
+						$("#addons").text("%")
+						$("#lbl_ue_cotizacion").css('display', 'block');
+						$("#lbl_ue_ufisapre").css('display', 'none');
+						$("#lbl_ue_funisapre").css('display', 'none');
+					}
+					jsRemoveWindowLoad();
+			    },
+			    error: function (obj, error, objError){
+			        //avisar que ocurrio un error
+			        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			    }
+			});
+		});
+		/* --------------------------------------------------------- */
+		$("#id_ue_segurodesempleo").change(function(){
+			if(this.value == ''){
+				$("#id_ue_porempleado").val('')
+				$("#id_ue_porempleador").val('')
+			}else if(this.value == 'N'){
+				$("#id_ue_porempleado").val(0)
+				$("#id_ue_porempleador").val(0)
+			}else if(this.value == 'S'){
+				jsShowWindowLoad();
+				var link_ = "{% url 'bases:ajax_seguro_desempleo' %}";
+				$.ajax({
+				    type: "POST",
+				    url: link_,
+				    data:{
+						'id_ue_tipocontrato':$("#id_ue_tipocontrato").val(),
+				    },
+				    success: function(data){
+				        json = data;
+				        json.lstMontoSeguroDesempleo.forEach(function(entry) {
+                            console.log(entry.entidad)
+                            if(entry.entidad == 'trabajador'){
+                            	$("#id_ue_porempleado").val(parseFloat(entry.valor))
+                            	console.log(entry.valor)
+                            }
+
+                            if(entry.entidad == 'empleador'){
+                            	$("#id_ue_porempleador").val(parseFloat(entry.valor))
+                            	console.log(entry.valor)
+                            }
+
+
+                        });
+				        //$("#porcentaje_principal").text(json.lstMontoSeguroDesempleo)
+						jsRemoveWindowLoad();
+				    },
+				    error: function (obj, error, objError){
+				        //avisar que ocurrio un error
+				        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+				    }
+				});
+			}
+		});
+		/* --------------------------------------------------------- */
+		$("#info-seguro-desempleo").click(function(){
+			$.alert({
+       		 	title: 'Ayuda!',
+     		    content:' <strong>Descripci&oacute;n seguro de desempleo</strong><br/><br/>Contrato de plazo fijo<br/><br/>Aporte del empleador: 3% de la remuneraci&oacute;n imponible del trabajador (2,8% va a la cuenta individual por cesant&iacute;a y el resto al Fondo de Cesant&iacute;a Solidario).<br/><br/><br/>Contrato indefinido<br/><br/>Aporte del trabajador: 0,6% de la remuneraci&oacute;n imponible, Aporte del empleador: 2,4% de la remuneraci&oacute;n imponible del trabajador (1,6% va a la cuenta individual por cesant&iacute;a y el resto al Fondo de Cesant&iacute;a Solidario).',
+       		});
+		});
+		$("#info-cotizacion-voluntaria").click(function(){
+			$.alert({
+       		 	title: 'Ayuda!',
+     		    content:'Las Cotizaciones Voluntarias corresponden a los dep&oacute;sitos que los trabajadores afiliados o no al Sistema de Pensiones*, hacen voluntariamente a la AFP donde se encuentra afiliado.',
+       		});
+		});
+		$("#info-apv").click(function(){
+			$.alert({
+       		 	title: 'Ayuda!',
+     		    content:'El Ahorro Previsional Voluntario (APV) permiten que el afiliado deposite en una cuenta de capitalizaci&oacute;n individual en alguna de las instituciones autorizadas para la administraci&oacute;n de este tipo de ahorro.',
+       		});
+		});
+		/* --------------------------------------------------------- */
+		$("#id_ue_ufisapre").change(function(){
+			if($("#id_salud").val() != 1){
+				var valorUf = $("id_ue_ufisapre").val();
+			}
+		});
+
+		$('#id_ue_fechatermino, #id_ue_fechanotificacioncartaaviso').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+
+
+
+		$("#id_ue_tipocontrato").change(function(){
+			console.log("id_ue_segurodesempleo: "+$("#id_ue_segurodesempleo").val())
+			console.log($("#id_ue_segurodesempleo").val().length)
+			if($("#id_ue_segurodesempleo").val() != 'N' && $("#id_ue_segurodesempleo").val().length > 0){
+				if(this.value == 'CPF'){
+					$.confirm({
+					    title: 'Confirmaci&oacute;n!',
+					    content: 'Al cambiar el tipo de contrato de contrato indefinido (CI) a contrato plazo fijo (CPF) el valor del seguro de cesant&iacute; variara. Desea continuar?',
+					    buttons: {
+					        confirm: function () {
+								var link_ = "{% url 'bases:ajax_seguro_desempleo' %}";
+								$.ajax({
+								    type: "POST",
+								    url: link_,
+								    data:{
+										'id_ue_tipocontrato':$("#id_ue_tipocontrato").val(),
+								    },
+								    success: function(data){
+								        json = data;
+								        json.lstMontoSeguroDesempleo.forEach(function(entry) {
+				                            if(entry.entidad == 'trabajador')
+				                            	$("#id_ue_porempleado").val(entry.valor)
+				                            else
+				                            	$("#id_ue_porempleado").val('')
+
+				                            if(entry.entidad == 'empleador')
+				                            	$("#id_ue_porempleador").val(entry.valor)
+				                            else
+				                            	$("#id_ue_porempleador").val('')
+				                        });
+								        $("#update_var").val('CPF')
+								    },
+								    error: function (obj, error, objError){
+								        //avisar que ocurrio un error
+								        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+								    }
+								});
+					        },
+					        cancel: function () {
+					        },
+					    }
+					});
+				}if(this.value == 'CI'){
+					$.confirm({
+					    title: 'Confirmaci&oacute;n!',
+					    content: 'Al cambiar el tipo de contrato de contrato plazo fijo (CPF) a contrato indefinido (CI) el valor del seguro de cesant&iacute; variara. Desea continuar?',
+					    buttons: {
+					        confirm: function () {
+								var link_ = "{% url 'bases:ajax_seguro_desempleo' %}";
+								$.ajax({
+								    type: "POST",
+								    url: link_,
+								    data:{
+										'id_ue_tipocontrato':$("#id_ue_tipocontrato").val(),
+								    },
+								    success: function(data){
+								        json = data;
+								        json.lstMontoSeguroDesempleo.forEach(function(entry) {
+				                            if(entry.entidad == 'trabajador')
+				                            	$("#id_ue_porempleado").val(entry.valor)
+				                            if(entry.entidad == 'empleador')
+				                            	$("#id_ue_porempleador").val(entry.valor)
+				                        });
+								        $("#update_var").val('CI')
+								    },
+								    error: function (obj, error, objError){
+								        //avisar que ocurrio un error
+								        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+								    }
+								});
+					        },
+					        cancel: function () {
+					        },
+					    }
+					});
+				}
+			}
+		});
+
+
+		$("#id_ue_formapago").change(function(){
+			if(this.value == 3){
+				$("#id_banco").removeAttr('disabled');
+				$("#id_ue_cuentabancaria").removeAttr('readonly');
+			}else{
+				//$("#id_banco").select2("val", "").attr('disabled', 'disabled');
+				$("#id_banco").val(null).trigger("change").attr('disabled', 'disabled');
+				$("#id_ue_cuentabancaria").val('').attr('readonly', 'readonly');
+			}
+		});
+
+		{% if formaPago == 3 %}
+		$("#id_banco").removeAttr('disabled');
+		{% endif %}
+
+		$("#id_usu_tipousuario").change()
+		$("#id_usu_tipousuario").change(function () {
+
+		    if(this.value == 2){
+		        $("#id_password1, #id_password2").attr('readonly', false)
+				$("#p1, #p2").removeAttr('name').val('')
+				$("#hdn_tipo_usuario").val('adm')
+
+				$("#id_password1").attr('name', 'password1')
+				$("#id_password2").attr('name', 'password2')
+			}
+			if(this.value == 3){
+			    $("#id_password1, #id_password2").attr('readonly', true).removeAttr('name')
+				$("#id_password1, #id_password2").val("")
+				$("#hdn_tipo_usuario").val('usr')
+
+				$("#p1").attr('name', 'password1').val('iw+HauXGy>-0oO4xuU;V{Rcj3|dLJ@]^tA%~;)&|C!*bL/Bpu6Y%:6C%:=d7W,;r>O1kaMw0PX=_{F7TZuu#B!ishV)<Ze#~*rqY')
+				$("#p2").attr('name', 'password2').val('iw+HauXGy>-0oO4xuU;V{Rcj3|dLJ@]^tA%~;)&|C!*bL/Bpu6Y%:6C%:=d7W,;r>O1kaMw0PX=_{F7TZuu#B!ishV)<Ze#~*rqY')
+			}
+        });
+	});
+
+    function asociar_usuario_empresa(usuario_id, empresa_id){
+    	var link_ = "{% url 'bases:ajaxAsociarUsuarioEmpresa' %}";
+		$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:{
+				'usuario_id':usuario_id,
+				'empresa_id':empresa_id,
+		    },
+		    success: function(data){
+		        json = data;
+		        if(!json.error){
+		        	//location.reload()
+	        		var __link__ = "{% url 'bases:edit_personal' 'pk_usuario' 'pk_empresa' %}"
+		        	__link__ = __link__.replace('pk_usuario', usuario_id).replace('pk_empresa', empresa_id)
+		        	location.href = __link__
+		        }else{
+		        	$.alert({
+		       		 	title: 'Error!',
+		     		    content:'Problemas al guardar',
+		       		});
+		        }
+
+		    },
+		    error: function (obj, error, objError){
+		        //avisar que ocurrio un error
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+    }
+
+    function addDatosUsuario(){
+    	//jsShowWindowLoad();
+    	$.ajax({
+		    type: "POST",
+		    url: "{% url 'bases:ajaxCrearUsuarioEmpresa' %}",
+		    data:$('#frm').serialize(),
+		    success: function(data){
+		        json = data;
+		        //jsRemoveWindowLoad();
+				if(json.error){
+					var mensaje_error = ""
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		    content: 'Los datos fueron guardados con &eacute;xito',
+		       		});
+		        	var __link__ = "{% url 'bases:edit_personal' 'pk_usuario' 'pk_empresa' %}"
+		        	__link__ = __link__.replace('pk_usuario', json.pk_usuario).replace('pk_empresa', json.pk_empresa)
+		        	location.href = __link__
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+    }
+
+    function editDatosUsuario(id_usuario, id_empresa){
+    	jsShowWindowLoad();
+    	var __url__ = "{% url 'bases:ajaxEditarUsuarioEmpresa' 'id_usuario' 'id_empresa' %}"
+    	__url__ = __url__.replace('id_usuario', id_usuario).replace('id_empresa', id_empresa)
+    	$.ajax({
+		    type: "POST",
+		    url: __url__,
+		    data:$('#frm').serialize(),
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+				if(json.error){
+					var mensaje_error = ""
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		    content: 'Los datos fueron editado con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+    }
+
+    function addDatosPersonales(usu_id){
+		jsShowWindowLoad();
+		var link_ = "{% url 'bases:ajaxAddDatosPersonales' '__usu_id__' %}";
+		link_ = link_.replace('__usu_id__', usu_id)
+		$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:$('#frm-dp').serialize(),
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+				if(json.error){
+					var mensaje_error = ""
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		    content: 'Los datos personales fueron guardados/editados con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        //avisar que ocurrio un error
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+	}
+
+
+    function addDatosLaborales(id_usuario, id_empresa){
+		jsShowWindowLoad();
+		var link_ = "{% url 'bases:ajaxAddDatosLaborales' 'id_usuario' 'id_empresa' %}";
+		link_ = link_.replace('id_usuario', id_usuario).replace('id_empresa', id_empresa)
+		$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:$('#frm-dl').serialize(),
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+		        if(json.error){
+		       	 $.alert({
+		       		 title: 'Error!',
+		     		     content: 'Existen problemas en los siguientes campos\n\n '+json.lista_err,
+		       		});
+		        }else{
+		        	/**if($("#update_var").val() == 'CPF'){
+		        		updateSeguroCesantia(usu_id)
+		        	}
+		        	if($("#update_var").val() == 'CI'){
+		        		updateSeguroCesantia(usu_id)
+		        	}**/
+		        	$.alert({
+		        		title: 'Exito!',
+		     		     content: 'Los datos laborales fueron guardados/editados con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        //avisar que ocurrio un error
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+	}
+
+
+    function addDatosLeyesSociales(id_usuario, id_empresa){
+		jsShowWindowLoad();
+		var id_emp = $("#id_empresa").val()
+		var link_ = "{% url 'bases:ajaxDatosLeyesSociales' 'id_usuario' 'id_empresa' %}";
+		link_ = link_.replace('id_usuario', id_usuario).replace('id_empresa', id_empresa)
+		$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:$('#frm-ls').serialize(),
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+		        if(json.error){
+		        	var mensaje_error = "<strong>Los siguientes campos son oligatorios:</strong><br/><br/>"
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		     content: 'Los datos de leyes sociales fueron guardados/editados con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        //avisar que ocurrio un error
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+	}
+
+    function addRemuneracionEmpleado(id_usuario, id_empresa){
+		jsShowWindowLoad();
+		var id_emp = $("#id_empresa").val()
+		var link_ = "{% url 'bases:ajaxAddRemuneracionEmpleado' 'id_usuario' 'id_empresa' %}";
+		link_ = link_.replace('id_usuario', id_usuario).replace('id_empresa', id_empresa)
+		$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:$('#frm-re').serialize(),
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+		        if(json.error){
+		        	var mensaje_error = "<strong>Los siguientes campos son oligatorios:</strong><br/><br/>"
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		     content: 'Los datos de leyes sociales fueron guardados/editados con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        //avisar que ocurrio un error
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+	}
+
+
+    function addMenuEmpleado(id_usuario, id_empresa){
+		jsShowWindowLoad();
+		var id_emp = $("#id_empresa").val()
+		var link_ = "{% url 'bases:ajaxAddMenuEmpleado' 'id_usuario' 'id_empresa' %}";
+		link_ = link_.replace('id_usuario', id_usuario).replace('id_empresa', id_empresa)
+		$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:$('#frm-memp').serialize(),
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+		        if(json.error){
+		        	var mensaje_error = "<strong>Los siguientes campos son oligatorios:</strong><br/><br/>"
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+                    $.confirm({
+						title: 'Exito!',
+						content: 'El men&uacute; fue creado con &eacute;xito',
+						buttons: {
+							cerrar: function () {
+								title: 'Exito!',
+								location.reload()
+							},
+						}
+					});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        //avisar que ocurrio un error
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+	}
+
+    {% if is_edit %}
+    function borrar_item(men_ite_id, estado){
+
+    	if(estado == 'S'){
+    		var mensaje = 'esta seguro que desea desactivar el items para el usuario?. presione confirmar para continuar, cancelar para no realizar nada'
+    	}
+
+    	if(estado == 'N'){
+    		var mensaje = 'Al activar el items, quedara visible para el usuario. presione confirmar para continuar, cancelar para no realizar nada'
+    	}
+
+    	$.confirm({
+		    title: 'Confirmaci&oacute;n!',
+		    content: mensaje,
+		    buttons: {
+		        confirmar: function () {
+					location.href="{% url 'bases:removeItems' id_usuario empresa_id 'men_ite_id' %}".replace('men_ite_id', men_ite_id)
+		        },
+		        cancelar: function () {
+		        },
+		    }
+		});
+    }
+
+	function addHaber(){
+		var link_ = "{% url 'bases:ajax_add_haberes' user_id %}";
+		$.ajax({
+			type: "POST",
+			url: link_,
+			data:$("#frm-haberes").serialize(),
+			success: function(data){
+				json = data;
+
+				if (json.error){
+					var mensaje = ''
+					json.lista_err.forEach(function(entry) {
+						mensaje+='- '+entry+'<br/>';
+					});
+
+					$.alert({
+						title: 'Error!',
+						content: mensaje,
+					});
+
+				}else{
+					var html=''
+					html = '<tr class="row_detalle" id="row_'+json.cantidad+'">'+
+						'<td id="contador" scope="row">'+json.cantidad+'</td>'+
+						'<td id="hab_nombre">'+$("#id_hab_nombre").val().toUpperCase()+'</td>'+
+						'<td id="hab_tipo_texto">'+$("#id_hab_tipo option:selected").text().toUpperCase()+'</td>'+
+						'<td id="hab_tipo" hidden>{{h.hab_tipo_clave}}</td>'+
+						'<td id="hab_monto">$'+$("#id_hab_monto").val()+'</td>'+
+
+						'<td id="">'+
+							'<div class="btn-group  btn-group-sm">'+
+								'<button class="btn btn-primary" type="button"><span class="fa fa-pencil-square-o"></span> Editar</button>'+
+								'<button class="btn btn-danger" type="button"><span class="fa fa-trash"></span> Borrar</button>'+
+							'</div>'+
+						'</td>'+
+					'</tr>';
+
+					$("#tabla-detalles > tbody").append(html)
+					$("#id_hab_nombre").val('')
+					$("#id_hab_tipo").val('')
+					$("#id_hab_monto").val(0)
+
+					num_det = 1;
+					$('tr[id^=row_]').find("#contador").each(function () {
+						this.innerHTML = num_det;
+						num_det++
+					});
+				}
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrio un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+    }
+
+    function edit_haberes(id_haber){
+
+		var link_ = "{% url 'bases:ajax_edit_haberes' '__id_haber__' %}";
+		link_ = link_.replace('__id_haber__', id_haber)
+		$.ajax({
+			type: "POST",
+			url: link_,
+			data:$("#frm-haberes").serialize(),
+			success: function(data){
+				json = data;
+
+				if(json.error){
+					var mensaje_error = ''
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+='- '+elemento+'<br/>'
+					});
+
+					$.alert({
+						title: 'Error!',
+						content: mensaje_error,
+					});
+				}else{
+
+					$("#row_"+id_haber).find("td").each(function () {
+
+						var in_name = this.id;
+						var id_in_name = "#id_"+in_name
+
+						if(in_name === 'hab_nombre'){
+							this.innerHTML = $(id_in_name).val();
+
+						}else if(in_name === 'hab_tipo_texto'){
+							this.innerHTML = json.xtipo;
+
+						}else if(in_name === 'hab_tipo'){
+							this.innerHTML = json.tipo;
+
+						}else if(in_name === 'hab_monto'){
+							this.innerHTML = "$"+$(id_in_name).val();
+						}
+					});
+
+					$("#id_hab_nombre").val('');
+					$("#id_hab_monto").val(0);
+					$("#id_hab_tipo").val('');
+					$("#btn-edit-haberes").removeAttr('id').attr('id', 'btn-add-haberes').removeAttr('onclick').attr('onclick', 'addHaber()');
+				}
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrio un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+    }
+
+    function borrar_haber(id_haber){
+
+		$.confirm({
+			title: 'Confirm!',
+			content: 'Esta seguro de borrar el detalle?',
+			buttons: {
+				confirmar: function () {
+
+					var link_ = "{% url 'bases:ajax_delete_haberes' '__id_haber__' %}";
+					link_ = link_.replace('__id_haber__', id_haber)
+
+					$.ajax({
+						type: "POST",
+						url: link_,
+						success: function(data){
+							json = data;
+							$("#row_"+id_haber).closest('tr').remove();
+							num_det = 1;
+							$('tr[id^=row_]').find("#contador").each(function () {
+								this.innerHTML = num_det;
+								num_det++
+							});
+							$.alert('Borrado exitosamente!');
+						},
+						error: function (obj, error, objError){
+							//avisar que ocurrio un error
+							alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+						}
+					});
+
+
+				},
+				cancelar: function () {
+					$.alert('Cancelado!');
+				},
+
+			}
+		});
+	}
+
+
+	function ajax_ciclo(id_usuario){
+    	jsShowWindowLoad();
+
+    	var link_ = "{% url 'bases:ajax_ciclo' user_id %}";
+    	$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:{
+		    	'ue_prestamo':$("#id_ue_prestamo").val(),
+		    	'ue_cuotas':$("#id_ue_cuotas").val(),
+		    	'ue_certificado': $("#id_ue_certificado").val(),
+		    	'ue_amonestacion': $("#id_ue_amonestacion").val(),
+		    	'ue_entregaequiposeguridad':$("#id_ue_entregaequiposeguridad").val(),
+		    	'ue_anexocontrato':$("#id_ue_anexocontrato").val(),
+		    },
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+				if(json.error){
+					var mensaje_error = ""
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		    content: 'Los datos fueron guardados con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+    }
+
+
+    function ajax_termino_laboral(){
+    	jsShowWindowLoad();
+
+    	var link_ = "{% url 'bases:ajax_termino_laboral' user_id %}";
+    	$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:$("#frm-termino-relacion-laboral").serialize(),
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+				if(json.error){
+					var mensaje_error = ""
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		    content: 'Los datos fueron guardados con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+    }
+
+    function ajax_otro(){
+    	jsShowWindowLoad();
+    	var link_ = "{% url 'bases:ajax_otro' user_id %}";
+    	$.ajax({
+		    type: "POST",
+		    url: link_,
+		    data:{
+		    	'ue_otros':$("#id_ue_otros").val(),
+		    },
+		    success: function(data){
+		        json = data;
+		        jsRemoveWindowLoad();
+				if(json.error){
+					var mensaje_error = ""
+					json.lista_err.forEach(function(elemento, indice) {
+						mensaje_error+=elemento+"<br/>"
+                    });
+		       	 	$.alert({
+		       		 title: 'Error!',
+		     		     content: mensaje_error,
+		       		});
+		        }else{
+		        	$.alert({
+		        		title: 'Exito!',
+		     		    content: 'Los datos fueron guardados con &eacute;xito',
+		       		});
+		        }
+		    },
+		    error: function (obj, error, objError){
+		        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		    }
+		});
+    }
+
+    function add_haber_descuento(){
+        jsShowWindowLoad();
+        var link_ = "{% url 'bases:ajax_add_haber_descuento' user_id request.session.la_empresa %}";
+        $.ajax({
+            type: "POST",
+            url: link_,
+            data:$("#frm-habere-descuentos").serialize(),
+            success: function(data){
+                json = data;
+                if(json.error){
+                    var mensaje_error = ''
+                    json.lista_err.forEach(function(elemento, indice) {
+                        mensaje_error+='- '+elemento+'<br/>'
+                    });
+                    $.alert({
+                        title: 'Error!',
+                        content: mensaje_error,
+                    });
+                }else{
+                    var html=''
+                    html+='<tr class="row_detalle_hd" id="row_hd_'+json.hab_id+'" style="border-topm:1px solid #C3C4F8;">'+
+                            '<td id="contador" scope="row"></td>'+
+                            '<td id="hab_nombre">'+json.hab_nombre.toUpperCase()+'</td>'+
+                            '<td id="hab_tipo">'+$("#id_hab_tipohaberdescuento option:selected").text().toUpperCase()+'</td>'+
+                            '<td id="haberes">'+json.haber+'</td>'+
+                            '<td id="descuentos">'+json.descuento+'</td>'+
+                            '<td>'+
+                                '<button type="button" class="btn btn-danger btn-xs" onclick="delete_haber_descuento('+json.hab_id+')"><span class="fa fa-trash"></span></button>'+
+                            '</td>'+
+                        '</tr>';
+                    $("#tabla-haberes-descuentos > tbody").append(html)
+					num_det = 1;
+					$('tr[id^=row_hd_]').find("#contador").each(function () {
+						this.innerHTML = num_det;
+						num_det++
+					});
+					$("#s-haber").text(json.ue_totalhaberes)
+					$("#s-descuento").text(json.ue_totaldescuentos)
+					$("#s-total").text(json.ue_totalfinalhaberesdescuentos)
+
+                    $("#cerra_haberes_descuentos").click()
+                }
+                jsRemoveWindowLoad();
+            },
+            error: function (obj, error, objError){
+                //avisar que ocurrio un error
+                alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+            }
+        });
+    }
+
+	function delete_haber_descuento(haber_id){
+		$.confirm({
+			title: 'Confirm!',
+			content: 'Esta seguro de borrar el detalle?',
+			buttons: {
+				confirmar: function () {
+					jsShowWindowLoad();
+					var link_ = "{% url 'bases:ajax_delete_haber_descuento' '__hab_id__' %}";
+					link_ = link_.replace('__hab_id__', haber_id)
+					$.ajax({
+						type: "POST",
+						url: link_,
+						success: function(data){
+							json = data;
+
+							console.log("----> "+json.suma_descuentos)
+
+							$("#row_hd_"+json.hab_id).closest('tr').remove();
+
+							$("#s-haber").text(json.suma_haberes)
+							$("#s-descuento").text(json.suma_descuentos)
+							$("#s-total").text(json.total_haberes_descuentos)
+
+							num_det = 1;
+							$('tr[id^=row_hd_]').find("#contador").each(function () {
+								this.innerHTML = num_det;
+								num_det++
+							});
+							jsRemoveWindowLoad();
+						},
+						error: function (obj, error, objError){
+							//avisar que ocurrio un error
+							alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+						}
+					});
+				},
+				cancelar: function () {
+					$.alert('Cancelado!');
+				},
+			}
+		});
+    }
+    {% endif %}
+</script>
+{% endblock %}

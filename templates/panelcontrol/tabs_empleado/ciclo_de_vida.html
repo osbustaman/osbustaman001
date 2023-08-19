@@ -1,0 +1,93 @@
+<br>
+<form name="frm-ciclo" id="frm-ciclo" class="form-horizontal form-label-left input_mask" method="POST">
+	{% csrf_token %}
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">    	
+	    <legend>Préstamo</legend>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="panel-default">
+					<div class="form-group">
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{data_dcpvcaaes.ue_prestamo.label}}</label>
+							{{data_dcpvcaaes.ue_prestamo}}
+						</div>
+						<div class="col-md-1 col-sm-1 col-xs-12">
+							<label >{{data_dcpvcaaes.ue_cuotas.label}}</label>
+							{{data_dcpvcaaes.ue_cuotas}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+    </fieldset>
+
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">
+	    <legend><span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="aquí se debe ingresar la descripción del certificado">Certificado</span></legend>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="panel-default">
+					<div class="form-group">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							{{data_dcpvcaaes.ue_certificado}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </fieldset>
+
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">
+	    <legend><span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="aquí se debe ingresar la descripción de la amonestación">Amonestación</span></legend>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="panel-default">
+					<div class="form-group">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							{{data_dcpvcaaes.ue_amonestacion}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </fieldset>
+
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">
+	    <legend><span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="aquí se debe ingresar la descripción del anexo de contrato">Anexo de contrato</span></legend>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="panel-default">
+					<div class="form-group">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							{{data_dcpvcaaes.ue_anexocontrato}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </fieldset>
+
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">
+	    <legend><span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Descripción del equipo de seguridad">Entrega de equipos de seguridad</span></legend>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="panel-default">
+					<div class="form-group">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							{{data_dcpvcaaes.ue_entregaequiposeguridad}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </fieldset>
+</form>
+<div class="form-group">
+<div class="col-md-12 col-sm-12 col-xs-12">
+	<button  style="margin-top:15px;" type="button" onclick="ajax_ciclo({{id_usuario}})" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+	</div>
+</div>

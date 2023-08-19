@@ -1,0 +1,85 @@
+<form id="frm-dp" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+    {% csrf_token %}
+    <div class="form-group">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.cp_rut.label}}</label>
+            {{form.cp_rut}}
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <label >{{form.cp_razonsocial.label}}</label>
+            {{form.cp_razonsocial}}
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <label >{{form.cp_nombrefantasia.label}}</label>
+            {{form.cp_nombrefantasia}}
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <label >{{form.cp_giro.label}}</label>
+            {{form.cp_giro}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <label >{{form.cp_direccion.label}}</label>
+            {{form.cp_direccion}}
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.cp_numero.label}}</label>
+            {{form.cp_numero}}
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.cp_piso.label}}</label>
+            {{form.cp_piso}}
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-12">
+            <label >{{form.cp_dptooficina.label}}</label>
+            {{form.cp_dptooficina}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.pais.label}}</label>
+            {{form.pais}}
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.region.label}}</label>
+            {{form.region}}
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.comuna.label}}</label>
+            {{form.comuna}}
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <label >{{form.cp_email.label}}</label>
+            {{form.cp_email}}
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.cp_fono.label}}</label>
+            {{form.cp_fono}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.cp_estado.label}}</label>
+            {{form.cp_estado}}
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{form.cp_tipoentidad.label}}</label>
+            {{form.cp_tipoentidad}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <label >{{form.cp_comentario.label}}</label>
+            {{form.cp_comentario}}
+        </div>
+    </div>
+
+
+    <div class="ln_solid"></div>
+    <div class="form-group">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+        </div>
+    </div>
+</form>

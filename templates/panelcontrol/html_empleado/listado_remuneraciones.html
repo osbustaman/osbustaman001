@@ -1,0 +1,37 @@
+<table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" cellpadding="0" width="100%">
+    <thead>
+        <tr>
+            <th>Empresa</th>
+            <th>Año</th>
+            <th>Mes</th>
+            <th>Total imponible</th>
+            <th>Total no imponibles</th>
+            <th>Total descuento</th>
+            <th>Liquido a pagar</th>
+            <th>Días trabajados</th>
+            <th>Licencias</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in lstCabLiqSueldo %}
+        <tr>
+            <td>{{u.emp_razonsocial}}</td>
+            <td>{{u.anio}}</td>
+            <td>{{u.mes}}</td>
+            <td>${{u.cls_totalhaber}}</td>
+            <td>${{u.cls_totalhabernoimp}}</td>
+            <td>${{u.cls_totaldescuento}}</td>
+            <td>${{u.cls_liquidoapagar}}</td>
+            <td>0</td>
+            <td>0</td>
+            <td>
+                <div class="btn-group  btn-group-sm">
+                    <a href="#" class="btn btn-primary"><span class="fa fa-eye"></span></a>
+                    <a href="{% url 'recursos_humanos_namespace:pdfLiquidacionSueldo' request.session.la_empresa id_usuario %}" target="_blank" class="btn btn-primary"><span class="fa fa-file-pdf-o"></span></a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

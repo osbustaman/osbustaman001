@@ -1,0 +1,33 @@
+.jconfirm.jconfirm-titan .jconfirm-bg{
+    background-color: #000000;
+    opacity: 0.71;
+    filter: alpha(opacity =71);
+}
+
+.jconfirm.jconfirm-titan .jconfirm-box{
+    border-top: 5px solid #da4f49;
+    border-radius: 0;
+}
+.jconfirm.jconfirm-titan .jconfirm-box.loading{
+    background-color: #FBEFEF;
+}
+.jconfirm.jconfirm-titan .jconfirm-box.loading:before{
+}
+.jconfirm.jconfirm-titan .jconfirm-box.loading:after{
+}
+.jconfirm.jconfirm-titan .jconfirm-box .jconfirm-closeIcon{
+}
+.jconfirm.jconfirm-titan .jconfirm-box .jconfirm-title-c{
+
+}
+.jconfirm.jconfirm-titan .jconfirm-box .jconfirm-content-pane{
+}
+.jconfirm.jconfirm-titan .jconfirm-box .jconfirm-content{
+}
+.jconfirm.jconfirm-titan .jconfirm-box .jconfirm-buttons{
+
+}
+.jconfirm.jconfirm-titan .jconfirm-box .jconfirm-buttons button{
+    background-color: #d9534f;
+    color:#ffffff;
+}

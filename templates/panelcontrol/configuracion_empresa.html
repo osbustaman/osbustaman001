@@ -1,0 +1,94 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="#" style="border:0px;"><span class="fa fa-cogs"></span></a>
+</li>
+<li role="presentation">
+	<a href="{% url 'bases:views_add_moneda' %}" id="btn-add-moneda" style="border:0px;"><span class="fa fa-usd"></span> Agregar nueva moneda</a>
+</li>
+<!--<li role="presentation">-->
+<!--	<a href="#" id="btn-add-pais" style="border:0px;"><span class="fa fa-flag"></span> Agregar nuevo país</a>-->
+<!--</li>-->
+{% endblock %}
+
+{% block dato_empresa %}
+Configuración empresa
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+
+<style type="text/css">
+	#btn-add-moneda{
+		display:none;
+	}
+    .table > thead > tr > th{
+        background: #2A3F54;
+        color:#FFFFFF;
+        border:1px solid #FFFFFF;
+    }
+
+    .table > tbody > tr:hover{
+        background: #E0E0F8;
+        border:1px solid #FFFFFF;
+        cursor: pointer;
+    }
+</style>
+
+<div class="x_panel">
+    <div class="x_content" >
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+			<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Logo empresa</a>
+				</li>
+				<li role="presentation" class="">
+					<a href="#tab_content2" role="tab" id="monedas-tab" data-toggle="tab" aria-expanded="false">Monedas</a>
+				</li>
+<!--				<li role="presentation" class="">-->
+<!--					<a href="#tab_content3" role="tab" id="pais-tab" data-toggle="tab" aria-expanded="false">País(es)</a>-->
+<!--				</li>-->
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                    {% include "panelcontrol/tabs_configuracion_empresa/logo_empresa.html" %}
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="monedas-tab">
+					{% include "panelcontrol/tabs_configuracion_empresa/tab_monedas.html" %}
+				</div>
+<!--				<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="pais-tab">-->
+<!--					{% include "panelcontrol/tabs_configuracion_empresa/paises.html" %}-->
+<!--				</div>-->
+			</div>
+		</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#btn-add-moneda").css('display', 'none');
+	$("#btn-add-pais").css('display', 'none');
+
+	$("#home-tab").click(function(){
+		$("#btn-add-moneda").css('display', 'none');
+		$("#btn-add-pais").css('display', 'none');
+	});
+
+	$("#monedas-tab").click(function(){
+		$("#btn-add-moneda").css('display', 'block');
+		$("#btn-add-pais").css('display', 'none');
+	});
+
+	$("#pais-tab").click(function(){
+		$("#btn-add-pais").css('display', 'block');
+		$("#btn-add-moneda").css('display', 'none');
+	});
+})
+</script>
+{% endblock %}

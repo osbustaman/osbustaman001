@@ -1,0 +1,171 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:edit_empresa' id_emp %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+{% if is_edit %}
+<li role="presentation" id="add-centrocosto">
+	<a href="{% url 'bases:add_centro_costo' gcencost_id %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar centro costo</a>
+</li>
+{% endif %}
+<li role="presentation">
+	<a href="#" style="border:0px;">{{nombre_gcce}}</a>
+</li>
+{% endblock %}
+
+{% block dato_empresa %}
+agregar/editar  centro de costos
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content" >
+		<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+			<li role="presentation" class="active" id="tab-gccosto">
+				<a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Grupo centro costo</a>
+			</li>
+			{% if is_edit %}
+			<li role="presentation" class="" id="tab-centro-costo">
+				<a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">centros de costo</a>
+			</li>
+			{% endif %}
+		</ul>
+		<div id="myTabContent" class="tab-content">
+			<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+				<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+					{% csrf_token %}
+					<div class="form-group">	
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frm_gCentrocCostoForm.gcencost_nombre.label}}</label>
+							{{frm_gCentrocCostoForm.gcencost_nombre}}
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frm_gCentrocCostoForm.gcencost_codigo.label}}</label>
+							{{frm_gCentrocCostoForm.gcencost_codigo}}
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frm_gCentrocCostoForm.gcencost_activo.label}}</label>
+							{{frm_gCentrocCostoForm.gcencost_activo}}
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frm_gCentrocCostoForm.empresa.label}}</label>
+							{{frm_gCentrocCostoForm.empresa}}
+						</div>
+					</div>
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			{% if is_edit %}
+			<style type="text/css">
+				.table > thead > tr > th{
+					background: #2A3F54;
+					color:#FFFFFF;
+					border:1px solid #FFFFFF;
+				}
+			
+				.table > tbody > tr:hover{
+					background: #E0E0F8;
+					border:1px solid #FFFFFF;
+					cursor: pointer;
+				}
+			</style>
+			<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+				<table  class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+					<thead>
+					    <tr>
+							<th>#</th>
+							<th>NOMBRE</th>
+							<th>CÓDIGO</th>
+							<th>CENTRO COSTE ACTIVO</th>
+							<th>ACCIONES</th>
+					    </tr>
+					</thead>
+					<tbody>
+				  		{% for c in lst_CentroCosto %}
+				    	<tr>
+							<td>{{c.contador}}</td>
+							<td>{{c.cencost_nombre|upper}}</td>
+							<td>{{c.cencost_codigo|upper}}</td>
+							<td>{{c.cencost_activo|upper}}</td>
+							<td>
+								<div class="btn-group btn-group-sm">
+									<a href="{% url 'bases:edit_centro_costo' gcencost_id c.cencost_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+									<a href="#" class="btn btn-danger" onclick="borrar_centro_costo({{c.cencost_id}}, '{{c.cencost_nombre|title}}')"><span class="fa fa-trash"></span> Borrar</a>
+								</div>
+							</td>
+				    	</tr>
+				    	{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			{% endif %}
+		</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2()
+    
+    $(document).ready(function(){
+
+    	{% include 'includes/cookies_js.html' with id_elemento='tab-gccosto' nombre_cookie='tab' valor_cookie='tabgccosto' %}
+    	{% include 'includes/cookies_js.html' with id_elemento='profile-tab' nombre_cookie='tab' valor_cookie='profiletab' %}
+
+		{% if error %}
+
+		mensaje_error = "";
+		{% for e in lista_err %}
+		mensaje_error += " {{e}} <br/>"
+		{% endfor %}
+
+		$.alert({
+			title: 'Error!',
+			content: mensaje_error,
+		});
+		{% endif %}
+		
+		{% if is_edit %}
+		$("#add-centrocosto").css('display', 'none');
+		
+		$("#tab-gccosto").click(function () {
+			$("#add-centrocosto").css('display', 'none');
+		});
+
+		$("#tab-centro-costo").click(function () {
+			$("#add-centrocosto").css('display', 'block');
+		});
+		{% endif %}
+    })
+    
+    
+    function borrar_centro_costo(cencost_id, nombre) {
+	$.confirm({
+	    title: 'Advertencia!',
+	    content: 'Esta seguro de eliminar el centro de costo '+nombre,
+	    buttons: {
+	        confirm: function () {
+
+				var __ruta__ = "{% url 'bases:delete_centro_costo' '__gcencost_id__' '__cencost_id__' %}";
+        		__ruta__ = __ruta__.replace('__gcencost_id__', {{gcencost_id}}).replace('__cencost_id__', cencost_id);
+
+	            location.href = __ruta__
+	        },
+	        cancel: function () {
+	            $.alert('Acci&oacute;n cancelada!');
+	        },
+	    }
+	});
+}
+
+</script>
+{% endblock %}

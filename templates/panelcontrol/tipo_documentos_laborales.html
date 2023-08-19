@@ -1,0 +1,119 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+tipo documentos laborales
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+    <a href="{% url 'bases:addGrupoDocumento' %}" style="border:0px;">
+        <span class="fa fa-plus-circle"></span> Agregar grupo documento
+    </a>
+</li>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+
+<style type="text/css">
+	.table > thead > tr > th{
+		background: #2A3F54;
+		color:#FFFFFF;
+		border:1px solid #FFFFFF;
+	}
+
+	.table > tbody > tr:hover{
+		background: #E0E0F8;
+		border:1px solid #FFFFFF;
+		cursor: pointer;
+	}
+	#id_tipoDocumentos{
+		min-width:200px;
+		margin-left:210px;
+		margin-top:-61px;
+	}
+</style>
+<div class="x_panel">
+    <div class="x_content" >
+		<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+			    <tr>
+					<th>#</th>
+					<th>CÓDIGO</th>
+					<th>DESCRIPCIÓN</th>
+					<th>ESTADO DOC.</th>
+					<th>ACCIONES</th>
+			    </tr>
+			</thead>
+
+			<tbody>
+		  		{% for x in lstTipoDocumentos %}
+		    	<tr>
+					<td>{{ x.contador }}</td>
+					<td>{{ x.tdl_codigo|upper }}</td>
+					<td>{{ x.tdl_descripcion|upper }}</td>
+					<td>{{ x.tdl_activo }}</td>
+					<td>
+						<div class="btn-group  btn-group-sm">
+							<a href="{% url 'bases:editGrupoDocumento' x.tdl_id %}" class="btn btn-primary"><span class="fa fa-{% if not x.tdl_pordefecto == 'S' %}pencil-square-o{% else %}search{% endif %}"></span> {% if not x.tdl_pordefecto == 'S' %}Editar{% else %}Ver{% endif %}</a>
+							{% if not x.tdl_pordefecto == 'S' %}
+							<a href="#" class="btn btn-danger" onclick="valida_cantidad_doc({{x.tdl_id}}, '{{x.estado}}')"><span class="fa fa-unlock-alt"></span> Borrar</a>
+							{% endif %}
+						</div>
+					</td>
+		    	</tr>
+		    	{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+$(document).ready(function(){
+
+	var filtro_docs='<label>'+
+				    '<select name="tipoDocumentos" id="id_tipoDocumentos" class="form-control input-sm">'+
+				    '<option value="" {% if filtro == "" %}selected{% endif %}>-- seleccione para filtar --</option>'+
+				    '<option value="DOC" {% if filtro == "DOC" %}selected{% endif %}>Documentos laborales</option>'+
+				    // '<option value="CLI" {% if filtro == "CLI" %}selected{% endif %}>Documentos clientes</option>'+
+				    // '<option value="PRO" {% if filtro == "PRO" %}selected{% endif %}>Documentos proveedores</option>'+
+				    '<option value="DEF" {% if filtro == "DEF" %}selected{% endif %}>Documentos por defecto</option>'+
+				    '</select>'+
+				    '</label>'
+
+	$(".dataTables_length").append(filtro_docs)
+
+	$("#id_tipoDocumentos").change(function(){
+		var __url__ = "{% url 'bases:listadoDocumentos' '__this__' %}"
+		__url__ = __url__.replace('__this__', this.value)
+		location.href=__url__
+	})
+})
+function valida_cantidad_doc(tdl_id, estado){
+
+	$.ajax({
+		type: "POST",
+		url: "{% url 'bases:borrarTipoDocumento' %}",
+		data:{
+			'tdl_id':tdl_id,
+			'estado':estado,
+		},
+		success: function(data){
+			json = data;
+
+			$.alert({
+				title: 'Error!',
+				content: json.error_mensaje,
+			});
+		},
+		error: function (obj, error, objError){
+			alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+		}
+	});
+}
+
+</script>
+{% endblock %}

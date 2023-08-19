@@ -1,0 +1,147 @@
+<form id="frm-ls" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+	{% csrf_token %}
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">    	
+	<legend>Previsi&oacute;n</legend>
+	
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="panel-default">
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frmLeyesSocialesForm.afp.label}}</label>
+					{{frmLeyesSocialesForm.afp}}
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frmLeyesSocialesForm.afp_porcentaje.label}}</label>
+					<div class='input-group date' id='afp_porcentaje'>
+                           {{frmLeyesSocialesForm.afp_porcentaje}}
+                           <span class="input-group-addon">
+                              %
+                           </span>
+                       </div>
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frmLeyesSocialesForm.ue_sis.label}}</label>
+					<div class='input-group date' id='ue_sis'>
+                           {{frmLeyesSocialesForm.ue_sis}}
+                           <span class="input-group-addon">
+                              %
+                           </span>
+                       </div>
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frmLeyesSocialesForm.afp_codigo.label}}</label>
+					{{frmLeyesSocialesForm.afp_codigo}}
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	</fieldset>	
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">    	
+		<legend>Salud</legend>
+		
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="panel-default">
+					<div class="form-group">
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frmLeyesSocialesForm.salud.label}}</label>
+							{{frmLeyesSocialesForm.salud}}
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frmLeyesSocialesForm.sa_codigo.label}}</label>
+							{{frmLeyesSocialesForm.sa_codigo}}
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-3 col-sm-3 col-xs-12" id="lbl_ue_ufisapre">
+							<label>{{frmLeyesSocialesForm.ue_ufisapre.label}}</label>
+							<div class='input-group date' id='ue_ufisapre'>
+	                            {{frmLeyesSocialesForm.ue_ufisapre}}
+	                            <span class="input-group-addon">UF</span>
+	                        </div>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" id="lbl_ue_funisapre">
+							<label>{{frmLeyesSocialesForm.ue_funisapre.label}}</label>
+							{{frmLeyesSocialesForm.ue_funisapre}}
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" id="lbl_ue_cotizacion">
+							<label>{{frmLeyesSocialesForm.ue_cotizacion.label}}</label>
+							<div class='input-group date' id='ue_cotizacion'>
+	                            {{frmLeyesSocialesForm.ue_cotizacion}}
+	                            <span class="input-group-addon" id="addons"></span>
+	                        </div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</fieldset>	
+	
+	<fieldset class="col-md-12" style="margin-bottom: 20px;">    	
+		<legend>APV y Ahorro voluntario</legend>
+		
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="form-group">
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmLeyesSocialesForm.ue_tieneapv.label}}</label>
+						{{frmLeyesSocialesForm.ue_tieneapv}}
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmLeyesSocialesForm.afp_apv.label}}</label>
+						{{frmLeyesSocialesForm.afp_apv}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmLeyesSocialesForm.ue_tipomontoapv.label}}</label>
+						{{frmLeyesSocialesForm.ue_tipomontoapv}}
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmLeyesSocialesForm.ue_cotizacionvoluntaria.label}}</label>
+						<div class='input-group date' id='ue_cotizacionvoluntaria'>
+	                           {{frmLeyesSocialesForm.ue_cotizacionvoluntaria}}
+	                           <span class="input-group-addon" id="char_ue_cotizacionvoluntaria">?</span>
+	                       </div>
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<button type="button" class="btn btn-dark" id="info-cotizacion-voluntaria">
+							<span class="fa fa-info"></span>
+						</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmLeyesSocialesForm.ue_tieneahorrovoluntario.label}}</label>
+						{{frmLeyesSocialesForm.ue_tieneahorrovoluntario}}
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<label >{{frmLeyesSocialesForm.ue_ahorrovoluntario.label}}</label>
+						<div class='input-group date' id='ue_apv'>
+	                           {{frmLeyesSocialesForm.ue_ahorrovoluntario}}
+	                           <span class="input-group-addon" id="">$</span>
+	                       </div>
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<button type="button" class="btn btn-dark" id="info-apv">
+							<span class="fa fa-info"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</fieldset>				
+	
+	<div class="form-group">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<button  style="margin-top:15px;" type="button" onclick="addDatosLeyesSociales({{id_usuario}}, {{empresa_id}})" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+		</div>
+	</div>
+</form>

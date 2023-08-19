@@ -1,0 +1,28 @@
+
+
+<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>SÍMBOLO</th>
+            <th>NOMBRE</th>
+            <th>ESTADO</th>
+            <th>ACCIONES</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in lstMonedas %}
+        <tr>
+            <td>{{x.mon_id|upper}}</td>
+            <td>{{x.mon_simbolo|upper}}</td>
+            <td>{{x.mon_descripcion|upper}}</td>
+            <td>{{x.mon_activa|upper}}</td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <a href="{% url 'bases:views_edit_moneda' x.mon_id '0' %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

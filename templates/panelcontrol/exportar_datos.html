@@ -1,0 +1,78 @@
+{% extends 'recursos_humanos/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+    <a href="#" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content">
+        <div class="form-group row">
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <label >{{frmEportarDatosRemuneraciones.dataAExportar.label}}</label>
+                {{frmEportarDatosRemuneraciones.dataAExportar}}
+            </div>
+        </div>
+
+        <!-- ASISTENCIA -->
+        <div id="asistencia">
+            <form name="frm-asistencia" id="frm-asistencia" method="post" enctype="multipart/form-data">
+                <div class="form-group row">
+                    {% csrf_token %}
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <label >{{frmEportarDatosRemuneraciones.fecha.label}}</label>
+                        {{frmEportarDatosRemuneraciones.fecha}}
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <label >{{frmEportarDatosRemuneraciones.fileAsistencia.label}}</label>
+                        {{frmEportarDatosRemuneraciones.fileAsistencia}}
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top:24px;">
+                        <div class="btn-group">
+                            <a href="{% url 'recursos_humanos_namespace:planillaSubirAsistencia' %}" class="btn btn-success"><span class="fa fa-file-excel-o"></span> Desacrgar plantilla .xls</a>
+                            <button class="btn btn-dark" name="btn-asistencia" value="btn-asistencia"><span class="fa fa-cloud-upload"></span> Subir planilla</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <p>* Recuerde que al momento de guardar la planilla debe se en formato .csv</p>
+                    <p>* Formato de ingreso de datos, elemplo: formato hora desde 0:00 hasta 23:59</p>
+                    <p>* En el caso que no tenga entrada y salida agregar 0:00 en la celda</p>
+                    <p>** Instrucciones para guardar: </p>
+                </div>
+            </form>
+        </div>
+        <!-- ASISTENCIA -->
+
+
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    $(document).ready(function(){
+
+        $("#id_fileAsistencia").filestyle({buttonText: "Buscar .csv"});
+        $("#id_fileAsistencia").filestyle({classInput: "input-small"});
+        $("#id_fileAsistencia").filestyle({iconName: "fa fa-file-excel-o"});
+
+
+        $("#asistencia").css('display', 'none')
+
+        $("#id_dataAExportar").change(function(){
+            if(this.value == 1){
+                $("#asistencia").css('display', 'block')
+            }
+        });
+
+	});
+    
+</script>
+{% endblock %}

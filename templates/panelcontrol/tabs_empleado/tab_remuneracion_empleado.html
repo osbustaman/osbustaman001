@@ -1,0 +1,162 @@
+<br><br>
+<form id="frm-re" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+	{% csrf_token %}
+	<div class="form-group">	
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_sueldobase.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_sueldobase}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_movilizacion.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_movilizacion}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_colacion.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_colacion}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12" style="padding-top:24px;">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-haberes"><span class="fa fa-plus-circle"></span> Agregar otros Haberes</button>
+		</div>
+	</div>
+
+	<div class="form-group">
+
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_gratificacion.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_gratificacion}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_tipogratificacion.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_tipogratificacion}}
+		</div>
+	</div>
+	
+	<div class="form-group">	
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_segurodesempleo.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_segurodesempleo}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_porempleado.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_porempleado}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_porempleador.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_porempleador}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_trabajopesado.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_trabajopesado}}
+		</div>
+	</div>
+	
+	<div class="form-group">	
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_comiciones.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_comiciones}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_porcentajecomicion.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_porcentajecomicion}}
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_anticipo.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_anticipo}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmRemuneracionEmpleadoForm.ue_montonticipo.label}}</label>
+			{{frmRemuneracionEmpleadoForm.ue_montonticipo}}
+		</div>
+	</div>
+
+	<div class="ln_solid"></div>
+	<div class="form-group">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<button type="button" onclick="addRemuneracionEmpleado({{id_usuario}}, {{empresa_id}})" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+		</div>
+	</div>
+</form>
+
+
+<!-- MODAL intrucciones -->
+<div class="modal fade modal-haberes" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">Otros haberes</h4>
+			</div>
+			<div class="modal-body">
+				<form id="frm-haberes" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+					{% csrf_token %}
+					<div class="form-group">
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frmHaberes.hab_nombre.label}}</label>
+							{{frmHaberes.hab_nombre}}
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frmHaberes.hab_monto.label}}</label>
+							{{frmHaberes.hab_monto}}
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<label >{{frmHaberes.hab_tipo.label}}</label>
+							{{frmHaberes.hab_tipo}}
+						</div>
+					</div>
+				</form>
+				<br>
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<table class="table" id="tabla-detalles">
+						<thead>
+							<tr>
+								<th width="5%">#</th>
+								<th width="25%">HABER</th>
+								<th width="25%">TIPO</th>
+								<th width="25%">MONTO</th>
+								<th width="20%">ACCIÓN</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for h in lstHaberes %}
+							<tr class="row_detalle" id="row_{{h.hab_id}}">
+								<td id="contador" scope="row">{{h.contador}}</td>
+								<td id="hab_nombre">{{h.hab_nombre|upper}}</td>
+								<td id="hab_tipo_texto">{{h.hab_tipo|upper}}</td>
+								<td id="hab_tipo" hidden>{{h.hab_tipo_clave}}</td>
+								<td id="hab_monto">${{h.hab_monto}}</td>
+								<td id="">
+									<div class="btn-group  btn-group-sm">
+										<button class="btn btn-primary" type="button" id="btn_h_{{h.hab_id}}" value="{{h.hab_id}}"><span class="fa fa-pencil-square-o"></span> Editar</button>
+										<button class="btn btn-danger" type="button" onclick="borrar_haber({{h.hab_id}})"><span class="fa fa-trash"></span> Borrar</button>
+									</div>
+
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="btn-add-haberes" class="btn btn-primary" onclick="addHaber()"><span class="fa fa-save"></span> Guardar</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <span id="txt_closed_boton_m">Cerrar</span>
+                </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+		function reset_add_detalles(){
+		$("#id_hab_nombre").val('')
+		$("#id_hab_monto").val('')
+		$("#id_hab_tipohaberdescuento").val('')
+	}
+
+</script>

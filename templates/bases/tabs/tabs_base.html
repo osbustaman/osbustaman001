@@ -1,0 +1,64 @@
+<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{formBaseEmpresaForm.ba_nameemp.label}}</label>
+                    {{formBaseEmpresaForm.ba_nameemp}}
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{formBaseEmpresaForm.ba_name.label}}</label>
+                    {{formBaseEmpresaForm.ba_name}}
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{formBaseEmpresaForm.ba_esquema.label}}</label>
+                    {{formBaseEmpresaForm.ba_esquema}}
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{formBaseEmpresaForm.ba_conexion.label}}</label>
+                    {{formBaseEmpresaForm.ba_conexion}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{formBaseEmpresaForm.ba_host.label}}</label>
+                    {{formBaseEmpresaForm.ba_host}}
+                </div>
+                 <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label>{{formBaseEmpresaForm.ba_fechaingreso.label}}</label>
+                    <div class='input-group date' id='ba_fechaingreso'>
+                       {{formBaseEmpresaForm.ba_fechaingreso}}
+                        <span class="input-group-addon">
+                           <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label>{{formBaseEmpresaForm.ba_fechatermino.label}}</label>
+                    <div class='input-group date' id='ba_fechatermino'>
+                       {{formBaseEmpresaForm.ba_fechatermino}}
+                        <span class="input-group-addon">
+                           <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                {% if isEdit %}
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{formBaseEmpresaForm.ba_cantidadusuarios.label}}</label>
+                    {{formBaseEmpresaForm.ba_cantidadusuarios}}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                 <div class="col-md-6 col-sm-6 col-xs-12">
+                    <label >{{formBaseEmpresaForm.ba_link.label}}</label>
+                    {{formBaseEmpresaForm.ba_link}}
+                </div>
+            </div>
+            <br><br>
+            <div class="clearfix x_title" style="border-buttom:1px solid"></div>
+            <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                    <button type="submit" class="btn btn-dark">Guardar/Editar</button>
+                </div>
+            </div>
+        </form>

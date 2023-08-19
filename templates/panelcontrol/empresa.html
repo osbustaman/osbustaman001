@@ -1,0 +1,113 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+listado de empresas
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:add_empresa' %}" style="border:0px;">
+		<span class="fa fa-plus-circle"></span> Agregar empresa
+	</a>
+</li>
+<li role="presentation" class="dropdown">
+	<a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+		Opciones
+		<span class="caret"></span>
+	</a>
+	<ul id="menu6" class="dropdown-menu animated fadeInDown" role="menu">
+		<li role="presentation">
+			<a role="menuitem" tabindex="-1" href="{% url 'bases:bajarExcelEmpresas' %}">descargar excel <span class="fa fa-file-excel-o"></span></a>
+		</li>
+	</ul>
+</li>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<style type="text/css">
+	.table > thead > tr > th{
+		background: #2A3F54;
+		color:#FFFFFF;
+		border:1px solid #FFFFFF;
+	}
+
+	.table > tbody > tr:hover{
+		background: #E0E0F8;
+		border:1px solid #FFFFFF;
+		cursor: pointer;
+	}
+</style>
+<div class="x_panel">
+    <div class="x_content" >
+		<table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+			    <tr>
+					<th>CÓDIGO</th>
+					<th>RUT</th>
+					<th>RAZÓN SOCIAL</th>
+					<th>GIRO</th>
+					<th>ACCIONES</th>
+			    </tr>
+			</thead>
+			<tbody>
+		  		{% for e in las_empresas %}
+		    	<tr>
+					<td>{{ e.emp_codigo }}</td>
+					<td>{{ e.emp_rut }}</td>
+					<td>{{ e.emp_razonsocial|upper }}</td>
+					<td>{{ e.emp_giro|upper }}</td>
+					<td>
+						<div class="btn-group  btn-group-sm">
+							<a href="{% url 'bases:edit_empresa' e.emp_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+							<a href="#" class="btn btn-danger" onclick="borrar_empresa({{e.emp_id}}, '{{ e.emp_razonsocial }}')"><span class="fa fa-trash"></span> Borrar</a>
+						</div>
+					</td>
+		    	</tr>
+		    	{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+	function borrar_empresa(id_emp, nombre) {
+		$.confirm({
+		    title: 'Advertencia!',
+		    content: 'Esta seguro de eliminar la empresa '+nombre,
+		    buttons: {
+		        confirm: function () {
+					var link_ = "{% url 'bases:remove_empresa' %}";
+					$.ajax({
+						type: "POST",
+						url: link_,
+						data:{
+							'id_emp':id_emp,
+							'nombre':nombre,
+						},
+						success: function(data){
+							json = data;
+							if(json.is_error==1){
+								$.alert({
+									title: 'Alerta!',
+									content: json.mensaje
+								});
+							}
+						},
+						error: function (obj, error, objError){
+							//avisar que ocurrio un error
+							alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+						}
+					});
+		        },
+		        cancel: function () {
+		            $.alert('Acción cancelada!');
+		        },
+		    }
+		});
+	}
+</script>
+{% endblock %}

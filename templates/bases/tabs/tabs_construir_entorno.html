@@ -1,0 +1,92 @@
+{% load static_tags %}
+<div class="well" style="overflow: auto; padding:5px; padding-top:10px;">
+
+</div>
+
+<style>
+#shell_html{
+	margin: auto;
+	border-color: 1px solid #FFFFFF;
+	background-color: #000;
+	width: 100%;
+	min-height: 300px;
+	color: #3ADF00;
+	padding: 2px;
+}
+#txt_loading_boton{
+    display: none;
+}
+</style>
+
+<div class="modal fade shell-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title" id="titulo_modal"></h4>
+			</div>
+			<div class="modal-body">
+                <div class="scrollbar" id="style-2" style="height: 300px;">
+    				<div class="force-overflow" id="shell_html">
+    				</div>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_modal_migrate">
+                    <span id="txt_loading_boton">Cargando <img src="{% statics_tag 'img/loading.svg' %}"></span>
+                    <span id="txt_closed_boton">Cerrar</span>
+                </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$("#reload_page").click(function(){
+			location.reload()
+		})
+	})
+
+
+
+	function armar_parametros_generales_del_sistema(){
+		$("#shell_html, #titulo_modal").html('');
+		$("#titulo_modal").text('Migrando base de dato');
+		var link_ = "{% url 'bases:armarParametrosGeneralesDelSistema' %}";
+
+		$("#btn_modal_migrate").attr('disabled', true)
+		$("#txt_closed_boton").hide();
+		$("#txt_loading_boton").show();
+
+		$.ajax({
+			type: "POST",
+			url: link_,
+			data:{
+				'id_base':{{idbase}}
+			},
+			success: function(data){
+				json = data;
+
+				var html = ""
+				json.lst_log.forEach(function(entry) {
+					html += "<code>"+entry.text+"</code><br/>";
+				});
+				$("#shell_html").html(html);
+				$("#btn_modal_migrate").removeAttr('disabled', false);
+				$("#txt_loading_boton").hide();
+				$("#txt_closed_boton").show();
+
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrió un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+	}
+
+
+	function reload_page(){
+		location.reload();
+	}
+</script>

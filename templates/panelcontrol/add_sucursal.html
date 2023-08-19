@@ -1,0 +1,76 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:edit_empresa' id_emp %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+<li role="presentation">
+	<a href="#" style="border:0px;">Empresa: {{ emp_razonsocial }}</a>
+</li>
+{% endblock %}
+
+{% block dato_empresa %}
+sucursal
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content" >
+		<br />
+		<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+			{% csrf_token %}
+			<div class="form-group">	
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_sucursalForm.suc_codigo.label}}</label>
+					{{frm_sucursalForm.suc_codigo}}
+				</div>
+				<div class="col-md-5 col-sm-5 col-xs-12">
+					<label >{{frm_sucursalForm.suc_descripcion.label}}</label>
+					{{frm_sucursalForm.suc_descripcion}}
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-12">
+					<label >{{frm_sucursalForm.suc_direccion.label}}</label>
+					{{frm_sucursalForm.suc_direccion}}
+				</div>
+			</div>
+			<div class="form-group">	
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_sucursalForm.pais.label}}</label>
+					{{frm_sucursalForm.pais}}
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_sucursalForm.region.label}}</label>
+					{{frm_sucursalForm.region}}
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_sucursalForm.comuna.label}}</label>
+					{{frm_sucursalForm.comuna}}
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_sucursalForm.suc_estado.label}}</label>
+					{{frm_sucursalForm.suc_estado}}
+				</div>
+			</div>
+			<div class="ln_solid"></div>
+			<div class="form-group">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<button type="submit" class="btn btn-primary" onclick="campos_disabled()"><span class="fa fa-save"></span> Guardar</button>
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+	
+</script>
+{% endblock %}

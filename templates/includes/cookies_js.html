@@ -1,0 +1,14 @@
+$("#{{id_elemento}}").click(function(){
+    Cookies.set('{{nombre_cookie}}', '{{valor_cookie}}');
+});
+
+console.log(" **************************** ")
+console.log(Cookies.get('{{nombre_cookie}}'))
+console.log('{{valor_cookie}}')
+console.log(" **************************** ")
+
+if(Cookies.get('{{nombre_cookie}}') == '{{valor_cookie}}'){
+    setTimeout(function() {
+        $("#{{id_elemento}}").get(0).click();
+    },1);
+}

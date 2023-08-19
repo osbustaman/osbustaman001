@@ -1,0 +1,74 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+listado de empleados
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<style type="text/css">
+	.table > thead > tr > th{
+		background: #2A3F54;
+		color:#FFFFFF;
+		border:1px solid #FFFFFF;
+	}
+
+	.table > tbody > tr:hover{
+		background: #E0E0F8;
+		border:1px solid #FFFFFF;
+		cursor: pointer;
+	}
+</style>
+<div class="x_panel" style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
+    <div class="x_content" style="padding-top: 0px; padding-bottom: 0px;  margin-bottom: 0px; margin-top: 0px;">
+    	<ul class="nav nav-pills" role="tablist">
+			<li role="presentation" id="empleado">
+				<a href="{% url 'bases:add_personal' id_emp %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar Empleado</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="x_panel">
+    <div class="x_content" >
+		<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+			    <tr>
+					<th>#</th>
+					<th>RUT</th>
+					<th>APELLIDOS</th>
+					<th>NOMBRES</th>
+					<th>MAIL</th>
+					<th>ESTADO EMPLEADO</th>
+					<th>ACCIONES</th>
+			    </tr>
+			</thead>
+			<tbody>
+		  		{% for u in lst_usuarios %}
+		    	<tr>
+					<td>{{u.contador}}</td>
+					<td>{{u.usu_rut|upper}}</td>
+					<td>{{u.last_name|upper}}</td>
+					<td>{{u.first_name|upper}}</td>
+					<td>{{u.email}}</td>
+					<td>
+						<span class="{% if u.usu_usuarioactivo == 'E' %}text-danger{% else %}{% endif %}">{{ u.estado_usuario|upper }}</span>
+					</td>
+					<td>
+						<div class="btn-group  btn-group-sm">
+							<a href="{% url 'bases:viewsFichaEmpleado' u.id u.emp_id 0 %}" class="btn btn-primary"><span class="fa fa-eye"></span> Ver ficha</a>
+						</div>
+					</td>
+		    	</tr>
+		    	{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

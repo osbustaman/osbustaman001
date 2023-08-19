@@ -1,0 +1,506 @@
+{% load static_tags %} 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Gestor de documentos</title>
+    <link rel="icon" type="image/jpg" href="{% statics_tag 'img/jab.jpg' %}" />
+
+    <!-- Bootstrap -->
+    <link href="{% statics_tag_gentella 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% statics_tag_gentella 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% statics_tag_gentella 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% statics_tag_gentella 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- bootstrap-datetimepicker -->
+    <link href="{% statics_tag_gentella 'vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css' %}" rel="stylesheet">
+    <!-- jQuery custom content scroller -->
+    <link href="{% statics_tag_gentella 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet"/>
+    <!-- iCheck -->
+    <link href="{% statics_tag_gentella 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% statics_tag_gentella 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{% statics_tag 'bower_components/select2/dist/css/select2.min.css' %}">
+
+    <!-- Custom Theme Style -->
+    <link href="{% statics_tag_gentella 'build/css/custom.min.css' %}" rel="stylesheet">
+
+    <style type="text/css">
+      
+    .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--single {
+		background-color: #fff;
+		border: 1px solid #ccc;
+		border-radius: 0;
+		min-height: 34.3px;
+    }
+    .form-control {
+		font-size: 13px;
+		color: #73879C;
+    }
+	fieldset{
+		border: 1px solid #ddd !important;
+		margin: 0;
+		xmin-width: 0;
+		padding: 10px;       
+		position: relative;
+		border-radius:4px;
+		background-color:#f5f5f5;
+		padding-left:10px!important;
+	}	
+	legend{
+		font-size:14px;
+		font-weight:bold;
+		margin-bottom: 0px; 
+		width: 35%; 
+		border: 1px solid #ddd;
+		border-radius: 4px; 
+		padding: 5px 5px 5px 10px; 
+		background-color: #ffffff;
+	}
+	#WindowLoad{
+	    position:fixed;
+	    top:0px;
+	    left:0px;
+	    z-index:3200;
+	    filter:alpha(opacity=45);
+	    -moz-opacity:45;
+	    opacity:0.65;
+	    background:#000;
+	}
+
+    #nombre_usuario_lista_empresas{
+       width:500px;
+    }
+
+    #nombre_empresa{
+       width:500px;
+       padding-top:19px;
+       font-size:16px;
+    }
+    .checkbox-filtro {
+        vertical-align: middle;
+        margin: 0 4px 0 0 !important;
+    }
+
+    .label-filtro {
+        margin : 0 5px 0 190px;
+    }
+
+
+    @media screen and (max-width: 1300px) {
+      #nombre_usuario_lista_empresas{
+        width:400px;
+      }
+    }
+
+    @media screen and (max-width: 1200px) {
+      #nombre_usuario_lista_empresas{
+        width:300px;
+      }
+    }
+
+    @media screen and (max-width: 1098px) {
+      #nombre_usuario_lista_empresas{
+        width:200px;
+      }
+    }
+
+    @media screen and (max-width: 770px) {
+      #nombre_usuario_lista_empresas{
+        width:auto;
+      }
+    }
+
+    @media screen and (max-width: 700px) {
+      #nombre_empresa{
+        width:auto;
+      }
+    }
+
+	@media screen and (max-width: 768px) {
+      .navbar-right{
+        max-width:30%;
+      }
+    }
+
+    </style>
+
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col menu_fixed">
+          <div class="left_col scroll-view">
+
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><span>{{ request.session.razon_social }}</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+<!--                  <img class="img-responsive img-thumbnail" width="40" height="200" src="">-->
+                <img src="{{ request.session.x_ruta_imagen }}" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Bienvenido,</span>
+                <h2>{{ request.session.dicUsuario.first_name|title }} {{ request.session.dicUsuario.last_name|title }}</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+            <br />
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+
+                  {% for i in request.session.menu_sistema.lst_item %}
+                  <li {% if request.session.item == i.item_sesion_menu %}class="active"{% else %}{% endif %}>
+                    <a><i class="{{i.icon}}"></i> {{i.value}}<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" {% if request.session.item == i.item_sesion_menu %}style="display: block;"{% else %}{% endif %}>
+                      {% for x in i.lst_subItem %}
+                      <li {% if request.session.sub_item == x.item_sesion_subitem %}class="current-page" {% else %}{% endif %}>
+                        <a href="{{x.slink}}">{{x.svalue}}</a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                  {% endfor %}
+ 
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <div class="nav toggle" id="nombre_empresa">
+                <a id="menu_toggle2"><strong>{{request.session.razon_social|title}}</strong>:{% block dato_empresa %}{% endblock %}</a>
+              </div>
+              <ul class="nav navbar-nav navbar-right" id="nombre_usuario_lista_empresas">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="images/img.jpg" alt="">{{ request.session.dicUsuario.first_name|title }} {{ request.session.dicUsuario.last_name|title }}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar sesi&oacute;n</a></li>
+                    {% for e in request.session.listado_empresas %}
+                    <li><a href="{% url 'bases:cambiarEmpresa' e.key %}">{{e.value|title}}</a></li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="x_panel" style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
+                <div class="x_content" style="padding-top: 0px; padding-bottom: 0px;  margin-bottom: 0px; margin-top: 0px;">
+                    <ul class="nav nav-pills" role="tablist">
+                        {% block nav %}{% endblock %}
+                    </ul>
+                </div>
+            </div>
+            {% block acciones_remuneraciones %}
+            {% endblock %}
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gestor de documentos | ©JAB consultores | 2019
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% statics_tag_gentella 'vendors/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% statics_tag 'js/json.js' %}" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <script src="{% statics_tag_gentella 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% statics_tag_gentella 'vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% statics_tag_gentella 'vendors/nprogress/nprogress.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% statics_tag_gentella 'vendors/iCheck/icheck.min.js' %}"></script>
+    <!-- jQuery custom content scroller -->
+    <script src="{% statics_tag_gentella 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <!-- Datatables -->
+    <script src="{% statics_tag_gentella 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+	
+	<!-- bootstrap-daterangepicker -->
+    <script src="{% statics_tag_gentella 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% statics_tag_gentella 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- bootstrap-datetimepicker -->    
+    <script src="{% statics_tag_gentella 'vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
+	
+    <!-- jquery.inputmask -->
+    <script src="{% statics_tag_gentella 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+    <!-- Select2 -->
+    <script src="{% statics_tag 'bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% statics_tag_gentella 'build/js/custom.min.js' %}"> </script>
+
+
+    <!-- <link href="{% statics_tag_confirm 'dist/jquery-confirm.min.css' %}" rel="stylesheet"> -->
+    <!-- <link href="{% statics_tag_confirm 'dist/jquery-confirm.min.js' %}" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+    <!-- Input file -->
+    <script src="{% statics_tag_gentella 'build/js/bootstrap-filestyle.min.js' %}"></script>
+
+    <script src="{% statics_tag 'ckeditor/ckeditor.js' %}"></script>
+
+    <script src="{% statics_tag 'js/js.cookie.js' %}"></script>
+    
+    <script type="text/javascript">
+        $('.select2').select2()
+
+        {% include 'includes/css_datatable.html'%}
+
+      $(document).ready(function(){
+
+    	    String.prototype.replaceAll = function(searchStr, replaceStr) {
+    			var str = this;
+
+    			// no match exists in string?
+    			if(str.indexOf(searchStr) === -1) {
+    			    // return string
+    			    return str;
+    			}
+
+    			// replace and remove first match, and do another recursirve search/replace
+    			return (str.replace(searchStr, replaceStr)).replaceAll(searchStr, replaceStr);
+    		}
+
+	  });
+
+	    function jsRemoveWindowLoad() {
+	        // eliminamos el div que bloquea pantalla
+	        $("#WindowLoad").remove();
+	     
+	    }
+	     
+	    function jsShowWindowLoad(mensaje) {
+	        //eliminamos si existe un div ya bloqueando
+	        jsRemoveWindowLoad();
+	     
+	        //si no enviamos mensaje se pondra este por defecto
+	        if (mensaje === undefined) mensaje = "Procesando la información&amp;lt;br&amp;gt;Espere por favor";
+	     
+	        //centrar imagen gif
+	        height = 15;//El div del titulo, para que se vea mas arriba (H)
+	        var ancho = 0;
+	        var alto = 0;
+	     
+	        //obtenemos el ancho y alto de la ventana de nuestro navegador, compatible con todos los navegadores
+	        if (window.innerWidth == undefined) ancho = window.screen.width;
+	        else ancho = window.innerWidth;
+	        if (window.innerHeight == undefined) alto = window.screen.height;
+	        else alto = window.innerHeight;
+	     
+	        //operación necesaria para centrar el div que muestra el mensaje
+	        var heightdivsito = alto/2 - parseInt(height)/2;//Se utiliza en el margen superior, para centrar
+	        
+	       //imagen que aparece mientras nuestro div es mostrado y da apariencia de cargando
+	        imgCentro = "<div style='text-align:center;height:" + alto + "px;'><div  style='color:#000;margin-top:" + heightdivsito + "px; font-size:20px;font-weight:bold'>" + mensaje + "</div><img  src='{% statics_tag 'img/Spinner-1s-200px.svg' %}'></div>";
+	     
+	            //creamos el div que bloquea grande------------------------------------------
+	            div = document.createElement("div");
+	            div.id = "WindowLoad"
+	            div.style.width = ancho + "px";
+	            div.style.height = alto + "px";
+	            $("body").append(div);
+	     
+	            //creamos un input text para que el foco se plasme en este y el usuario no pueda escribir en nada de atras
+	            input = document.createElement("input");
+	            input.id = "focusInput";
+	            input.type = "text"
+	     
+	            //asignamos el div que bloquea
+	            $("#WindowLoad").append(input);
+	     
+	            //asignamos el foco y ocultamos el input text
+	            $("#focusInput").focus();
+	            $("#focusInput").hide();
+	     
+	            //centramos el div del texto
+	            $("#WindowLoad").html(imgCentro);
+	     
+	    }
+	    
+	    function formatNumber(num) {
+	        if (!num || num == 'NaN') return '-';
+	        if (num == 'Infinity') return '&#x221e;';
+	        num = num.toString().replace(/\$|\,/g, '');
+	        if (isNaN(num))
+	            num = "0";
+	        sign = (num == (num = Math.abs(num)));
+	        num = Math.floor(num * 100 + 0.50000000001);
+	        cents = num % 100;
+
+	        num = Math.floor(num / 100).toString();
+	        if (cents < 10)
+	            cents = "0" + cents;
+	        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3) ; i++)
+	            num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
+	        return (((sign) ? '' : '-') + num + ',' + cents);
+	    }
+
+
+	    /**
+         * @author: osvaldo bustamante
+         * @date: 08-10-2018 16:04
+         * @param: frm, id del form que se validará
+         * @description: esta funcion es para validar un formulario según sus inputs
+         * @return: mensaje
+         */
+        function is_validate(frm){
+            var text_error = [];
+            var mensaje=""
+            // Desde aqui se recorre el form, y asi se encuentran los inputs
+            $(frm).find(':input').each(function(){
+                var elemento=this;
+                if($(elemento).attr('rel-label') != undefined) {
+                    // aqui se obtienen los elementos del formulario(input)
+                    if (elemento.type == 'select-one') {
+                        if ($(elemento).attr('rel-require') == 'no') {
+                        } else {
+                            if (!$(elemento).val()) {
+                                text_error.push($(elemento).attr('rel-label'));
+                            }
+                        }
+                    }
+                    if (elemento.type == 'text') {
+                        if ($(elemento).attr('rel-require') == 'no') {
+                        } else {
+                            if ($(elemento).val().length == 0) {
+                                text_error.push($(elemento).attr('rel-label'));
+                            }
+                        }
+                    }
+                    if (elemento.type == 'hidden') {
+                        if ($(elemento).attr('rel-require') == 'no') {
+                        } else {
+                            if ($(elemento).val().length == 0) {
+                                text_error.push($(elemento).attr('rel-label'));
+                            }
+                        }
+                    }
+                    if (elemento.type == 'file') {
+                        if ($(elemento).attr('rel-require') == 'no') {
+                        } else {
+                            if ($(elemento).val().length == 0) {
+                                text_error.push($(elemento).attr('rel-label'));
+                            }
+                        }
+                    }
+                }
+            });
+            if(text_error.length > 0){
+                text_error.forEach(function(elemento, indice) {
+                    try {
+                        mensaje+="- "+elemento.toString()+"<br/>"
+                    }
+                    catch(error) {
+                      console.error(error);
+                      mensaje = console.error(error);
+                    }
+                });
+                return mensaje;
+            }else{
+                return mensaje;
+            }
+        }
+        /* ---------------------------------------------------------------*/
+        // marcar_fila de las tablas
+        /* ---------------------------------------------------------------*/
+        function marcar_fila(id) {
+            $('table > tbody > tr[id^=row_]').removeClass('selected')
+            $("#"+id).addClass('even pointer selected')
+        }
+        /* ---------------------------------------------------------------*/
+        // Limpiar un formulario
+        /* ---------------------------------------------------------------*/
+        function is_clean(frm){
+            // Desde aqui se recorre el form, y asi se encuentran los inputs
+            frm.find(':input').each(function(){
+                var elemento=this;
+                // aqui se obtienen los elementos del formulario(input)
+                if(elemento.type == 'select-one'){
+                    $(elemento).find('option:first').attr('selected', 'selected').parent('select')
+                }
+                if(elemento.type == 'text'){
+                    $(elemento).val("")
+                }
+                if(elemento.type == 'hidden'){
+                    $(elemento).val("")
+                }
+            });
+        }
+
+
+    </script>
+  </body>
+  {% block css_js_down %}
+
+  {% endblock %}
+</html>

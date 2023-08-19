@@ -1,0 +1,81 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<style>
+    #relacion-empresa{
+        display:none;
+    }
+</style>
+<li role="presentation">
+	<a href="{% url 'bases:listadoDocumentos' %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+{% if is_edit %}
+<li role="presentation">
+	<a href="#" tyle="border:0px;">Tipo de documento: <strong>{{tipoDocumento}}</strong></a>
+</li>
+{% if not tdl_pordefecto == 'S' %}
+<li role="presentation">
+	<a href="{% url 'bases:addNuevoDocumento' tdl_id %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar documento</a>
+</li>
+{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block dato_empresa %}
+{% if is_edit %}editar {% else %}agregar {% endif %}tipo documento laboral
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<style>
+    .elemento-table{
+        margin-left:200px;
+        margin-top:-60px;
+        min-width: 190px;
+    }
+
+    .select2{
+        margin-left:200px;
+        margin-top:-75px;
+        min-width: 190px;
+        height:15px;
+    }
+</style>
+<div class="x_panel">
+    <div class="x_content" >
+
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Tipo de documento</a>
+                </li>
+                {% if is_edit %}
+                <li role="presentation" class="">
+					<a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Documento</a>
+				</li>
+                {% endif %}
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                    {% include "panelcontrol/tabs_tipo_doc_laboral/tab_tipo_documento.html" %}
+                </div>
+                {% if is_edit %}
+                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                    {% include "panelcontrol/tabs_tipo_doc_laboral/tab_documentos.html" %}
+				</div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        //Initialize Select2 Elements
+        $('.select2').select2()
+    })
+</script>
+{% endblock %}

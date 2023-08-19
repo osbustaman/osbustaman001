@@ -1,0 +1,44 @@
+<style type="text/css">
+    .table > thead > tr > th{
+        background: #2A3F54;
+        color:#FFFFFF;
+        border:1px solid #FFFFFF;
+    }
+
+    .table > tbody > tr:hover{
+        background: #E0E0F8;
+        border:1px solid #FFFFFF;
+        cursor: pointer;
+    }
+</style>
+
+<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>EMPRESA</th>
+            <th>TIPO CLIENTE</th>
+            <th>TIPO PROVEEDOR</th>
+            <th>ESTADO</th>
+            <th>ACCIONES</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in lstClientesProveedoresEmpresa %}
+        <tr>
+            <td>{{x.contador}}</td>
+            <td>{{x.empresa|upper}}</td>
+            <td>{{x.cpe_tipocliente|upper}}</td>
+            <td>{{x.cpe_tipoproveedor|upper}}</td>
+            <td>{{x.estado|upper}}</td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <a href="{% url 'bases:editClienteProveedorEmpresa' cp_id x.cpe_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+                    <a href="{% url 'bases:borrarClienteProveedorEmpresa' x.cpe_id x.cpe_estado %}" class="btn btn-danger" onclick=""><span class="fa fa-trash"></span> Borrar</a>
+
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,100 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+entidades relacionadas con la empresa
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:edit_empresa' id_emp %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+<li role="presentation">
+	<a href="#" style="border:0px;">Empresa: {{ emp_razonsocial }}</a>
+</li>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content" >
+		<br />
+		<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+			{% csrf_token %}
+			<div class="form-group">	
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frmRelacion.rda_tipoafiliacion.label}}</label>
+					{{frmRelacion.rda_tipoafiliacion}}
+				</div>
+				{% if eleccion == 'CCAF' %}
+				<div class="col-md-9 col-sm-9 col-xs-12">
+					<label >{{frmRelacion.cajascompensacion.label}}</label>
+					{{frmRelacion.cajascompensacion}}
+				</div>
+				{% elif eleccion == 'IPS' %}
+				<div class="col-md-9 col-sm-9 col-xs-12">
+					<label >{{frmRelacion.rda_inp.label}}</label>
+					{{frmRelacion.rda_inp}}
+				</div>
+				{% elif eleccion == 'MUT' %}
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<label >{{frmRelacion.rda_tipoatipomutual.label}}</label>
+					{{frmRelacion.rda_tipoatipomutual}}
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frmRelacion.rda_porcentajemutual.label}}</label>
+					{{frmRelacion.rda_porcentajemutual}}
+				</div>
+				{% endif %}
+			</div>
+			<input type="hidden" id="nosave" name="nosave" value="on">
+			<div class="ln_solid"></div>
+			<div class="form-group">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<button type="submit" class="btn btn-primary" onclick="campos_disabled()"><span class="fa fa-save"></span> Guardar</button>
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+	$(document).ready(function(){
+		{% if error %}
+
+		mensaje_error = "";
+		{% for e in lista_err %}
+		mensaje_error += " {{e}} <br/>"
+		{% endfor %}
+
+		$.alert({
+			title: 'Error!',
+			content: mensaje_error,
+		});
+
+		$("#id_rda_tipoafiliacion").val('')
+
+		{% endif %}
+
+
+		$("#id_rda_tipoafiliacion").change(function () {
+			$("#nosave").val('off');
+			$("#frm").submit();
+		});
+
+
+
+	})
+
+	function campos_disabled() {
+		
+	}
+</script>
+{% endblock %}

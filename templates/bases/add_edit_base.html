@@ -1,0 +1,555 @@
+{% extends 'bases/base.html' %}
+{% load static_tags %}
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:listado_bases' %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+{% if editar %}
+<li role="presentation">
+	<a href="#" style="border:0px;">Fecha inicio contrato: {{fecha_ini}}</a>
+</li>
+<li role="presentation">
+	<a href="#" style="border:0px;">Fecha término de contrato: {{fecha_fin}}</a>
+</li>
+<li role="presentation">
+	<a href="#" style="border:0px;" class="btn btn-link" target="_blank">Imprimir contrato <span class="fa fa-print"></span></a>
+</li>
+<li role="presentation">
+	<div class="btn-group" style="margin-top: 8px;">
+		<button type="button" class="btn btn-dark">Configuración de la base</button>
+		<button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			<span class="caret"></span>
+			<span class="sr-only">Toggle Dropdown</span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li>
+				<a href="javascript:void()" data-toggle="modal" data-target=".shell-modal-migrate-lg" onclick="armar_menu()">Actualizar menú</a>
+			</li>
+			<li>
+				<a href="javascript:void()">Atualizar parametros</a>
+			</li>
+			<li>
+				<a href="javascript:void()" data-toggle="modal" data-target=".shell-modal-migrate-lg" onclick="llenado_tabla_general()">Atualizar parametros generales</a>
+			</li>
+
+<!--			<li>-->
+<!--				<a href="javascript:void()" data-toggle="modal" data-target=".shell-modal-migrate-lg" onclick="actualizar_documentos()">Actualizar documentos cliente/proveedor</a>-->
+<!--			</li>-->
+			<li>
+				<a href="javascript:void()" data-toggle="modal" data-target=".shell-modal-migrate-lg" onclick="crear_directorios()">Crear carpeta empresa</a>
+			</li>
+			<li class="divider"></li>
+			<li>
+				<a href="javascript:void()" data-toggle="modal" data-target=".shell-modal-migrate-lg" onclick="migrate_database()">Actualizar base de datos <span class="fa fa-database"></span></a>
+			</li>
+		</ul>
+	</div>
+</li>
+{% endif %}
+{% endblock %}
+{% block dato_empresa %} {% if editar %}Nombre de la base - {{nombre_base}} {% else %}crear nuevo entorno{% endif %}{% endblock %}
+{% block bases %}
+<div class="x_panel">
+    <div class="x_content" >
+
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+			<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Agregar/Editar base</a>
+				</li>
+				{% if isEdit %}
+				<li role="presentation" class="">
+					<a href="{% if not baseCreada %}#{% else %}#tab_content2{% endif %}" role="tab" id="profile-tab" {% if baseCreada %}data-toggle="tab" aria-expanded="false"´{% else %}onclick="mensaje_uno()"{% endif %}>Crear usuario</a>
+				</li>
+				{% endif %}
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+					{% include "bases/tabs/tabs_base.html" %}
+				</div>
+				{% if isEdit %}
+				<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+					{% include "bases/tabs/tabs_usurio_base.html" %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+
+    </div>
+</div>
+
+<style>
+#shell_html, #shell_html_m{
+	margin: auto;
+	border-color: 1px solid #FFFFFF;
+	background-color: #000;
+	width: 100%;
+	min-height: 300px;
+	color: #3ADF00;
+	padding: 2px;
+}
+#txt_loading_boton{
+    display: none;
+}
+</style>
+
+<div class="modal fade bs-shell-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title" id="titulo_modal"></h4>
+			</div>
+			<div class="modal-body">
+                <div class="scrollbar" id="style-2" style="height: 300px;">
+    				<div class="force-overflow" id="shell_html">
+    				</div>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_modal">
+                    <span id="txt_loading_boton">Cargando <img src="{% statics_tag 'img/loading.svg' %}"></span>
+                    <span id="txt_closed_boton">Cerrar</span>
+                </button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade shell-modal-migrate-lg" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title" id="titulo_modal_m"></h4>
+			</div>
+			<div class="modal-body">
+                <div class="scrollbar" id="style-3" style="height: 300px;">
+    				<div class="force-overflow" id="shell_html_m">
+    				</div>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_modal_migrate">
+                    <span id="txt_loading_boton_m">Cargando <img src="{% statics_tag 'img/loading.svg' %}"></span>
+                    <span id="txt_closed_boton_m">Cerrar</span>
+                </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2();
+
+    {% include 'includes/cookies_js.html' with id_elemento='home-tab' nombre_cookie='tab' valor_cookie='homeTab' %}
+    {% include 'includes/cookies_js.html' with id_elemento='profile-tab' nombre_cookie='tab' valor_cookie='profileTab' %}
+
+	$('#ba_fechatermino, #ba_fechaingreso').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+
+	$('#id_ba_nameemp').change(function(){
+
+		var nombre_emp = (this.value).replace(' ', '_').replace(' ', '_').replace(' ', '_').replace(' ', '_').replace(' ', '_')
+
+		$('#id_ba_esquema').val(nombre_emp)
+		$('#id_ba_name').val(nombre_emp)
+		$('#id_ba_conexion').val(nombre_emp)
+	})
+
+	{% if editar %}
+	function open_modal_edit_user(id){
+
+	    $("#guardar-usuario").removeAttr("onclick").attr("onclick", "editar_usuario(__id__)".replace('__id__', id)).html('Editar <span class="fa fa fa-pencil-square-o"></span>')
+		la_url = "{% url 'bases:obtenerDatosUsuario' '__id__' idbase %}"
+		la_url = la_url.replace("__id__", id)
+
+		$("#titulo_modal_usuario").text("Editar usuario")
+
+		$.ajax({
+			type: "POST",
+			url: la_url,
+			data:$("#frm-new-user").serialize(),
+			success: function(data){
+				json = data;
+				$("#id_username").val(json.username)
+				$("#id_first_name").val(json.first_name)
+				$("#id_last_name").val(json.last_name)
+				$("#id_email").val(json.mail)
+				$("#id_password1").val(json.usu_passwordusuario)
+				$("#id_password2").val(json.usu_passwordusuario)
+
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrió un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+	}
+
+
+	function open_modal_add_user() {
+		$("#guardar-usuario").removeAttr("onclick").attr("onclick", "crear_usuario()").html('Agregar <span class="fa fa-floppy-o"></span>')
+		$("#titulo_modal_usuario").text("Nuevo usuario")
+    }
+
+	function crear_usuario() {
+
+		var num=0
+		var mensaje_error=""
+		if($('#id_username').val().length == 0){
+			mensaje_error+="- Debe ingresar un usuario <br/>"
+			num=1
+		}
+		if($('#id_first_name').val().length == 0){
+			mensaje_error+="- Debe ingresar el/los nombre(s) <br/>"
+			num=1
+		}
+		if($('#id_last_name').val().length == 0){
+			mensaje_error+="- Debe ingresar el/los apellidos(s) <br/>"
+			num=1
+		}
+		if($('#id_email').val().length == 0){
+			mensaje_error+="- Debe ingresar el mail <br/>"
+			num=1
+		}
+		if($('#id_password1').val().length == 0){
+			mensaje_error+="- Debe ingresar la contraseña <br/>"
+			num=1
+		}
+		if($('#id_password2').val().length == 0){
+			mensaje_error+="- Debe repetir la contraseña <br/>"
+			num=1
+		}
+
+		if(num==0){
+			$.ajax({
+				type: "POST",
+				url: "{% url 'bases:add_usuario_admin' idbase %}",
+				data:$("#frm-new-user").serialize(),
+				success: function(data){
+					json = data;
+
+					if(json.error) {
+						var mensaje = "";
+						json.lista_err.forEach(function(entry) {
+							mensaje += entry+"<br/>";
+						});
+						$.alert({
+							title: 'Error!',
+							content: mensaje,
+						});
+					}else{
+						location.reload()
+					}
+
+				},
+				error: function (obj, error, objError){
+					//avisar que ocurrió un error
+					alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+				}
+			});
+
+			console.log(1)
+		}else{
+			console.log(2)
+			$.alert({
+				title: 'Error!',
+				content: mensaje_error,
+			});
+		}
+	}
+	
+	function editar_usuario(id) {
+
+	    la_url = "{% url 'bases:editUsuarioAdmin' idbase '__id__' %}"
+		la_url = la_url.replace("__id__", id)
+
+	    $.ajax({
+			type: "POST",
+			url: la_url,
+			data:$("#frm-new-user").serialize(),
+			success: function(data){
+				json = data;
+
+				if(json.error) {
+				    var mensaje = "";
+					json.lista_err.forEach(function(entry) {
+						mensaje += entry+"<br/>";
+					});
+					$.alert({
+						title: 'Error!',
+						content: mensaje,
+					});
+				}else{
+				    location.reload()
+				}
+
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrió un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+		
+    }
+	
+	function borrar_usuario(id){
+	    $.confirm({
+			title: 'Confirmar!',
+			content: 'Esta apunto de borrar a este usuario. Si desea borrar presione "borrar" de lo contrario "cancelar"!',
+			buttons: {
+				borrar: function () {
+				    url="{% url 'bases:borrarUsuario' '__base__' '__id__' %}"
+					url=url.replace('__base__', {{idbase}}).replace('__id__', id)
+					location.href=url
+				},
+				cancelar: function () {
+				},
+			}
+		});
+	}
+
+	function migrate_database(){
+		$("#shell_html_m, #titulo_modal_m").html('');
+		$("#titulo_modal_m").text('Migrando base de dato');
+		var link_ = "{% url 'bases:crear_migrate' idbase True %}";
+
+		$("#btn_modal_migrate_m").attr('disabled', true)
+		$("#txt_closed_boton_m").hide();
+		$("#txt_loading_boton_m").show();
+
+		$.ajax({
+			type: "POST",
+			url: link_,
+			success: function(data){
+				json = data;
+
+				if(json.lista_err.length > 0){
+				  $("#shell_html_m").html("<code>"+json.lista_err[0].label +" : "+json.lista_err[0].error+"</code>");
+				}else{
+				  var html = ""
+				  json.lst_log.forEach(function(entry) {
+					html += "<code>"+entry.log+"</code><br/>";
+				  });
+				  $("#shell_html_m").html(html);
+
+				  $("#btn_modal_migrate_m").attr('onclick', 'reload_page()')
+				}
+				$("#btn_modal_migrate_m").removeAttr('disabled', false);
+				$("#txt_loading_boton_m").hide();
+				$("#txt_closed_boton_m").show();
+
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrió un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+	}
+
+	function armar_menu(){
+		$("#shell_html_m, #titulo_modal_m").html('');
+		$("#titulo_modal_m").text('Armando menu');
+		var link_ = "{% url 'bases:ajaxArmarMenu' idbase True %}";
+
+		$("#btn_modal_migrate_m").attr('disabled', true)
+		$("#txt_closed_boton_m").hide();
+		$("#txt_loading_boton_m").show();
+
+		$.ajax({
+			type: "POST",
+			url: link_,
+			success: function(data){
+				json = data;
+
+				var html = ""
+				json.lst_log.forEach(function(entry) {
+				html += "<code>"+entry.text+"</code><br/>";
+				});
+				$("#shell_html_m").html(html);
+
+				//$("#btn_modal_migrate_m").attr('onclick', 'reload_page()')
+
+				$("#btn_modal_migrate_m").removeAttr('disabled', false);
+				$("#txt_loading_boton_m").hide();
+				$("#txt_closed_boton_m").show();
+
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrió un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+    }
+
+    function actualizar_documentos(){
+        $("#shell_html_m, #titulo_modal_m").html('');
+        $("#titulo_modal_m").text('Migrando base de dato');
+        var link_ = "{% url 'bases:ajaxCrearDocumentos' idbase True %}";
+
+        $("#btn_modal_migrate_m").attr('disabled', true)
+        $("#txt_closed_boton_m").hide();
+        $("#txt_loading_boton_m").show();
+
+        $.ajax({
+            type: "POST",
+            url: link_,
+            success: function(data){
+                json = data;
+
+                var html = ""
+                json.lst_log.forEach(function(entry) {
+                html += "<code>"+entry.text+"</code><br/>";
+                });
+                $("#shell_html_m").html(html);
+
+                //$("#btn_modal_migrate_m").attr('onclick', 'reload_page()')
+
+                $("#btn_modal_migrate_m").removeAttr('disabled', false);
+                $("#txt_loading_boton_m").hide();
+                $("#txt_closed_boton_m").show();
+
+            },
+            error: function (obj, error, objError){
+                //avisar que ocurrió un error
+                alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+            }
+        });
+    }
+
+    function llenado_tabla_general(){
+        $("#shell_html_m, #titulo_modal_m").html('');
+        $("#titulo_modal_m").text('Migrando base de dato');
+        var link_ = "{% url 'bases:ajaxLlenadoTablaGeneral' idbase True %}";
+
+        $("#btn_modal_migrate_m").attr('disabled', true)
+        $("#txt_closed_boton_m").hide();
+        $("#txt_loading_boton_m").show();
+
+        $.ajax({
+            type: "POST",
+            url: link_,
+            success: function(data){
+                json = data;
+
+                var html = ""
+                json.lst_log.forEach(function(entry) {
+                html += "<code>"+entry.text+"</code><br/>";
+                });
+                $("#shell_html_m").html(html);
+
+                //$("#btn_modal_migrate_m").attr('onclick', 'reload_page()')
+
+                $("#btn_modal_migrate_m").removeAttr('disabled', false);
+                $("#txt_loading_boton_m").hide();
+                $("#txt_closed_boton_m").show();
+
+            },
+            error: function (obj, error, objError){
+                //avisar que ocurrió un error
+                alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+            }
+        });
+    }
+
+
+    function crear_directorios(){
+        $("#shell_html_m, #titulo_modal_m").html('');
+        $("#titulo_modal_m").text('Creando directorio para la empresa');
+        var link_ = "{% url 'bases:ajaxArmarEstructuraCarpetaEmpresa' idbase True %}";
+
+        $("#btn_modal_migrate_m").attr('disabled', true)
+        $("#txt_closed_boton_m").hide();
+        $("#txt_loading_boton_m").show();
+
+        $.ajax({
+            type: "POST",
+            url: link_,
+            success: function(data){
+                json = data;
+
+                var html = ""
+                json.lst_log.forEach(function(entry) {
+                html += "<code>"+entry.text+"</code><br/>";
+                });
+                $("#shell_html_m").html(html);
+
+                //$("#btn_modal_migrate_m").attr('onclick', 'reload_page()')
+
+                $("#btn_modal_migrate_m").removeAttr('disabled', false);
+                $("#txt_loading_boton_m").hide();
+                $("#txt_closed_boton_m").show();
+
+            },
+            error: function (obj, error, objError){
+                //avisar que ocurrió un error
+                alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+            }
+        });
+    }
+
+	{% endif %}
+
+	function mensaje_uno(){
+		$.alert({
+			title: 'Alerta!',
+			content: 'Debe migrar las tablas para armar la base!',
+		});
+	}
+
+	function create_database(ba_id){
+
+		$("#shell_html, #titulo_modal").html('');
+		$("#titulo_modal").text('Shell nueva BD');
+		var link_ = "#";
+
+		$("#btn_modal").attr('disabled', 'disabled')
+		$("#txt_closed_boton").hide();
+		$("#txt_loading_boton").show();
+
+		$.ajax({
+			type: "POST",
+			url: link_,
+			data:{
+				'ba_id':ba_id,
+			},
+			success: function(data){
+				json = data;
+
+				if(json.lista_err.length > 0){
+				  $("#shell_html").html("<code>"+json.lista_err[0].label +" : "+json.lista_err[0].error+"</code>");
+				}else{
+				  var html = ""
+				  json.lst_log.forEach(function(entry) {
+					html += "<code>"+entry.text+"</code><br/>";
+				  });
+				  $("#shell_html").html(html);
+				}
+				$("#btn_modal").removeAttr('disabled');
+				$("#txt_loading_boton").hide();
+				$("#txt_closed_boton").show();
+			},
+			error: function (obj, error, objError){
+				//avisar que ocurrió un error
+				alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+			}
+		});
+	}
+
+	function clear_input_user() {
+		$("#id_username").val("")
+		$("#id_first_name").val("")
+		$("#id_last_name").val("")
+		$("#id_email").val("")
+		$("#id_password1").val("")
+		$("#id_password2").val("")
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,100 @@
+
+{% load static_tags %}
+<div class="well text-right" style="overflow: auto; padding:5px; padding-top:10px;">
+    <a href="#" class="btn btn-dark" data-toggle="modal" data-target=".add-user-shell-modal-lg" onclick="open_modal_add_user(), clear_input_user()">Agregar usuario <span class="fa fa-user"></span></a>
+</div>
+
+<table id="table-usuarios" class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>NOMBRE</th>
+            <th>USUARIO</th>
+            <th>CONTRASEÑA</th>
+            <th>ACCIONES</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in usuarios %}
+        <tr>
+            <td>{{x.contador}}</td>
+            <td>{{x.first_name|upper}} {{x.last_name|upper}}</td>
+            <td>{{x.usu_nombreusuario}}</td>
+            <td>{{x.usu_passwordusuario}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-dark" onclick="open_modal_edit_user({{x.id}})" data-toggle="modal" data-target=".add-user-shell-modal-lg">Editar <span class="fa fa-pencil-square-o"></span></a>
+                    <a href="#" class="btn btn-danger" onclick="borrar_usuario({{x.id}})">Borrar <span class="fa fa-trash"></span></a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div class="modal fade add-user-shell-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title" id="titulo_modal_usuario">Nuevo usuario</h4>
+			</div>
+            <form class="form-horizontal form-label-left input_mask" method="POST" id="frm-new-user" name="frm-new-user">
+			    <div class="modal-body">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">{{frm.username.label}} <span class="required">*</span></label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            {{frm.username}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">{{frm.first_name.label}} <span class="required">*</span></label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            {{frm.first_name}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">{{frm.last_name.label}} <span class="required">*</span></label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            {{frm.last_name}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">{{frm.email.label}} <span class="required">*</span></label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            {{frm.email}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">{{frm.password1.label}} <span class="required">*</span></label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            {{frm.password1}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">{{frm.password2.label}} <span class="required">*</span></label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            {{frm.password2}}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="guardar-usuario" onclick="crear_usuario()">Guardar <span class="fa fa-floppy-o"></span></button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_modal">
+                        Cerrar <span class="fa fa-times"></span>
+                    </button>
+                </div>
+            </form>
+		</div>
+	</div>
+</div>

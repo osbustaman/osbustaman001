@@ -1,0 +1,92 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+agregar relacion clientes/proveedores empresa
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+    <a href="{% url 'bases:editClienteProveedor' cp_id %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+<li role="presentation">
+    <a href="#" style="border:0px;"><strong>{{cp_tipoentidad}}: {{cp_razonsocial|title}}</strong></a>
+</li>
+{% if is_edit %}
+
+{% endif %}
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+
+
+<div class="x_panel">
+    <div class="x_content" >
+        <form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label >{{form.empresa.label}}</label>
+                    {{form.empresa}}
+                </div>
+                {% if tipo_cliente == 'C' or tipo_cliente == 'A' %}
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{form.cpe_tipocliente.label}}</label>
+                    {{form.cpe_tipocliente}}
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{form.cpe_vencimiento.label}}</label>
+                    {{form.cpe_vencimiento}}
+                </div>
+                {% endif %}
+                {% if tipo_cliente == 'P' or tipo_cliente == 'A' %}
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{form.cpe_tipoproveedor.label}}</label>
+                    {{form.cpe_tipoproveedor}}
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{form.cpe_plazopago.label}}</label>
+                    {{form.cpe_plazopago}}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{form.banco.label}}</label>
+                    {{form.banco}}
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{form.cpe_tipocuenta.label}}</label>
+                    {{form.cpe_tipocuenta}}
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{form.cpe_ctacorriente.label}}</label>
+                    {{form.cpe_ctacorriente}}
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label >{{form.cpe_credautorizado.label}}</label>
+                    {{form.cpe_credautorizado}}
+                </div>
+            </div>
+
+            <div class="ln_solid"></div>
+            <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+$(document).ready(function(){
+
+})
+</script>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+    <a href="{{ruta}}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+<li role="presentation" id="relacion">
+	<a href="{% url 'bases:addNuevoDocumentosCP' doc_id tipoDoc %}" style="border:0px;"><span class="fa fa-plus-circle"></span> Agregar documento</a>
+</li>
+{% endblock %}
+
+{% block dato_empresa %}
+documentos {{doc_nombre}}
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<style type="text/css">
+	.table > thead > tr > th{
+		background: #2A3F54;
+		color:#FFFFFF;
+		border:1px solid #FFFFFF;
+	}
+
+	.table > tbody > tr:hover{
+		background: #E0E0F8;
+		border:1px solid #FFFFFF;
+		cursor: pointer;
+	}
+</style>
+
+<div class="x_panel">
+    <div class="x_content" >
+		<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+			    <tr>
+					<th></th>
+					<th>N° doc</th>
+					<th>{{titulo}}</th>
+					<th>Fecha de emisión</th>
+					<th></th>
+			    </tr>
+			</thead>
+
+			<tbody>
+		  		{% for d in lst_docEmpresa %}
+		    	<tr>
+					<td>
+						<div class="btn-group  btn-group-sm">
+							<a href="{% url 'bases:editNuevoDocumentosCP' doc_id d.docenc_id tipoDoc %}" class="btn btn-primary btn-sm"><span class="fa fa-eye"></span> Ver</a>
+						</div>
+					</td>
+					<td>{{d.num_doc}}</td>
+					<td>{{d.cp_razonsocial|upper}}</td>
+					<td>{{d.docenc_fechaemision}}</td>
+					<td>
+						<div class="btn-group  btn-group-sm">
+							<a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="borrar_documento({{d.docenc_id}}, {{d.cant_detalles}})"><span class="fa fa-close"></span> Borrar</a>
+						</div>
+					</td>
+		    	</tr>
+		    	{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+
+function borrar_documento(docenc_id, cant_detalles){
+
+	var link_ = "{% url 'bases:ajaxDeleteDocumento' %}";
+
+	$.confirm({
+		title: 'Confirmar!',
+		content: 'El documento que desea borrar tiene __var1__ detalle(s). Esta seguro de borrar el docuemnto?'.replace('__var1__', cant_detalles),
+		buttons: {
+			confirmar: function () {
+				$.ajax({
+					type: "POST",
+					url: link_,
+					data:{
+						'docenc_id':docenc_id,
+						'cant_detalles':cant_detalles,
+					},
+					success: function(data){
+						json = data;
+						if(json.is_error === 1){
+							$.alert(json.mensaje);
+						}else{
+							location.reload();
+						}
+					},
+					error: function (obj, error, objError){
+						//avisar que ocurrio un error
+						alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+					}
+				});
+			},
+			cancelar: function () {
+				$.alert('Operación cancelada');
+			},
+
+		}
+	});
+}
+</script>
+{% endblock %}

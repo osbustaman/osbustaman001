@@ -1,0 +1,206 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+exportador
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+    <a href="#" class="btn btn-link" data-toggle="modal" data-target=".modal-intrucciones"><span class="fa fa-info"></span> Intrucciones</a>
+</li>
+<li role="presentation">
+    <a href="javascript:abrir('{% url 'bases:modal_ids' %}')" class="btn btn-link"><span class="fa fa-info"></span> Buscar IDs</a>
+</li>
+<li role="presentation">
+    <a href="#" class="btn btn-link" id="formato-planilla"><span class="fa fa-info"></span> Bajar formato planilla</a>
+</li>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+
+<div class="x_panel">
+    <div class="x_content" >
+        <!-- FORM INI -->
+        <form id="frm_carga" name="frm_carga" method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label for="dato">Elemento a exportar</label>
+                    <select name="dato" id="dato" class="form-control">
+                        <option value="" >-- Seleccione --</option>
+                        {% for e in lstDataExport %}
+                        <option value="{{e.key}}" {% if filtro == e.key %}selected{% endif %} >{{e.value}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12" style="margin-left:20px;">
+                    <label for="dato">Tipo de archivo</label>
+                    <select name="tipo-archivo" id="tipo-archivo" class="form-control">
+                        <option value="" >-- Seleccione --</option>
+                        <option value="1" {% if tipoArchivo == '1' %}selected{% endif %} >.csv con ;</option>
+                        <option value="2" {% if tipoArchivo == '2' %}selected{% endif %} >.csv con ,</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    {{form.archivo}}
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12" style="margin-top:23px;">
+                    <button class="btn btn-success" id="upload_planilla" name="upload_planilla" type="button"><span class="fa fa-cloud-upload"></span> Subir planilla</button>
+                </div>
+            </div>
+        </form>
+        <!-- FORM FIN -->
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content" >
+		<style type="text/css">
+			.bootstrap-filestyle{
+			    max-width:300px;
+			    margin-left:20px;
+			    margin-top:23px;
+			    border-round:0px;
+			}
+			.table > thead > tr > th{
+                background: #2A3F54;
+                color:#FFFFFF;
+                border:1px solid #FFFFFF;
+            }
+
+            .table > tbody > tr:hover{
+                background: #E0E0F8;
+                border:1px solid #FFFFFF;
+                cursor: pointer;
+            }
+        </style>
+
+        <table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+            <thead>
+                <tr>
+                    <th>RUT</th>
+                    <th>ERROR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in lista_uno %}
+                <tr>
+                    <td>{{e.rut|upper}}</td>
+                    <td>{{e.error|upper|safe}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+	</div>
+</div>
+
+<!-- MODAL intrucciones -->
+<div class="modal fade modal-intrucciones" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">Intrucciones</h4>
+			</div>
+			<div class="modal-body">
+                <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" cellpadding="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Campo</th>
+                            <th>Validacion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in lst_validaciones %}
+                        <tr>
+                            <td>{{v.contador}}</td>
+                            <td>{{v.key}}</td>
+                            <td>{{v.value}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <span id="txt_closed_boton_m">Cerrar</span>
+                </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+//Initialize Select2 Elements
+    $('.select2').select2()
+
+$(document).ready(function(){
+
+
+    $('#datatable-errores').DataTable();
+
+    {% if error %}
+
+    var error_1 = ""
+    {% for e in lista_err %}
+    error_1+='{{e}}'
+    {% endfor %}
+
+
+    {% endif %}
+
+	$("#dato").change(function(){
+		var __url__ = "{% url 'bases:viewsExportador' '__this__' %}"
+		__url__ = __url__.replace('__this__', this.value)
+		location.href=__url__
+	})
+
+	$("#formato-planilla").click(function(){
+	    location.href='{{url_formato}}'
+	})
+
+	$("#upload_planilla").click(function(){
+
+	    var mensaje_error = ""
+	    var is_error = false
+	    if($("#dato").val().length == 0){
+	        mensaje_error+=" - Elemento a exportar <br/>"
+	        is_error = true
+	    }
+	    if($("#tipo-archivo").val().length == 0){
+	        mensaje_error+=" - Tipo de archivo <br/>"
+	        is_error = true
+	    }
+	    if($("#id_archivo").val().length == 0){
+	        mensaje_error+=" - Debe ir un archivo en el input <br/>"
+	        is_error = true
+	    }
+
+        if(is_error){
+            $.alert({
+                title: 'Error!',
+                content: mensaje_error,
+            });
+        }else{
+            $("#frm_carga").submit()
+        }
+
+
+	})
+
+})
+
+
+
+function abrir(url) {
+    open(url,'','top=300,left=300,width=550,height=400') ;
+}
+
+</script>
+{% endblock %}

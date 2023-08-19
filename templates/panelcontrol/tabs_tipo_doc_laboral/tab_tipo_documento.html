@@ -1,0 +1,27 @@
+<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+	{% csrf_token %}
+	<div class="form-group">
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmTipoDocumentosLaboralesForm.tdl_codigo.label}}</label>
+			{{frmTipoDocumentosLaboralesForm.tdl_codigo}}
+		</div>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<label >{{frmTipoDocumentosLaboralesForm.tdl_descripcion.label}}</label>
+			{{frmTipoDocumentosLaboralesForm.tdl_descripcion}}
+		</div>
+		{% if not tdl_pordefecto == 'S' %}
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmTipoDocumentosLaboralesForm.tdl_activo.label}}</label>
+			{{frmTipoDocumentosLaboralesForm.tdl_activo}}
+		</div>
+		{% endif %}
+	</div>
+	{% if not tdl_pordefecto == 'S' %}
+    <div class="ln_solid"></div>
+	<div class="form-group">
+		<div class="col-md-12 col-sm-12 col-xs-12 text-right">
+			<button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+		</div>
+	</div>
+	{% endif %}
+</form>

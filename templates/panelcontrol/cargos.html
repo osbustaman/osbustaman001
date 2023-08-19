@@ -1,0 +1,86 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+{% block dato_empresa %}
+listado de cargos
+{% endblock %}
+{% block acciones_remuneraciones %}
+<div class="x_panel" style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
+    <div class="x_content" style="padding-top: 0px; padding-bottom: 0px;  margin-bottom: 0px; margin-top: 0px;">
+    	<ul class="nav nav-pills" role="tablist">
+			<li role="presentation">
+				<a href="{% url 'bases:add_cargo' %}" style="border:0px;">
+					<span class="fa fa-plus-circle"></span> Agregar cargo
+				</a>
+			</li>
+
+		</ul>
+	</div>
+</div>
+<style type="text/css">
+	.table > thead > tr > th{
+		background: #2A3F54;
+		color:#FFFFFF;
+		border:1px solid #FFFFFF;
+	}
+
+	.table > tbody > tr:hover{
+		background: #E0E0F8;
+		border:1px solid #FFFFFF;
+		cursor: pointer;
+	}
+</style>
+
+<div class="x_panel">
+    <div class="x_content" >
+		<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+			    <tr>
+					<th>#</th>
+					<th>NOMBRE</th>
+					<th>EMPRESA</th>
+					<th>ACCIONES</th>
+			    </tr>
+			</thead>
+			<tbody>
+		  		{% for c in lst_cargos %}
+		    	<tr>
+					<td>{{c.contador}}</td>
+					<td>{{c.car_nombre|upper}}</td>
+					<td>{{c.care_nombre_emp|upper}}</td>
+					<td>
+						<div class="btn-group btn-group-sm">
+							<a href="{% url 'bases:edit_cargo' c.car_id c.care_empresa_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+							<a href="#" class="btn btn-danger" onclick="borrar_cargo({{c.car_id}}, {{c.care_empresa_id}}, '{{c.car_nombre|title}}')"><span class="fa fa-trash"></span> Borrar</a>
+						</div>
+					</td>
+		    	</tr>
+		    	{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+function borrar_cargo(car_id, id_emp, nombre) {
+	$.confirm({
+	    title: 'Advertencia!',
+	    content: 'Esta seguro de eliminar el cargo '+nombre,
+	    buttons: {
+	        confirm: function () {
+
+				var __ruta__ = "{% url 'bases:delete_cargo' '__car_id__' '__id_emp__' %}";
+        		__ruta__ = __ruta__.replace('__car_id__', car_id).replace('__id_emp__', id_emp);
+
+	            location.href = __ruta__
+	        },
+	        cancel: function () {
+	            $.alert('Acci&oacute;n cancelada!');
+	        },
+	    }
+	});
+}
+</script>
+{% endblock %}

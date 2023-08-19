@@ -1,0 +1,90 @@
+<style type="text/css">
+	.table > thead > tr > th{
+		background: #2A3F54;
+		color:#FFFFFF;
+		border:1px solid #FFFFFF;
+	}
+
+	.table > tbody > tr:hover{
+		background: #E0E0F8;
+		border:1px solid #FFFFFF;
+		cursor: pointer;
+	}
+</style>
+<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>NOMBRE DOCUMENTO</th>
+            <th>ESTADO DOCUMENTO</th>
+            <th>ACCIÓN</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for x in lstDocumentos %}
+        <tr>
+            <td>{{ x.contador }}</td>
+            <td>{{ x.doc_nombre|upper }}</td>
+            <td>
+                {% if x.activo == 'SI' %}
+                ACTIVO
+                {% else %}
+                DE BAJA
+                {% endif %}
+            </td>
+            <td>
+                {% if not tdl_pordefecto == 'S' %}
+                <div class="btn-group  btn-group-sm">
+                    <a href="{% url 'bases:editDocumento' x.doc_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+                    <a href="javascript:cantidadDocEmpresa({{x.doc_id}}, '{{x.doc_activo}}')" class="btn btn-danger" onclick=""><span class="fa fa-close"></span> Borrar documento</a>
+                </div>
+                {% else  %}
+                DOCUMENTO DEFAULT
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+function cantidadDocEmpresa(doc_id, estado){
+
+    $.confirm({
+        title: 'Confirmación!',
+        content: 'Esta apunto de borrar un documento!',
+        buttons: {
+            aceptar: function () {
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'bases:consultarBorrarDocumento' %}",
+                    data:{
+                        'doc_id':doc_id,
+                        'estado':estado,
+                    },
+                    success: function(data){
+                        json = data;
+
+                        if(json.error){
+                            $.alert({
+                                title: 'Error!',
+                                content: json.error_mensaje,
+                            });
+                        }else{
+                            __url__="{% url 'bases:borrarDocumento' '__doc_id__' '__estado__' %}"
+                            __url__=__url__.replace('__doc_id__', doc_id).replace('__estado__', estado)
+                            location.href=__url__
+                        }
+                    },
+                    error: function (obj, error, objError){
+                        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+                    }
+                });
+            },
+            cancelar: function () {
+
+            },
+        }
+    });
+}
+</script>

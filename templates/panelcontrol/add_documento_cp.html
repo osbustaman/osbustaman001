@@ -1,0 +1,596 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+    <a href="{% url 'bases:cantidad_documentos' doc_id tipoDoc %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+<li role="presentation">
+    <a href="{% if is_edit %}{% url 'bases:pdfDocumentoClienteProveedor' doc_id docenc_id tipoDoc %}{% else %}#{% endif %}" target="_blank" style="border:0px;"><span class="fa fa-file-pdf-o text-danger"></span> Imprimir documento</a>
+</li>
+{% endblock %}
+
+{% block dato_empresa %}
+documentos {{doc_nombre}}
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content" >
+        <form id="frm-doc-encabezado" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{formDocumentoEncabezadoForm.docenc_numerodoc.label}}</label>
+                    {{formDocumentoEncabezadoForm.docenc_numerodoc}}
+                </div>
+
+                {% include "panelcontrol/includes/modal_cliprov.html" with form=formDocumentoEncabezadoForm id_buton_search='clienteProveedor_search' class_modal='clienteProveedor_modal' lista=lstClienteProveedor titulo='clientes' is_editar=is_edit %}
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{formDocumentoEncabezadoForm.docenc_fechaemision.label}}</label>
+                    <div class='input-group date' id='docenc_fechaemision'>
+                        {{formDocumentoEncabezadoForm.docenc_fechaemision}}
+                        <span class="input-group-addon">
+                           <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{formDocumentoEncabezadoForm.docenc_fechavencimiento.label}}</label>
+                    <div class='input-group date' id='docenc_fechavencimiento'>
+                        {{formDocumentoEncabezadoForm.docenc_fechavencimiento}}
+                        <span class="input-group-addon">
+                           <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{formDocumentoEncabezadoForm.docenc_tipodescuento.label}}</label>
+                    {{formDocumentoEncabezadoForm.docenc_tipodescuento}}
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <label >{{formDocumentoEncabezadoForm.docenc_descuento.label}}</label>
+                    <div class="input-group date">
+                        {{formDocumentoEncabezadoForm.docenc_descuento}}
+                        <span class="input-group-addon">
+                            <span id="change_monto"> $</span>
+                            <span id="change_porcentaje">%</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label >{{formDocumentoEncabezadoForm.docenc_descripcionadicional.label}}</label>
+                    {{formDocumentoEncabezadoForm.docenc_descripcionadicional}}
+                </div>
+
+            </div>
+
+            <div class="ln_solid"></div>
+            <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+                    {% if is_edit %}
+                    <button type="button" class="btn btn-primary" id="btn-new-detalle" data-toggle="modal" data-target=".add-detalle" onclick="reset_campos()"><span class="fa fa-shopping-cart"></span> Agregar detalle</button>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% if is_edit %}
+<div class="x_panel">
+    <div class="x_content" >
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-striped" id="tabla-detalles">
+                <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="15%">Producto/Servicio</th>
+                        <th width="10%">Precio unitario</th>
+                        <th width="10%">Cantidad</th>
+                        <th width="10%">Monto neto</th>
+                        <th width="10%">Descuento</th>
+                        <th width="10%">IVA</th>
+                        <th width="10%">Precio total</th>
+                        <th width="40%">acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in lstDocumentoDetalle %}
+                    <tr class="row_detalle" id="row_{{d.docdet_id}}">
+                        <td id="docdet_numdetalle" scope="row">{{d.docdet_numdetalle}}</td>
+                        <td id="docdet_producto">{{d.docdet_producto}}</td>
+                        <td id="docdet_preciounitario">{{d.docdet_preciounitario}}</td>
+                        <td id="docdet_cantidad">{{d.docdet_cantidad}}</td>
+                        <td id="docdet_monto_neto">{{d.monto_neto}}</td>
+                        <td id="monto_descuento">{{d.monto_descuento}}</td>
+                        <td id="docdet_montoiva">{{d.docdet_montoiva}}</td>
+                        <td id="docdet_preciototal">{{d.docdet_preciototal}}</td>
+
+                        <td id="docdet_tipodescuento" hidden>{{d.docdet_tipodescuento}}</td>
+                        <td id="docdet_descuento" hidden>{{d.docdet_descuento}}</td>
+                        <td id="docdet_isiva" hidden>{{d.docdet_isiva}}</td>
+                        <td id="docdet_id" hidden>{{d.docdet_id}}</td>
+                        <td id="moneda" hidden>{{d.moneda}}</td>
+                        <td id="docdet_tasadecambio" hidden>{{d.docdet_tasadecambio}}</td>
+                        <td id="docdet_valorcotizado" hidden>{{d.docdet_valorcotizado}}</td>
+                        <td>
+                            <div class="btn-group  btn-group-sm">
+							    <a href="#" data-toggle="modal" data-target=".add-detalle" class="btn btn-primary" id="editar_detalle_{{d.docdet_id}}"><span class="fa fa-eye"></span> Ver</a>
+							    <a href="javascript:borrar_detalle({{d.docdet_id}})" class="btn btn-danger"><span class="fa fa-close"></span> Eliminar</a>
+						    </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content" >
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-striped" id="tabla-totales">
+                <thead>
+                    <tr>
+                        <th width="5%"></th>
+                        <th width="15%"></th>
+                        <th width="15%"></th>
+                        <th width="15%"></th>
+                        <th width="10%"></th>
+                        <th width="10%">TOTAL IVA</th>
+                        <th width="10%">TOTAL</th>
+                        <th width="40%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td id="total_iva">${% if total_iva %}{{total_iva}}{% else %}0{% endif %}</td>
+                        <td id="total_doc">${{total_documento}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade add-detalle" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">Agregar detalle - Documento {{num_doc}}</h4>
+			</div>
+			<div class="modal-body">
+                <div class="scrollbar" id="style-2" style="height: 300px;">
+
+                    <form id="frm-doc-detalle" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_numdetalle.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_numdetalle}}
+                            </div>
+                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_producto.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_producto}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.moneda.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.moneda}}
+                            </div>-
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_tasadecambio.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_tasadecambio}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_preciounitario.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_preciounitario}}
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_cantidad.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_cantidad}}
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_tipodescuento.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_tipodescuento}}
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_descuento.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_descuento}}
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_isiva.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_isiva}}
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_montoiva.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_montoiva}}
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label >{{formDocumentoEncabezadoDetalleForm.docdet_preciototal.label}}</label>
+                                {{formDocumentoEncabezadoDetalleForm.docdet_preciototal}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="add_detalle()" id="add-detalle"><span class="fa fa-save"></span> Guardar</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_modal_dos">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    {% if is_edit %}
+    $("#id_txt_clienteProveedor").val('{{razon_social}}');
+
+    if($("#id_docenc_tipodescuento").val()=='M'){
+        $("#change_monto").css('display', 'block')
+        $("#change_porcentaje").css('display', 'none')
+    }else{
+        $("#change_monto").css('display', 'none')
+        $("#change_porcentaje").css('display', 'block')
+    }
+
+    $("#btn-new-detalle").click(function(){
+        var num_detalle = $("#tabla-detalles > tbody > tr").size()
+        $("#id_docdet_numdetalle").val((num_detalle + 1))
+    })
+
+
+    $("#id_docdet_cantidad").blur(function(){
+        var precio_unitario = parseFloat($("#id_docdet_preciounitario").val())
+        var tasa_cambio = parseFloat($("#id_docdet_tasadecambio").val())
+        var cantidad = parseFloat($("#id_docdet_cantidad").val())
+
+        var valor_cotizado = precio_unitario * tasa_cambio * cantidad;
+
+        $("#id_docdet_preciototal").val(Math.round(valor_cotizado))
+    })
+
+
+    $("#id_docdet_descuento, #id_docdet_tipodescuento, #id_docdet_isiva").change(function(){
+
+        the_element = $("#id_docdet_tipodescuento")
+        var precio_unitario = parseFloat($("#id_docdet_preciounitario").val())
+        var tasa_cambio = parseFloat($("#id_docdet_tasadecambio").val())
+        var cantidad = parseFloat($("#id_docdet_cantidad").val())
+
+        var valor_cotizado = precio_unitario * tasa_cambio * cantidad;
+
+        var monto_neto = 0
+        var monto_total = 0
+        var iva = {{iva}}/100
+
+
+        if(the_element.val() === ''){
+
+            $("#id_docdet_descuento").val(0)
+            var monto_neto = valor_cotizado
+
+        }else if(the_element.val() === 'P'){
+            var descuento = parseFloat($("#id_docdet_descuento").val())
+
+            var monto_descuento = descuento * (valor_cotizado/100)
+            var monto_neto = valor_cotizado - monto_descuento
+
+        }else if(the_element.val() === 'M'){
+            var descuento = parseFloat($("#id_docdet_descuento").val())
+            var monto_neto = valor_cotizado - descuento
+
+        }
+
+        if($("#id_docdet_isiva").val() === 'S'){
+            var valor_iva = monto_neto * iva
+            $("#id_docdet_montoiva").val(Math.round(valor_iva))
+            monto_total = monto_neto + valor_iva
+        }else{
+            $("#id_docdet_montoiva").val(0)
+            monto_total = monto_neto
+        }
+        $("#id_docdet_preciototal").val(Math.round(monto_total))
+    })
+
+    {% else %}
+    $("#change_porcentaje").css('display', 'none')
+    {% endif %}
+
+    {% if error %}
+
+    var mensaje_error = ''
+
+    {% for x in lista_err %}
+    mensaje_error+='{{x}} <br/>'
+    {% endfor %}
+
+    $.alert({
+        title: 'Error!',
+        content: mensaje_error,
+    });
+    {% endif %}
+
+
+    $("#id_docenc_tipodescuento").change(function(){
+        if(this.value=='M'){
+            $("#change_monto").css('display', 'block')
+            $("#change_porcentaje").css('display', 'none')
+        }else{
+            $("#change_monto").css('display', 'none')
+            $("#change_porcentaje").css('display', 'block')
+        }
+    })
+
+    $('#docenc_fechavencimiento, #docenc_fechaemision').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+
+    $('a[id^=editar_detalle_]').click(function(){
+
+        $(this).parents("tr").find("td").each(function() {
+
+            if (this.id.substring(0,7) === "docdet_"){
+                object_name = "#id_"+this.id
+                object_valor = $(this).text()
+
+                if(this.id === 'docdet_preciounitario'){
+                    $(object_name).val($(this).text().replaceAll(',', '.'))
+                }else{
+                    $(object_name).val($(this).text().replaceAll('.', '').replaceAll(',', ''))
+                }
+            }
+            if(this.id === 'docdet_id'){
+                $("#add-detalle").removeAttr('onclick').attr('onclick', 'edit_detalle('+object_valor+')')
+            }
+            if(this.id === 'moneda'){
+                var la_moneda = $(this).text()
+                $("#id_moneda").val(la_moneda).trigger('change');
+            }
+        });
+    });
+
+})
+
+function cargar_cliprov(id){
+    $("#id_clienteProveedor").val(id)
+    $("#id_txt_clienteProveedor").val($("#cp_razonsocial_"+id).html())
+    $("#txt_closed_boton").click()
+}
+
+{% if is_edit %}
+function add_detalle(){
+    jsShowWindowLoad();
+    var link_ = "{% url 'bases:ajaxAddDetalle' docenc_id %}";
+    $.ajax({
+        type: "POST",
+        url: link_,
+        data:$("#frm-doc-detalle").serialize(),
+        success: function(data){
+            json = data;
+
+            if(json.error){
+                var mensaje_error = ''
+                json.lista_err.forEach(function(elemento, indice) {
+                    mensaje_error+='- '+elemento+'<br/>'
+                });
+
+                $.alert({
+                    title: 'Error!',
+                    content: mensaje_error,
+                });
+            }else{
+
+                var html=''
+
+                html+='<tr class="row_detalle" id="row_'+json.docdet_id+'">'+
+
+                        '<td id="docdet_numdetalle" scope="row">'+$("#id_docdet_numdetalle").val()+'</td>'+
+                        '<td id="docdet_producto">'+$("#id_docdet_producto").val()+'</td>'+
+                        '<td id="docdet_preciounitario">'+$("#id_docdet_preciounitario").val()+'</td>'+
+                        '<td id="docdet_cantidad">'+$("#id_docdet_cantidad").val()+'</td>'+
+                        '<td id="monto_neto">'+json.monto_neto+'</td>'+
+                        '<td id="monto_descuento">'+json.monto_descuento+'</td>'+
+                        '<td id="docdet_montoiva">'+$("#id_docdet_montoiva").val()+'</td>'+
+                        '<td id="docdet_preciototal">'+$("#id_docdet_preciototal").val()+'</td>'+
+
+                        '<td id="docdet_tipodescuento" hidden>'+json.tipoDescuento+'</td>'+
+                        '<td id="docdet_descuento" hidden>'+$("#id_docdet_descuento").val()+'</td>'+
+                        '<td id="docdet_isiva" hidden>'+json.isIva+'</td>'+
+                        '<td id="docdet_id" hidden>'+json.docdet_id+'</td>'+
+                        '<td id="moneda" hidden>'+json.moneda+'</td>'+
+                        '<td id="docdet_tasadecambio" hidden>'+json.tasacambio+'</td>'+
+                        '<td id="docdet_valorcotizado" hidden>'+json.valorcotizado+'</td>'+
+                        '<td>'+
+                            '<div class="btn-group  btn-group-sm">'+
+                                '<a href="javascript:editar_detalle('+json.docdet_id+')" data-toggle="modal" data-target=".add-detalle" class="btn btn-primary" id="editar_detalle_'+json.docdet_id+'"><span class="fa fa-eye"></span> Ver</a>'+
+                                '<a href="javascript:borrar_detalle('+json.docdet_id+')" class="btn btn-danger"><span class="fa fa-close"></span> Eliminar</a>'+
+                            '</div>'+
+                        '</td>'+
+                    '</tr>';
+
+                $("#tabla-detalles > tbody").append(html)
+                $("#btn_modal_dos").click()
+                $("#total_doc").text(json.total_valor)
+                $("#total_iva").text(json.total_iva)
+            }
+
+            jsRemoveWindowLoad();
+        },
+        error: function (obj, error, objError){
+            //avisar que ocurrio un error
+            alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+        }
+    });
+}
+
+
+function edit_detalle(docdet_id){
+    jsShowWindowLoad();
+    var link_ = "{% url 'bases:ajaxEditDetalle' docenc_id '__docdet_id__' %}";
+    link_ = link_.replace('__docdet_id__', docdet_id)
+    $.ajax({
+        type: "POST",
+        url: link_,
+        data:$("#frm-doc-detalle").serialize(),
+        success: function(data){
+            json = data;
+
+            if(json.error){
+                var mensaje_error = ''
+                json.lista_err.forEach(function(elemento, indice) {
+                    mensaje_error+='- '+elemento+'<br/>'
+                });
+
+                $.alert({
+                    title: 'Error!',
+                    content: mensaje_error,
+                });
+            }else{
+
+                $("#row_"+docdet_id).find("td").each(function () {
+
+                    var in_name = this.id;
+
+                    console.log(in_name)
+
+                    var id_in_name = "#id_"+in_name
+
+                    if(in_name === 'docdet_producto'){
+                        this.innerHTML = $("#id_docdet_producto").val();
+
+                    }else if(in_name === 'docdet_preciounitario'){
+                        this.innerHTML = $("#id_docdet_preciounitario").val();
+
+                    }else if(in_name === 'docdet_cantidad'){
+                        this.innerHTML = $("#id_docdet_cantidad").val();
+
+                    }else if(in_name === 'docdet_isiva'){
+                        this.innerHTML = $("#id_docdet_isiva").val();
+
+                    }else if(in_name === 'docdet_tipodescuento'){
+                        this.innerHTML = $("#id_docdet_tipodescuento").val();
+
+                    }else if(in_name === 'docdet_descuento'){
+                        this.innerHTML = $("#id_docdet_descuento").val();
+
+                    }else if(in_name === 'docdet_montoiva'){
+                        this.innerHTML = $("#id_docdet_montoiva").val();
+
+                    }else if(in_name === 'docdet_preciototal'){
+                        this.innerHTML = $("#id_docdet_preciototal").val();
+
+                    }else if(id_in_name === 'id_moneda'){
+                        this.innerHTML = $("#id_moneda").val();
+
+                    }else if(in_name === 'docdet_monto_neto'){
+                        this.innerHTML = json.monto_neto;
+
+                    }else if(in_name === 'monto_descuento'){
+                        this.innerHTML = json.monto_descuento;
+                    }
+                });
+
+                $("#total_doc").text(json.total_valor)
+                $("#total_iva").text(json.total_iva)
+                $("#btn_modal_dos").click();
+            }
+
+            jsRemoveWindowLoad();
+        },
+        error: function (obj, error, objError){
+            //avisar que ocurrio un error
+            alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+        }
+    });
+}
+
+
+function borrar_detalle(id){
+
+    $.confirm({
+        title: 'Confirm!',
+        content: 'Esta seguro de borrar el detalle?',
+        buttons: {
+            confirmar: function () {
+
+                var link_ = "{% url 'bases:ajaxDelDetalle' '__id__' docenc_id %}";
+                link_ = link_.replace('__id__', id);
+
+                $.ajax({
+                    type: "POST",
+                    url: link_,
+                    data:$("#frm-doc-detalle").serialize(),
+                    success: function(data){
+                        json = data;
+
+                        $("#row_"+id).closest('tr').remove();
+
+                        num_det = 1;
+                        $('tr[id^=row_]').find("#docdet_numdetalle").each(function () {
+                            this.innerHTML = num_det;
+                            num_det++
+                        });
+
+                        $("#total_doc").text(json.monto_total)
+                        $("#total_iva").text(json.total_iva)
+                    },
+                    error: function (obj, error, objError){
+                        //avisar que ocurrio un error
+                        alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+                    }
+                });
+
+                $.alert('Borrado exitosamente!');
+            },
+            cancelar: function () {
+                $.alert('Cancelado!');
+            },
+
+        }
+    });
+}
+
+function reset_campos(){
+    $("#id_docdet_producto").val('')
+    $("#id_docdet_preciounitario").val(0)
+    $("#id_docdet_cantidad").val(0)
+    $("#id_docdet_isiva").val('N')
+    $("#id_docdet_tipodescuento").val('')
+    $("#id_docdet_descuento").val(0)
+    $("#id_docdet_montoiva").val(0)
+    $("#id_docdet_preciototal").val(0)
+}
+
+{% endif %}
+</script>
+{% endblock %}

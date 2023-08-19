@@ -1,0 +1,136 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+listado clientes/proveedores
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:addClienteProveedor' %}" style="border:0px;">
+		<span class="fa fa-plus-circle"></span> Agregar cliente/proveedor
+	</a>
+</li>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+
+
+<div class="x_panel">
+    <div class="x_content" >
+		<style type="text/css">
+			.table > thead > tr > th{
+				background: #2A3F54;
+				color:#FFFFFF;
+				border:1px solid #FFFFFF;
+			}
+
+			.table > tbody > tr:hover{
+				background: #E0E0F8;
+				border:1px solid #FFFFFF;
+				cursor: pointer;
+			}
+				#id_tipoEntidad{
+				min-width:200px;
+				margin-left:210px;
+				margin-top:-61px;
+			}
+		</style>
+
+		<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>RUT</th>
+					<th>RAZÓN SOCIAL</th>
+					<th>TIPO</th>
+					<th>ESTADO</th>
+					<th>ACCIONES</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for x in lstClientesProveedores %}
+				<tr>
+					<td>{{x.contador}}</td>
+					<td>{{x.cp_rut|upper}}</td>
+					<td>{{x.cp_razonsocial|upper}}</td>
+					<td>{{x.cp_tipoentidad|upper}}</td>
+					<td>{{x.estado|upper}}</td>
+					<td>
+						<div class="btn-group btn-group-sm">
+							<a href="{% url 'bases:editClienteProveedor' x.cp_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+							<a href="#" class="btn btn-danger" onclick="valida_cantidad_emp_aso({{x.cp_id}}, '{{x.cp_estado}}')"><span class="fa fa-trash"></span> Borrar</a>
+
+						</div>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+$(document).ready(function(){
+	var filtro_docs='<label>'+
+				    '<select name="tipoDocumentos" id="id_tipoEntidad" class="form-control input-sm">'+
+				    '<option value="" {% if filtro == "" %}selected{% endif %}>-- seleccione para filtar --</option>'+
+				    '<option value="C" {% if filtro == "C" %}selected{% endif %}>Clientes</option>'+
+				    '<option value="P" {% if filtro == "P" %}selected{% endif %}>Proveedores</option>'+
+				    '</select>'+
+				    '</label>'
+
+	$(".dataTables_length").append(filtro_docs)
+
+	$("#id_tipoEntidad").change(function(){
+		var __url__ = "{% url 'bases:viewsClientesProveedores' '__this__' %}"
+		__url__ = __url__.replace('__this__', this.value)
+		location.href=__url__
+	})
+})
+
+function valida_cantidad_emp_aso(cp_id, estado){
+
+	$.confirm({
+		title: 'Advertencia!',
+		content: 'Esta seguro de eliminar la empresa',
+		buttons: {
+			confirmar: function () {
+				$.ajax({
+					type: "POST",
+					url: "{% url 'bases:borrarClienteProveedor' %}",
+					data:{
+						'cp_id':cp_id,
+						'estado':estado,
+					},
+					success: function(data){
+						json = data;
+						if(json.error){
+							$.alert({
+								title: 'Error!',
+								content: json.error_mensaje,
+							});
+						}else{
+							location.reload();
+						}
+					},
+					error: function (obj, error, objError){
+						alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+					}
+				});
+			},
+			cancelar: function () {
+
+			},
+		}
+	});
+
+
+
+}
+</script>
+{% endblock %}

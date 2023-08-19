@@ -1,0 +1,143 @@
+<br>
+<form id="frm-termino-relacion-laboral" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+{% csrf_token %}
+    <div class="form-group">
+
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <label >{{frmTerminoRelacionLaboralForm.ue_fechatermino.label}}</label>
+            <div class='input-group date' id='ue_fechatermino'>
+                {{frmTerminoRelacionLaboralForm.ue_fechatermino}}
+                <span class="input-group-addon">
+                   <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <label >{{frmTerminoRelacionLaboralForm.ue_fechanotificacioncartaaviso.label}}</label>
+            <div class='input-group date' id='ue_fechanotificacioncartaaviso'>
+                {{frmTerminoRelacionLaboralForm.ue_fechanotificacioncartaaviso}}
+                <span class="input-group-addon">
+                   <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <label >{{frmTerminoRelacionLaboralForm.ue_tiponoticacion.label}}</label>
+            {{frmTerminoRelacionLaboralForm.ue_tiponoticacion}}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <label >{{frmTerminoRelacionLaboralForm.ue_cuasal.label}}</label>
+            {{frmTerminoRelacionLaboralForm.ue_cuasal}}
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <label >{{frmTerminoRelacionLaboralForm.ue_fundamento.label}}</label>
+            {{frmTerminoRelacionLaboralForm.ue_fundamento}}
+        </div>
+    </div>
+
+</form>
+<div class="form-group">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+	    <button  style="margin-top:15px;" type="button" onclick="ajax_termino_laboral()" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+	    <button  style="margin-top:15px;" type="button" data-toggle="modal" data-target=".add-detalle" onclick="reset_add_detalles()" class="btn btn-primary"><span class="fa fa-plus"></span> Agregar haberes y descuentos</button>
+	</div>
+</div>
+
+<div class="modal fade add-detalle" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">Agregar Haberes/Descuento</h4>
+			</div>
+			<div class="modal-body">
+                <div class="scrollbar" id="style-2" style="height: 300px;">
+
+                    <form id="frm-habere-descuentos" name="frm-habere-descuentos" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label >{{frmHaberesDescuentosForm.hab_nombre.label}}</label>
+                                {{frmHaberesDescuentosForm.hab_nombre}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label >{{frmHaberesDescuentosForm.hab_monto.label}}</label>
+                                {{frmHaberesDescuentosForm.hab_monto}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label >{{frmHaberesDescuentosForm.hab_tipohaberdescuento.label}}</label>
+                                {{frmHaberesDescuentosForm.hab_tipohaberdescuento}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="add_haber_descuento()"><span class="fa fa-save"></span> Guardar</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" id="cerra_haberes_descuentos">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<div class="col-md-12 col-sm-12 col-xs-12">
+
+    <style>
+        .table{
+            background-color:#FFF;
+        }
+		.table > thead > tr > th{
+			background-color:#B8B8BE;
+			color:#48484B;
+        }
+		.table > tbody > tr:hover{
+			background-color:#EDE6E6;
+        }
+    </style>
+
+    <table class="table table-condensed" style="margin-top:35px;" id="tabla-haberes-descuentos">
+        <thead>
+            <tr>
+                <th width="5%">#</th>
+                <th width="35%">NOMBRE HABER/DESCUENTO</th>
+                <th width="20%">TIPO HABER/DESCUENTO</th>
+                <th width="20%">HABER</th>
+                <th width="20%">DESCUENTO</th>
+                <th width="5%">BORRAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in lstHaberesDescuentos %}
+            <tr class="row_detalle_hd" id="row_hd_{{x.hab_id}}" style="border-topm:1px solid #C3C4F8;">
+                <td id="contador" scope="row">{{x.contador}}</td>
+                <td id="hab_nombre">{{x.hab_nombre|upper}}</td>
+                <td id="hab_tipo">{{x.hab_tipo|upper}}</td>
+                <td id="haberes">{{x.haberes}}</td>
+                <td id="descuentos">{{x.descuentos}}</td>
+                <td><button type="button" class="btn btn-danger btn-xs" onclick="delete_haber_descuento({{x.hab_id}})"><span class="fa fa-trash"></span></button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table-condensed" style="margin-top:35px;" width="100%">
+        <tbody>
+            <tr style="background-color:#F5F7FA; border-topm:1px solid #C3C4F8;">
+                <td></td>
+                <td>TOTAL HABERES: $ <span id="s-haber">{{suma_haberes}}</span></td>
+                <td>TOTAL DESCUENTOS: $ <span id="s-descuento">{{suma_descuentos}}</span></td>
+                <td>TOTAL FINAL: $ <span id="s-total">{{total_haberes_descuentos}}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

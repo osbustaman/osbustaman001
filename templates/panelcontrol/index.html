@@ -1,0 +1,56 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+sistema de gestión de documentos - inicio
+{% endblock %}
+
+{% block nav %}
+<div class="right-col" role="main">
+    <div class="row tile_count">
+
+        <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-university"></i> Cantidad de empresas</span>
+            <div class="count">{{cantEmpresas}}</div>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-users"></i> Total Empleados</span>
+            <div class="count green">{{todos}}</div>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-male"></i> Total Hombres</span>
+            <div class="count green">{{cant_hombres}}</div>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-female"></i> Total Mujeres</span>
+            <div class="count green">{{cant_mujeres}}</div>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-shopping-cart"></i> Total Clientes</span>
+            <div class="count green">{{cant_clientes}}</div>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-truck"></i> Total Proveedores</span>
+            <div class="count green">{{cant_proveedor}}</div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+
+
+
+
+{% endblock %}
+
+{% block css_js_down %}
+
+{% endblock %}

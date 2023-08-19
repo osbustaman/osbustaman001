@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include "docpdf/style.html" %}
+</head>
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="20%" align="left"></td>
+    <td width="60%" valign="top" class="text-center"><span style="font-size:25px;">Ficha empleado</span></td>
+    <td width="20%">&nbsp;</td>
+  </tr>
+</table>
+<br/>
+<br/>
+<br/>
+<p style="font-size:18px;">DATOS PERSONALES</p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
+  <tr>
+    <td width="30%" rowspan="10"><img class="img-responsive img-thumbnail" src="{{lst_datosUsuario.rutaImagen}}"></td>
+    <td width="21%" align="left" valign="middle" class="text-muted">Nombre</td>
+    <td width="49%">{{lst_datosUsuario.nombreCompleto|title}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Tipo de rut</td>
+    <td>{{lst_datosUsuario.usu_tiporut}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Rut</td>
+    <td>{{lst_datosUsuario.usu_rut}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Sexo</td>
+    <td>{{lst_datosUsuario.usu_sexo}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Teléfono</td>
+    <td>{{lst_datosUsuario.usu_fono}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Fecha de nacimiento</td>
+    <td>{{lst_datosUsuario.usu_fechanacimiento}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Estado civil</td>
+    <td>{{lst_datosUsuario.usu_estadocivil}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Dirección</td>
+    <td>{{lst_datosUsuario.direccion}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Correo electrónico</td>
+    <td>{{lst_datosUsuario.email}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" class="text-muted">Profesión</td>
+    <td>{{lst_datosUsuario.titulo}}</td>
+  </tr>
+</table>
+
+<p style="font-size:18px;">DATOS LABORALES</p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
+  <tr>
+    <td colspan="4" align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted"><em><strong>Empresa: </strong></em><strong>{{lst_datosUsuario.empresa}}</strong></td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Sucursal</td>
+    <td align="left" valign="middle">{{lst_datosUsuario.sucursal|title}}</td>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Tipo de contrato</td>
+    <td align="left" valign="middle">{{lst_datosUsuario.ue_tipocontrato}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Cargo</td>
+    <td align="left" valign="middle">{{lst_datosUsuario.cargo|title}}</td>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Fecha de contratacion</td>
+    <td align="left" valign="middle">{{lst_datosUsuario.ue_fechacontratacion}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Centro de costo</td>
+    <td align="left" valign="middle">{{lst_datosUsuario.centrocosto|title}}</td>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Fecha termino de contrato</td>
+    <td align="left" valign="middle">{{lst_datosUsuario.ue_fecharenovacioncontrato}}</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Tipo de trabajador</td>
+    <td width="25%" align="left" valign="middle">{{lst_datosUsuario.ue_tipotrabajdor}}</td>
+    <td width="25%" align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Fecha de finiquito</td>
+    <td width="25%" align="left" valign="middle">{{lst_datosUsuario.ue_fecharetiro}}</td>
+  </tr>
+  <tr>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">&nbsp;</td>
+    <td align="left" valign="middle">&nbsp;</td>
+    <td align="left" valign="middle" bgcolor="#F8F8F8" class="text-muted">Fecha de retiro</td>
+    <td align="left" valign="middle">{{lst_datosUsuario.ue_fecharetiro}}</td>
+  </tr>
+</table>
+
+	
+</body>
+</html>

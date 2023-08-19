@@ -1,0 +1,54 @@
+<br>
+<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+	{% csrf_token %}
+	<div class="form-group">	
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmUserForm.username.label}}</label>
+			{{frmUserForm.username}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmUserForm.first_name.label}}</label>
+			{{frmUserForm.first_name}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmUserForm.last_name.label}}</label>
+			{{frmUserForm.last_name}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmUserForm.email.label}}</label>
+			{{frmUserForm.email}}
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmUserForm.usu_tipousuario.label}}</label>
+			{{frmUserForm.usu_tipousuario}}
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmUserForm.password1.label}}</label>
+			{{frmUserForm.password1}}
+			<input type="hidden" id="p1">
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<label >{{frmUserForm.password2.label}}</label>
+			{{frmUserForm.password2}}
+			<input type="hidden" id="p2">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			{{frmUserForm.empresa}}
+		</div>
+	</div>
+	<div class="ln_solid"></div>
+	<div class="form-group">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<button type="button" id="btn-datos-usuario" onclick="{{funcion}}" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+		</div>
+		{% if is_edit %}
+		<input type="hidden" name="hdn_edit_datos_usuario" id="hdn_edit_datos_usuario" value="{{user_id}}">
+		<input type="hidden" name="hdn_edit_datos_empresa" id="hdn_edit_datos_empresa" value="{{empresa_id}}">
+		{% endif %}
+		<input type="hidden" name="hdn_tipo_usuario" id="hdn_tipo_usuario" value="">
+	</div>
+</form>

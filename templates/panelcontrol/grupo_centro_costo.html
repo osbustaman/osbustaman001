@@ -1,0 +1,103 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+grupo centro de costos
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel" style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
+    <div class="x_content" style="padding-top: 0px; padding-bottom: 0px;  margin-bottom: 0px; margin-top: 0px;">
+    	<ul class="nav nav-pills" role="tablist">
+			<li role="presentation">
+				<a href="{% url 'bases:add_grupo_centro_costo' %}" style="border:0px;">
+					<span class="fa fa-plus-circle"></span> Agregar grupo centro de costo
+				</a>
+			</li>
+			<li role="presentation" class="dropdown">
+				<a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+					Opciones
+					<span class="caret"></span>
+				</a>
+				<ul id="menu6" class="dropdown-menu animated fadeInDown" role="menu">
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#">descargar excel <span class="fa fa-file-excel-o"></span></a>
+					</li>
+				</ul>
+			</li>
+
+		</ul>
+	</div>
+</div>
+<style type="text/css">
+	.table > thead > tr > th{
+		background: #2A3F54;
+		color:#FFFFFF;
+		border:1px solid #FFFFFF;
+	}
+
+	.table > tbody > tr:hover{
+		background: #E0E0F8;
+		border:1px solid #FFFFFF;
+		cursor: pointer;
+	}
+</style>
+
+<div class="x_panel">
+    <div class="x_content" >
+		<table class="table table-striped table-bordered dt-responsive nowrap x_table" cellspacing="0" cellpadding="0" width="100%">
+			<thead>
+			    <tr>
+					<th>#</th>
+					<th>NOMBRE GRUPO</th>
+					<th>CÓDIGO</th>
+					<th>EMPRESA</th>
+					<th>GRUPO ACTIVO</th>
+					<th>ACCIONES</th>
+			    </tr>
+			</thead>
+			<tbody>
+		  		{% for g in lst_GrupoCentroCosto %}
+		    	<tr>
+					<td>{{g.contador}}</td>
+					<td>{{g.gcencost_nombre|upper}}</td>
+					<td>{{g.gcencost_codigo|upper}}</td>
+					<td>{{g.empresa|upper}}</td>
+					<td>{{g.gcencost_activo|upper}}</td>
+					<td>
+						<div class="btn-group btn-group-sm">
+							<a href="{% url 'bases:edit_grupo_centro_costo' g.gcencost_id %}" class="btn btn-primary"><span class="fa fa-pencil-square-o"></span> Editar</a>
+							<a href="#" class="btn btn-danger" onclick="borrar_grupo_centro_costo({{g.gcencost_id}}, '{{g.gcencost_nombre|title}}')"><span class="fa fa-trash"></span> Borrar</a>
+						</div>
+					</td>
+		    	</tr>
+		    	{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+function borrar_grupo_centro_costo(gcencost_id, nombre) {
+	$.confirm({
+	    title: 'Advertencia!',
+	    content: 'Esta seguro de eliminar el grupo de centro de costo '+nombre,
+	    buttons: {
+	        confirm: function () {
+
+				var __ruta__ = "{% url 'bases:delete_grupo_centro_costo' '__gcencost_id__' %}";
+        		__ruta__ = __ruta__.replace('__gcencost_id__', gcencost_id);
+
+	            location.href = __ruta__
+	        },
+	        cancel: function () {
+	            $.alert('Acci&oacute;n cancelada!');
+	        },
+	    }
+	});
+}
+</script>
+{% endblock %}

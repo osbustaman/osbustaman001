@@ -1,0 +1,89 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:editGrupoDocumento' tdl_id %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+<li role="presentation">
+	<a href="#" tyle="border:0px;">Tipo de documento: <strong>{{tipoDocumento}}</strong></a>
+</li>
+<li role="presentation">
+    <a href="{% url 'bases:documentoEmpresa' doc_id %}" style="border:0px;" id="{% if tdl_filtrodoc %}docuemnto-empresa{% endif %}">
+        <span class="fa fa-plus-circle"></span> Agregar documento empresa
+    </a>
+</li>
+{% endblock %}
+
+{% block dato_empresa %}
+agregar/editar un documento
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+
+            <li role="presentation" class="active">
+                <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Formato documento</a>
+            </li>
+
+            {% if is_edit %}
+            <li role="presentation" class="{% if not tdl_filtrodoc %}active{% else %}{% endif %}">
+                <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="{% if not tdl_filtrodoc %}true{% else %}false{% endif %}">Documento empresa</a>
+            </li>
+            {% endif %}
+        </ul>
+        <div id="myTabContent" class="tab-content">
+
+            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                {% include "panelcontrol/tabs_tipo_doc_laboral/tab_formato_documento.html" %}
+            </div>
+
+            {% if is_edit %}
+            <div role="tabpanel" class="tab-pane fade {% if not tdl_filtrodoc %}active in{% else %}{% endif %}" id="tab_content2" aria-labelledby="profile-tab">
+                {% include "panelcontrol/tabs_tipo_doc_laboral/tab_documento_empresa.html" %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $("#id_doc_empresa").change()
+        $("#id_doc_empresa").change(function () {
+           console.log("NO")
+        })
+        $("#docuemnto-empresa").css('display', 'none')
+
+        $("#profile-tab").click(function(){
+            $("#docuemnto-empresa").css('display', 'block')
+        })
+
+        $("#home-tab").click(function(){
+            $("#docuemnto-empresa").css('display', 'none')
+        })
+    })
+
+    //Initialize Select2 Elements
+    $('.select2').select2()
+    CKEDITOR.replace( 'doc_texto', {
+        language: 'es',
+
+    });
+    CKEDITOR.config.height = 550
+    CKEDITOR.config.extraPlugins = 'justify';
+
+
+    $('#table-asociacion-empresa').DataTable();
+
+</script>
+{% endblock %}

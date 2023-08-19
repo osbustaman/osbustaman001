@@ -1,0 +1,22 @@
+<br>
+<form id="frm_carga" name="frm_carga" method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            {{frmCargaFotoUsuario.archivo}}
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <button class="btn btn-success" id="upload_imagen" name="upload_imagen" type="button"><span class="fa fa-cloud-upload"></span> Subir Imagen</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+            <div class="profile_img">
+                <div id="crop-avatar">
+                    <img class="img-responsive avatar-view" id="imagen-avatar">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- FORM FIN -->

@@ -1,0 +1,305 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block dato_empresa %}
+ficha del empleado - {{nombreGrupoDoc}}
+{% endblock %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:views_empleados' %}">
+		<span class="fa fa-angle-double-left"></span> Volver
+	</a>
+</li>
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<style>
+.check {
+    width:20px;
+    height:20px;
+}
+</style>
+<div class="x_panel">
+    <div class="x_content" >
+		<div class="x_content">
+			<div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+				<div class="profile_img">
+					<div id="crop-avatar">
+						<!-- Current avatar -->
+						<img class="img-responsive img-thumbnail avatar-view" src="{{rutaImagen}}">
+					</div>
+				</div>
+			  	<h3>{{nombreCompleto}}</h3>
+
+				<ul class="list-unstyled user_data">
+					<li>
+						<i class="fa fa-map-marker user-profile-icon"></i> {{direccion}}
+					</li>
+
+					<li>
+						<i class="fa fa-briefcase user-profile-icon"></i> {{titulo}}
+					</li>
+
+					<li class="m-top-xs">
+						<i class="fa fa-university user-profile-icon"></i>
+						{{empresa}}
+					</li>
+				</ul>
+
+				<a href="{% url 'bases:editDataEmpleado' id_usuario id_empresa %}" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Editar</a>
+                <a href="{% url 'bases:pdfFichaEmpleado' id_usuario id_empresa %}" target="_blank" class="btn btn-dark"><span class="fa fa-file-pdf-o"></span> descargar ficha </a>
+				<br />
+				<br />
+                <div class="panel panel-default" style="border:0;">
+                    <div class="panel-body"style="padding:0px;padding-top:10px;border:0;">
+                        {% if is_documentos %}
+
+                        <ul class="to_do">
+                            <a href="{% url 'bases:viewsFichaEmpleado' id_usuario id_empresa 'FIS' %}"><li>DOCUMENTOS FÍSICOS</li></a>
+                        {% for d in lstTipoDocumentos %}
+                            <a href="{% url 'bases:viewsFichaEmpleado' id_usuario id_empresa d.tdl_id %}"><li>{{d.tdl_descripcion}}</li></a>
+                        {% endfor %}
+                        </ul>
+                        {% else %}
+                        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                            Sin documentos predeterminados
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+			</div>
+			<div class="col-md-9 col-sm-9 col-xs-12">
+
+				<div class="profile_title">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<h2>{% if accion == 'FIS' %}<a href="javascript:void(0)" class="btn btn-dark btn-xs" id="descargar_seleccionado"> descargar seleccionados</a>{% endif %}</h2>
+					</div>
+				</div>
+                <!-- start of user-activity-graph -->
+                {% if accion == 'FIS' %}
+                <div class="row" style="margin-top: 10px;">
+                    <form id="frm_carga_file" name="frm_carga_file" method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label>{{formSubirDocumentoForm.archivo.label}}</label>
+                            {{formSubirDocumentoForm.archivo}}
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12" style="padding-top:24px;">
+                            <a href="javascript:void(0)" id="upload_imagen" class="btn btn-dark">Subir documento</a>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+                <div id="graph_bar row" style="width:100%; height:280px;padding-top:25px;">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table class="table bulk_action x_table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <th><input type="checkbox" id="check-all" class="check"></th>
+                                    </th>
+                                    {% if accion == 'FIS' %}
+                                    <th>NOMBRE DOCUMENTO</th>
+                                    <th>FECHA CREACIÓN</th>
+                                    <th>DESCARGAR <span class="fa fa-download"></span></th>
+                                    <th>BORRAR</th>
+                                    {% else %}
+                                    <th>DOCUMENTOS</th>
+                                    <th>PDF <span class="fa fa-download"></span></th>
+                                    {% endif %}
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in xDocumentos %}
+                                <tr>
+                                    <td>
+                                        <th><input type="checkbox" id="doc_{{d.doc_id}}" class="check"></th>
+                                    </td>
+
+                                    {% if accion == 'FIS' %}
+                                    <td>{{d.docemp_nombrearchivo|upper}}</td>
+                                    <td>{{d.docemp_fechacreacion|date:"d/m/Y"}}</td>
+                                    <td><a href="{{d.docemp_rutaarchivo}}" target="_blank" class="btn btn-link btn-xs" id="doc_up_{{d.doc_id}}"> {{d.docemp_nombrearchivo|upper}}</a></td>
+                                    <td><a href="{% url 'bases:borrarDocumentoEmpleado' d.docemp_id accion %}" class="btn btn-danger"><span class="fa fa-times text-danger" style="font-size:15px;color:#fff;"></span></a></td>
+                                    {% else %}
+                                    <td>{{d.doc_nombre|upper}}</td>
+                                    <td><a href="{% url 'bases:pdfDocumento' d.doc_id id_usuario %}" target="_blank">DESCARGAR</a></td>
+                                    {% endif %}
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end of user-activity-graph -->
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block css_js_down %}
+<script>
+$(document).ready(function(){
+
+    $("#descargar_seleccionado").click(function(){
+        var contador=0
+        // Recorremos todos los checkbox para contar los que estan seleccionados
+        $('input[id^=doc_]').each(function(){
+            if($(this).is(":checked"))
+                contador++;
+        });
+
+        if(contador == 0){
+            $.alert({
+                title: 'Error!',
+                content: 'Debe marcar a lo menos un checkbok',
+            });
+        }else{
+            console.log(contador+" MARCADOS")
+            $('input[id^=doc_]').each(function(){
+                var el_split = (this.id).split('_')[1]
+                setTimeout(function() {
+                        $("#doc_up_"+el_split).get(0).click();
+                    },1);
+            });
+        }
+    })
+
+    $("#imprimir_seleccionado").click(function(){
+        var contador=0
+        // Recorremos todos los checkbox para contar los que estan seleccionados
+        $('input[id^=doc_]').each(function(){
+            if($(this).is(":checked"))
+                contador++;
+        });
+
+        if(contador == 0){
+            $.alert({
+                title: 'Error!',
+                content: 'Debe marcar a lo menos un checkbok',
+            });
+        }else{
+            console.log(contador+" MARCADOS")
+            $('input[id^=doc_]').each(function(){
+
+            });
+        }
+    })
+
+
+    $("#id_tipoDocumento").change(function(){
+        $.ajax({
+            type: "POST",
+            url: "{% url 'bases:ajaxBuscarDocumento' %}",
+            data:{
+                'documento':this.value,
+            },
+            success: function(data){
+                json = data;
+
+                console.log(json.lstLosDocumentos)
+
+                $('#id_documento').html('')
+                json.lstLosDocumentos.forEach(function(k, v) {
+                   $('#id_documento').append('<option value="'+k.doc_id+'">'+k.doc_nombre+'</option>')
+                });
+
+            },
+            error: function (obj, error, objError){
+                //avisar que ocurrio un error
+                alert("ERROR: problema de compatibilidad, verifique el navegado o la version");
+            }
+        });
+    })
+
+
+
+    $("#check-all").click(function(){
+        if($(this).prop('checked') ) {
+           $('input[id^=doc_]').prop('checked', true);
+        }else{
+            $('input[id^=doc_]').prop('checked', false);
+        }
+    })
+
+
+    $('#upload_imagen').click(function(e) {
+
+        var mensaje=""
+        var is_error = false
+
+
+        if($("#id_archivo").val().length == 0){
+            mensaje += '- Archivo a subir <br/>'
+            is_error=true
+        }
+
+        if(is_error){
+
+            el_error = 'Faltan el/los siguiente/s dato/s </br></br>'+mensaje
+            $.alert({
+                title: 'Error!',
+                content: el_error,
+            });
+        }else{
+
+            var archivo=$("#id_archivo").val()
+            extensiones_permitidas = new Array(".jpg", ".jpeg", ".png", ".pdf");
+            extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase();
+            permitida = false;
+            for (var i = 0; i < extensiones_permitidas.length; i++) {
+                if (extensiones_permitidas[i] == extension) {
+                    permitida = true;
+                    break;
+                }
+            }
+            if (!permitida) {
+                $.alert({
+                    title: 'Error!',
+                    content: 'Formato no permitido debe ser <strong>.jpg, .jpeg, .png, .pdf</strong>',
+                });
+            }else{
+                var link_ = '{% url 'bases:ajaxAddFileUsuario' id_usuario %}';
+                var data = new FormData(document.getElementById("frm_carga_file"));
+                $('#frm_carga_file').find(':input').each(function(){
+                    data.append(this.name, $(this).val());
+                });
+                jsShowWindowLoad();
+                $.ajax({
+                    url: link_,
+                    type: "POST",
+                    dataType: "html",
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function(){
+                      // $("#img-loading").show();
+                    },
+                    success: function(data){
+                        json = JSON.parse(data);
+                        jsRemoveWindowLoad();
+                        location.reload()
+                    },
+                    error: function (obj, error, objError){
+                        //avisar que ocurrió un error
+                        $.alert({
+                            title: 'Error!',
+                            content: objError,
+                        });
+                    }
+                });
+            }
+        }
+    });
+})
+</script>
+{% endblock %}

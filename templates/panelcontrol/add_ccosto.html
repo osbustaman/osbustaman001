@@ -1,0 +1,50 @@
+{% extends 'panelcontrol/base.html' %}
+{% load static_tags %}
+
+{% block nav %}
+<li role="presentation">
+	<a href="{% url 'bases:edit_grupo_centro_costo' gcencost_id id_emp %}" style="border:0px;"><span class="fa fa-angle-double-left"></span> Volver</a>
+</li>
+{% endblock %}
+
+{% block dato_empresa %}
+{{nombre_gcce|lower}}
+{% endblock %}
+
+{% block acciones_remuneraciones %}
+<div class="x_panel">
+    <div class="x_content" >
+		<br />
+		<form id="frm" class="form-horizontal form-label-left input_mask" method="POST" action=".">
+			{% csrf_token %}
+			<div class="form-group">	
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_cCostoForm.cencost_nombre.label}}</label>
+					{{frm_cCostoForm.cencost_nombre}}
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_cCostoForm.cencost_codigo.label}}</label>
+					{{frm_cCostoForm.cencost_codigo}}
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12">
+					<label >{{frm_cCostoForm.cencost_activo.label}}</label>
+					{{frm_cCostoForm.cencost_activo}}
+				</div>
+			</div>
+			<div class="ln_solid"></div>
+			<div class="form-group">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+{% endblock %}
+
+{% block css_js_down %}
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.select2').select2()
+</script>
+{% endblock %}
